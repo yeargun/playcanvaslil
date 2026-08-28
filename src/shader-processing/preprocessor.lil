@@ -1,0 +1,765 @@
+import extern { Debug } from "../../upstream/engine/src/core/debug.js";
+import extern { assertPc, debugCall } from "./webgpu-shader-processor-wgsl.host.js";
+
+extern JsValue Debug;
+extern void assertPc(bool condition, string message);
+extern void debugCall(func()->void callback);
+extern JsValue Array;
+extern JsValue Number;
+extern JsValue console;
+extern float parseFloat(JsValue value);
+extern int parseInt(string value, int radix);
+extern string String(int value);
+
+struct Evaluation {
+  bool result;
+  bool error;
+}
+
+struct ParenthesesResult {
+  string expression;
+  bool error;
+}
+
+struct BlockInfo {
+  bool anyKeep;
+  bool keep;
+  int start;
+  int end;
+}
+
+string TRACEID = "Preprocessor";
+
+Regex KEYWORD = new Regex(
+  "[ \\t]*#(ifn?def|if|endif|else|elif|define|undef|extension|include)",
+  "g"
+);
+Regex DEFINE = new Regex("define[ \\t]+([^\\n]+)\\r?(?:\\n|$)", "g");
+Regex EXTENSION = new Regex(
+  "extension[ \\t]+([\\w-]+)[ \\t]*:[ \\t]*(enable|require)",
+  "g"
+);
+Regex UNDEF = new Regex("undef[ \\t]+([^\\n]+)\\r?(?:\\n|$)", "g");
+Regex IF_DIRECTIVE = new Regex("(ifdef|ifndef|if)[ \\t]*([^\\r\\n]+)\\r?\\n", "g");
+Regex ENDIF = new Regex("(endif|else|elif)(?:[ \\t]+([^\\r\\n]*))?\\r?\\n?", "g");
+Regex IDENTIFIER = new Regex("\\{?[\\w-]+\\}?");
+Regex DEFINED = new Regex("(!|\\s)?defined\\(([\\w-]+)\\)");
+Regex DEFINED_PARENS = new Regex("!?defined\\s*\\([^)]*\\)", "g");
+Regex DEFINED_BEFORE_PAREN = new Regex("!?defined\\s*$");
+Regex COMPARISON = new Regex(
+  "([a-z_]\\w*)\\s*(==|!=|<|<=|>|>=)\\s*([\\w\"']+)",
+  "i"
+);
+Regex INVALID = new Regex("[+\\-]", "g");
+Regex INCLUDE = new Regex(
+  "include[ \\t]+\"([\\w-]+)(?:\\s*,\\s*([\\w-]+))?\"",
+  "g"
+);
+Regex LOOP_INDEX = new Regex("\\{i\\}", "g");
+Regex FRAGCOLOR = new Regex("(pcFragColor[1-8])\\b", "g");
+Regex NUMERIC_LITERAL = new Regex("^\\d+(?:\\.\\d+)?$");
+Regex COMMENTS = new Regex("/\\*[\\s\\S]*?\\*/|([^\\\\:]|^)//.*$", "gm");
+Regex LINE_BREAK = new Regex("\\r?\\n");
+Regex EXCESS_EMPTY_LINES = new Regex("(\\n\\n){3,}", "g");
+
+JsValue sourceName = JS.undefined();
+
+int matchIndex(JsValue matched) {
+  return JS.number(matched["index"]).toInt();
+}
+
+string capture(JsValue matched, int index) {
+  return JS.string(matched[index]);
+}
+
+string presentString(JsValue values, int index) {
+  return JS.assume(values[index]);
+}
+
+string substringFrom(string value, int start) {
+  return JS.string(JS.invoke(JS.assume(value), "substring", start));
+}
+
+string substringRange(string value, int start, int end) {
+  return JS.string(JS.invoke(JS.assume(value), "substring", start, end));
+}
+
+void consoleError(string message, JsValue details) {
+  JS.invoke(console, "error", message, details);
+}
+
+export JsValue getSourceName() {
+  return sourceName;
+}
+
+export void setSourceName(JsValue value) {
+  sourceName = value;
+}
+
+export string? run(
+  string source,
+  Map<string, string>? includes,
+  JsValue options
+) {
+  // Strip first so directives inside comments cannot participate.
+  source = stripComments(source);
+
+  string[] sourceLines = JS.assume(JS.invoke(JS.assume(source), "split", LINE_BREAK));
+  source = sourceLines.map((string line) => line.trimEnd()).join("\n");
+
+  Map<string, string> defines = new Map<string, string>();
+  Map<string, string> injectedDefines = new Map<string, string>();
+
+  bool stripDefines = options["stripDefines"].truthy();
+  string? preprocessed = _preprocess(
+    source,
+    defines,
+    injectedDefines,
+    includes,
+    stripDefines
+  );
+  if (preprocessed == null) {
+    return null;
+  }
+  source = preprocessed;
+
+  Map<string, string> intDefines = new Map<string, string>();
+  auto collectIntegerDefine = (string value, string key) => {
+    float parsed = parseFloat(value);
+    bool integer = JS.invoke(Number, "isInteger", parsed).truthy();
+    if (integer && !value.includes(".")) {
+      intDefines.set(key, value);
+    }
+  };
+  JS.invoke(JS.assume(defines), "forEach", collectIntegerDefine);
+
+  // Includes can add comments and injected placeholders.
+  source = stripComments(source);
+  source = JS.assume(injectDefines(source, injectedDefines));
+  source = stripUnusedColorAttachments(source, options);
+  source = JS.assume(RemoveEmptyLines(source));
+  source = JS.assume(processArraySize(source, intDefines));
+
+  return source;
+}
+
+export string stripUnusedColorAttachments(string source, JsValue options) {
+  if (options["stripUnusedColorAttachments"].truthy()) {
+    Map<int, int> counts = new Map<int, int>();
+    JsValue matches = JS.invoke(JS.assume(source), "match", FRAGCOLOR);
+    if (!JS.isNullish(matches)) {
+      auto countMatch = (JsValue rawMatch) => {
+        string matched = JS.string(rawMatch);
+        int index = parseInt(matched.charAt(matched.length - 1), 10);
+        int count = counts.get(index) ?? 0;
+        counts.set(index, count + 1);
+      };
+      JS.invoke(matches, "forEach", countMatch);
+    }
+
+    JsValue countValues = JS.invoke(JS.assume(counts), "values");
+    JsValue countArray = JS.invoke(Array, "from", countValues);
+    auto hasSingleUse = (int count) => count == 1;
+    bool anySingleUse = JS.invoke(countArray, "some", hasSingleUse).truthy();
+    if (anySingleUse) {
+      string[] lines = source.split("\n");
+      string[] keepLines = [];
+      for (int i = 0; i < lines.length; i++) {
+        string line = presentString(JS.assume(lines), i);
+        JsValue lineMatch = JS.invoke(JS.assume(line), "match", FRAGCOLOR);
+        if (!JS.isNullish(lineMatch)) {
+          string matched = JS.string(lineMatch[0]);
+          int index = parseInt(matched.charAt(matched.length - 1), 10);
+          JsValue count = JS.invoke(JS.assume(counts), "get", index);
+          if (index > 0 && JS.strictEqual(count, 1)) {
+            continue;
+          }
+        }
+        keepLines.push(line);
+      }
+      source = keepLines.join("\n");
+    }
+  }
+
+  return source;
+}
+
+export string stripComments(string source) {
+  return source.replace(COMMENTS, "$1");
+}
+
+export JsValue processArraySize(JsValue source, Map<string, string> intDefines) {
+  if (!JS.strictEqual(source, null)) {
+    auto replaceArraySize = (string value, string key) => {
+      Regex arraySize = new Regex("\\[" + key + "\\]", "g");
+      source = JS.invoke(source, "replace", arraySize, "[" + value + "]");
+    };
+    JS.invoke(JS.assume(intDefines), "forEach", replaceArraySize);
+  }
+
+  return source;
+}
+
+export JsValue injectDefines(JsValue source, Map<string, string> injectDefines) {
+  if (!JS.strictEqual(source, null) && injectDefines.size > 0) {
+    string[] lines = JS.assume(JS.invoke(source, "split", "\n"));
+    auto injectDefine = (string value, string key) => {
+      Regex replacement = new Regex(key, "g");
+      for (int i = 0; i < lines.length; i++) {
+        string line = presentString(JS.assume(lines), i);
+        if (!line.includes("#")) {
+          lines[i] = line.replace(replacement, value);
+        }
+      }
+    };
+    JS.invoke(JS.assume(injectDefines), "forEach", injectDefine);
+    source = lines.join("\n");
+  }
+
+  return source;
+}
+
+export JsValue RemoveEmptyLines(JsValue source) {
+  if (!JS.strictEqual(source, null)) {
+    string[] lines = JS.assume(JS.invoke(source, "split", LINE_BREAK));
+    string result = lines.map((string line) => {
+      if (line.trim() == "") {
+        return "";
+      }
+      return line;
+    }).join("\n");
+    source = result.replace(EXCESS_EMPTY_LINES, "\n\n");
+  }
+
+  return source;
+}
+
+export string? _preprocess(
+  string source,
+  Map<string, string> defines,
+  Map<string, string> injectDefines,
+  Map<string, string>? includes,
+  bool stripDefines
+) {
+  string originalSource = source;
+  BlockInfo[] stack = [];
+  bool error = false;
+
+  while (true) {
+    // The regex executes before the error check in the upstream loop condition.
+    JsValue matched = KEYWORD.exec(source);
+    if (JS.isNullish(matched) || error) {
+      break;
+    }
+
+    string keyword = capture(matched, 1);
+    int keywordIndex = matchIndex(matched);
+
+    if (keyword == "define") {
+      DEFINE.lastIndex = keywordIndex;
+      JsValue defineMatch = DEFINE.exec(source);
+      assertPc(
+        !JS.isNullish(defineMatch),
+        "Invalid [" + keyword + "]: " +
+          substringRange(source, keywordIndex, keywordIndex + 100) + "..."
+      );
+      error = error || JS.isNullish(defineMatch);
+      string expression = capture(defineMatch, 1);
+
+      IDENTIFIER.lastIndex = matchIndex(defineMatch);
+      JsValue identifierValue = IDENTIFIER.exec(expression);
+      string identifier = capture(identifierValue, 0);
+      string value = substringFrom(expression, identifier.length).trim();
+      if (value == "") {
+        value = "true";
+      }
+
+      bool keep = _keep(stack);
+      bool stripThisDefine = stripDefines;
+
+      if (keep) {
+        bool replacementDefine = identifier.startsWith("{") && identifier.endsWith("}");
+        if (replacementDefine) {
+          stripThisDefine = true;
+        }
+
+        if (replacementDefine) {
+          injectDefines.set(identifier, value);
+        } else {
+          defines.set(identifier, value);
+        }
+
+        if (stripThisDefine) {
+          int defineIndex = matchIndex(defineMatch);
+          source = substringRange(source, 0, defineIndex - 1) +
+            substringFrom(source, DEFINE.lastIndex.toInt());
+          KEYWORD.lastIndex = defineIndex - 1;
+        }
+      }
+
+      debugCall(() => {
+        string defineStatus = "";
+        if (!keep) {
+          defineStatus = "IGNORED";
+        }
+        JS.invoke(
+          Debug,
+          "trace",
+          TRACEID,
+          keyword + ": [" + identifier + "] " + value + " " + defineStatus
+        );
+      });
+
+      if (!stripThisDefine) {
+        KEYWORD.lastIndex = matchIndex(defineMatch) + JS.number(defineMatch[0]["length"]);
+      }
+    } else if (keyword == "undef") {
+      UNDEF.lastIndex = keywordIndex;
+      JsValue undefMatch = UNDEF.exec(source);
+      string identifier = capture(undefMatch, 1).trim();
+
+      bool keep = _keep(stack);
+      if (keep) {
+        defines.delete(identifier);
+
+        if (stripDefines) {
+          int undefIndex = matchIndex(undefMatch);
+          source = substringRange(source, 0, undefIndex - 1) +
+            substringFrom(source, UNDEF.lastIndex.toInt());
+          KEYWORD.lastIndex = undefIndex - 1;
+        }
+      }
+
+      debugCall(() => {
+        string undefStatus = "";
+        if (!keep) {
+          undefStatus = "IGNORED";
+        }
+        JS.invoke(
+          Debug,
+          "trace",
+          TRACEID,
+          keyword + ": [" + identifier + "] " + undefStatus
+        );
+      });
+
+      if (!stripDefines) {
+        KEYWORD.lastIndex = matchIndex(undefMatch) + JS.number(undefMatch[0]["length"]);
+      }
+    } else if (keyword == "extension") {
+      EXTENSION.lastIndex = keywordIndex;
+      JsValue extensionMatch = EXTENSION.exec(source);
+      assertPc(
+        !JS.isNullish(extensionMatch),
+        "Invalid [" + keyword + "]: " +
+          substringRange(source, keywordIndex, keywordIndex + 100) + "..."
+      );
+      error = error || JS.isNullish(extensionMatch);
+      if (!JS.isNullish(extensionMatch)) {
+        string identifier = capture(extensionMatch, 1);
+        bool keep = _keep(stack);
+        if (keep) {
+          defines.set(identifier, "true");
+        }
+
+        debugCall(() => {
+          string extensionStatus = "";
+          if (!keep) {
+            extensionStatus = "IGNORED";
+          }
+          JS.invoke(
+            Debug,
+            "trace",
+            TRACEID,
+            keyword + ": [" + identifier + "] " + extensionStatus
+          );
+        });
+      }
+
+      KEYWORD.lastIndex = matchIndex(extensionMatch) + JS.number(extensionMatch[0]["length"]);
+    } else if (keyword == "ifdef" || keyword == "ifndef" || keyword == "if") {
+      IF_DIRECTIVE.lastIndex = keywordIndex;
+      JsValue ifMatch = IF_DIRECTIVE.exec(source);
+      string expression = capture(ifMatch, 2);
+
+      Evaluation evaluated = evaluate(expression, defines);
+      error = error || evaluated.error;
+      bool result = evaluated.result;
+      if (keyword == "ifndef") {
+        result = !result;
+      }
+
+      stack.push(BlockInfo{
+        result,
+        result,
+        keywordIndex,
+        IF_DIRECTIVE.lastIndex.toInt()
+      });
+      debugCall(() => {
+        JS.invoke(Debug, "trace", TRACEID, keyword + ": [" + expression + "] => " + result);
+      });
+
+      KEYWORD.lastIndex = matchIndex(ifMatch) + JS.number(ifMatch[0]["length"]);
+    } else if (keyword == "endif" || keyword == "else" || keyword == "elif") {
+      ENDIF.lastIndex = keywordIndex;
+      JsValue endifMatch = ENDIF.exec(source);
+
+      JsValue maybeBlockInfo = JS.invoke(JS.assume(stack), "pop");
+      if (JS.isNullish(maybeBlockInfo)) {
+        consoleError(
+          "Shader preprocessing encountered \"#" + capture(endifMatch, 1) +
+            "\" without a preceding #if #ifdef #ifndef while preprocessing " +
+            sourceName + " on line:\n " +
+            substringRange(source, keywordIndex, keywordIndex + 100) + "...",
+          JS.object("source", originalSource)
+        );
+        error = true;
+        continue;
+      }
+      BlockInfo blockInfo = JS.assume(maybeBlockInfo);
+
+      string blockCode = "";
+      if (blockInfo.keep) {
+        blockCode = substringRange(source, blockInfo.end, keywordIndex);
+      }
+      debugCall(() => {
+        JS.invoke(
+          Debug,
+          "trace",
+          TRACEID,
+          keyword + ": [previous block] => " + (blockCode != "")
+        );
+      });
+
+      source = substringRange(source, 0, blockInfo.start) + blockCode +
+        substringFrom(source, ENDIF.lastIndex.toInt());
+      KEYWORD.lastIndex = blockInfo.start + blockCode.length;
+
+      string endifCommand = capture(endifMatch, 1);
+      if (endifCommand == "else" || endifCommand == "elif") {
+        bool result = false;
+        if (!blockInfo.anyKeep) {
+          if (endifCommand == "else") {
+            result = !blockInfo.keep;
+          } else {
+            Evaluation evaluated = evaluate(capture(endifMatch, 2), defines);
+            result = evaluated.result;
+            error = error || evaluated.error;
+          }
+        }
+
+        stack.push(BlockInfo{
+          blockInfo.anyKeep || result,
+          result,
+          KEYWORD.lastIndex.toInt(),
+          KEYWORD.lastIndex.toInt()
+        });
+        debugCall(() => {
+          JS.invoke(
+            Debug,
+            "trace",
+            TRACEID,
+            keyword + ": [" + endifMatch[2] + "] => " + result
+          );
+        });
+      }
+    } else if (keyword == "include") {
+      INCLUDE.lastIndex = keywordIndex;
+      JsValue includeMatch = INCLUDE.exec(source);
+      error = error || JS.isNullish(includeMatch);
+      if (JS.isNullish(includeMatch)) {
+        assertPc(
+          !JS.isNullish(includeMatch),
+          "Invalid [" + keyword + "] while preprocessing " + sourceName + ":\n" +
+            substringRange(source, keywordIndex, keywordIndex + 100) + "..."
+        );
+        error = true;
+        continue;
+      }
+
+      string identifier = capture(includeMatch, 1).trim();
+      string? countIdentifier = null;
+      if (!JS.isUndefined(includeMatch[2])) {
+        countIdentifier = capture(includeMatch, 2).trim();
+      }
+
+      bool keep = _keep(stack);
+      if (keep) {
+        JsValue includeSource = JS.undefined();
+        if (includes != null) {
+          includeSource = JS.invoke(JS.assume(includes), "get", identifier);
+        }
+
+        if (!JS.isUndefined(includeSource)) {
+          string resolvedInclude = stripComments(JS.assume(includeSource));
+
+          if (countIdentifier != null) {
+            JsValue countString = JS.invoke(JS.assume(defines), "get", countIdentifier);
+            float count = parseFloat(countString);
+            if (JS.invoke(Number, "isInteger", count).truthy()) {
+              string result = "";
+              for (int i = 0; i < count; i++) {
+                result += resolvedInclude.replace(LOOP_INDEX, String(i));
+              }
+              resolvedInclude = result;
+            } else {
+              consoleError(
+                "Include Count identifier \"" + countIdentifier +
+                  "\" not resolved while preprocessing " + sourceName + " on line:\n " +
+                  substringRange(source, keywordIndex, keywordIndex + 100) + "...",
+                JS.object("originalSource", originalSource, "source", source)
+              );
+              error = true;
+            }
+          }
+
+          int includeIndex = matchIndex(includeMatch);
+          source = substringRange(source, 0, includeIndex - 1) + resolvedInclude +
+            substringFrom(source, INCLUDE.lastIndex.toInt());
+          KEYWORD.lastIndex = includeIndex - 1;
+        } else {
+          consoleError(
+            "Include \"" + identifier + "\" not resolved while preprocessing " + sourceName,
+            JS.object("originalSource", originalSource, "source", source)
+          );
+          error = true;
+          continue;
+        }
+      }
+
+      debugCall(() => {
+        string includeStatus = "";
+        if (!keep) {
+          includeStatus = "IGNORED";
+        }
+        JS.invoke(
+          Debug,
+          "trace",
+          TRACEID,
+          keyword + ": [" + identifier + "] " + includeStatus
+        );
+      });
+    }
+  }
+
+  if (stack.length > 0) {
+    JS.invoke(
+      console,
+      "error",
+      "Shader preprocessing reached the end of the file without encountering the " +
+        "necessary #endif to close a preceding #if, #ifdef, or #ifndef block. " + sourceName
+    );
+    error = true;
+  }
+
+  if (error) {
+    consoleError("Failed to preprocess shader: ", JS.object("source", originalSource));
+    return null;
+  }
+
+  return source;
+}
+
+export bool _keep(BlockInfo[] stack) {
+  for (int i = 0; i < stack.length; i++) {
+    if (!stack[i].keep) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export Evaluation evaluateAtomicExpression(string expr, Map<string, string> defines) {
+  bool error = false;
+  expr = expr.trim();
+  bool invert = false;
+
+  if (expr == "true") {
+    return Evaluation{true, error};
+  }
+  if (expr == "false") {
+    return Evaluation{false, error};
+  }
+
+  if (NUMERIC_LITERAL.test(expr)) {
+    return Evaluation{parseFloat(expr) != 0.0, error};
+  }
+
+  JsValue definedMatch = DEFINED.exec(expr);
+  if (!JS.isNullish(definedMatch)) {
+    invert = JS.strictEqual(definedMatch[1], "!");
+    expr = capture(definedMatch, 2).trim();
+    bool exists = defines.has(expr);
+    if (invert) {
+      return Evaluation{!exists, error};
+    }
+    return Evaluation{exists, error};
+  }
+
+  JsValue comparisonMatch = COMPARISON.exec(expr);
+  if (!JS.isNullish(comparisonMatch)) {
+    string leftKey = capture(comparisonMatch, 1).trim();
+    string rightKey = capture(comparisonMatch, 3).trim();
+    JsValue leftValue = JS.invoke(JS.assume(defines), "get", leftKey);
+    JsValue rightValue = JS.invoke(JS.assume(defines), "get", rightKey);
+    string left = leftKey;
+    string right = rightKey;
+    if (!JS.isNullish(leftValue)) {
+      left = JS.string(leftValue);
+    }
+    if (!JS.isNullish(rightValue)) {
+      right = JS.string(rightValue);
+    }
+    string operator = capture(comparisonMatch, 2).trim();
+
+    bool result = false;
+    if (operator == "==") {
+      result = left == right;
+    } else if (operator == "!=") {
+      result = left != right;
+    } else if (operator == "<") {
+      result = left < right;
+    } else if (operator == "<=") {
+      result = left <= right;
+    } else if (operator == ">") {
+      result = left > right;
+    } else if (operator == ">=") {
+      result = left >= right;
+    } else {
+      error = true;
+    }
+
+    return Evaluation{result, error};
+  }
+
+  return Evaluation{defines.has(expr), error};
+}
+
+export ParenthesesResult processParentheses(
+  string expression,
+  Map<string, string> defines
+) {
+  bool error = false;
+  string processed = expression.trim();
+
+  while (processed.startsWith("(") && processed.endsWith(")")) {
+    int depth = 0;
+    bool wrapsEntire = true;
+    for (int i = 0; i < processed.length - 1; i++) {
+      string character = processed.charAt(i);
+      if (character == "(") {
+        depth++;
+      } else if (character == ")") {
+        depth--;
+        if (depth == 0) {
+          wrapsEntire = false;
+          break;
+        }
+      }
+    }
+    if (wrapsEntire) {
+      processed = processed.slice(1, -1).trim();
+    } else {
+      break;
+    }
+  }
+
+  while (true) {
+    bool foundParen = false;
+    int depth = 0;
+    int maxDepth = 0;
+    int deepestStart = -1;
+    int deepestEnd = -1;
+    int inDefinedParen = 0;
+
+    for (int i = 0; i < processed.length; i++) {
+      string character = processed.charAt(i);
+      if (character == "(") {
+        string beforeParen = substringRange(processed, 0, i);
+        if (DEFINED_BEFORE_PAREN.test(beforeParen)) {
+          inDefinedParen++;
+        } else if (inDefinedParen == 0) {
+          depth++;
+          if (depth > maxDepth) {
+            maxDepth = depth;
+            deepestStart = i;
+          }
+          foundParen = true;
+        }
+      } else if (character == ")") {
+        if (inDefinedParen > 0) {
+          inDefinedParen--;
+        } else if (depth > 0) {
+          if (depth == maxDepth && deepestStart != -1) {
+            deepestEnd = i;
+          }
+          depth--;
+        }
+      }
+    }
+
+    if (!foundParen || deepestStart == -1 || deepestEnd == -1) {
+      break;
+    }
+
+    string subExpr = substringRange(processed, deepestStart + 1, deepestEnd);
+    Evaluation evaluated = evaluate(subExpr, defines);
+    error = error || evaluated.error;
+
+    string resultText = "false";
+    if (evaluated.result) {
+      resultText = "true";
+    }
+    processed = substringRange(processed, 0, deepestStart) + resultText +
+      substringFrom(processed, deepestEnd + 1);
+  }
+
+  return ParenthesesResult{processed, error};
+}
+
+export Evaluation evaluate(string expression, Map<string, string> defines) {
+  bool correct = JS.isNullish(INVALID.exec(expression));
+  assertPc(correct, "Resolving expression like this is not supported: " + expression);
+
+  string processedExpr = expression;
+  bool parenError = false;
+
+  string withoutDefined = expression.replace(DEFINED_PARENS, "");
+  if (withoutDefined.indexOf("(") != -1) {
+    ParenthesesResult processed = processParentheses(expression, defines);
+    processedExpr = processed.expression;
+    parenError = processed.error;
+  }
+
+  if (parenError) {
+    debugCall(() => {
+      JS.invoke(
+        Debug,
+        "log",
+        "Parenthesis parsing error in expression: \"" + expression + "\""
+      );
+    });
+    return Evaluation{false, true};
+  }
+
+  string[] orSegments = processedExpr.split("||");
+  for (int orIndex = 0; orIndex < orSegments.length; orIndex++) {
+    string orSegment = presentString(JS.assume(orSegments), orIndex);
+    string[] andSegments = orSegment.split("&&");
+    bool andResult = true;
+    for (int andIndex = 0; andIndex < andSegments.length; andIndex++) {
+      string andSegment = presentString(JS.assume(andSegments), andIndex);
+      Evaluation evaluated = evaluateAtomicExpression(andSegment.trim(), defines);
+      if (!evaluated.result || evaluated.error) {
+        andResult = false;
+        break;
+      }
+    }
+
+    if (andResult) {
+      return Evaluation{true, !correct};
+    }
+  }
+
+  return Evaluation{false, !correct};
+}

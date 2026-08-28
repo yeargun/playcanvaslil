@@ -1,63 +1,50 @@
 # PlayCanvasLil
 
-An independent, file-by-file LilScript port of one PlayCanvas Engine subsystem:
-[`src/core/math`](https://github.com/playcanvas/engine/tree/main/src/core/math).
-This is not an official PlayCanvas project and it is not a port of the full
-engine.
+A LilScript rewrite of one substantial PlayCanvas Engine subsystem: the shader-processing core.
+It is not an official PlayCanvas project and it is not a port of the complete engine.
 
-**Site:** [yeargun.github.io/playcanvaslil](https://yeargun.github.io/playcanvaslil/)
+**Live evidence:** [yeargun.github.io/playcanvaslil](https://yeargun.github.io/playcanvaslil/)
 
-## Current Status
+## Scope
 
-The upstream engine is pinned at `dbd2f580915273d50cfb12936af25d45ae636a04`
-as the `upstream/engine` Git submodule. The scope has 17 JavaScript files.
-`bit-packing.js` is the first converted file, so current coverage is **1 / 17**.
-See [PORT_STATUS.md](PORT_STATUS.md) for the file ledger.
+The selected upstream is pinned at `dbd2f580915273d50cfb12936af25d45ae636a04` and contains
+four algorithm-heavy JavaScript modules totaling **124,613 source bytes**:
 
-The algorithms are kept in LilScript. The open-world build uses a small
-JavaScript facade only to reproduce PlayCanvas's exact exported `BitPacking`
-object: keys, defaults, arities, and non-constructible methods. The closed-world
-build has no facade or public object and lets the compiler optimize the complete
-consumer graph.
+- `src/core/preprocessor.js`
+- `src/platform/graphics/shader-definition-utils.js`
+- `src/platform/graphics/shader-processor-glsl.js`
+- `src/platform/graphics/webgpu/webgpu-shader-processor-wgsl.js`
 
-## First Result
+All four are rewritten in LilScript. Thin JavaScript facades retain static class constructors,
+method descriptors, defaults, and real PlayCanvas format-object prototypes. Shared PlayCanvas host
+dependencies are present in both artifacts and are never subtracted from measurements.
 
-Canonical gzip-9 and Brotli-11 come from `lilscript-codec`. All rows include the
-same license banner. LilScript uses a separate compile for each size objective;
-the official baseline is the smaller valid esbuild or Terser result for that
-metric.
+## Size
 
-| Contract | Metric | LilScript | Best official | Difference |
+The primary comparison follows the requested library-delivery contract: PlayCanvas release Debug
+calls are stripped and Terser compression runs with **identifier and property mangling disabled**.
+LilScript still emits its own compiler-selected identifiers.
+
+| Contract | Raw | gzip-9 | Brotli-11 | Brotli difference |
 | --- | ---: | ---: | ---: | ---: |
-| Open-world ESM | raw | 537 B | 236 B | +127.5% |
-| Open-world ESM | gzip-9 | 264 B | 179 B | +47.5% |
-| Open-world ESM | Brotli-11 | 228 B | 169 B | +34.9% |
-| Closed-world kernel | raw | 403 B | 410 B | -1.7% |
-| Closed-world kernel | gzip-9 | 284 B | 283 B | +0.4% |
-| Closed-world kernel | Brotli-11 | 277 B | 262 B | +5.7% |
+| Official open-world module | 67,112 B | 16,267 B | 14,633 B | baseline |
+| **LilScript open-world module** | **53,783 B** | 16,337 B | **14,580 B** | **-0.36%** |
+| Official closed-world entry | 67,422 B | 16,333 B | 14,681 B | baseline |
+| **LilScript closed-world entry** | **51,123 B** | **15,536 B** | **13,810 B** | **-5.93%** |
 
-This is useful evidence in both directions. LilScript does not optimize this
-tiny reusable object better today. The facade is linked after LilScript's
-objective search, which exposes an integration limitation: the compiler cannot
-score the final reusable artifact yet. In the closed-world kernel it inlines the
-calls, but currently leaves an unreachable materialized method table behind.
-That output is slightly smaller raw and slightly larger after gzip/Brotli. These
-contracts are reported separately and are never compared to each other.
-
-The repository also records a balanced 12-block Node benchmark for both
-contracts. This is a small synthetic kernel, not a broad engine performance
-claim. Current medians, every raw sample, and machine details are in
-`reports/performance.json`.
+The open-world result is intentionally a narrow win, not rounded into a larger claim. Gzip is 70
+bytes larger in that lane. Closed-world linking removes public-class facade costs and wins all three
+size metrics.
 
 ## Correctness
 
-- Exact cases from PlayCanvas's `bit-packing.test.mjs`
-- 100,000 deterministic 32-bit differential vectors
-- Exact public keys, function types, arities, defaults, and constructibility
-- Open-world candidate, esbuild baseline, and Terser baseline all checked
-- Closed-world checksum checked across all three artifacts
-- No algorithm substitution: LilScript spells JavaScript's `~x` as `x ^ -1`,
-  the equivalent signed-i32 bitwise complement
+- 78 unchanged upstream PlayCanvas tests for preprocessing and WGSL reflection
+- 14 differential GLSL fixture groups
+- 13 differential shader-definition fixture groups
+- Public export, constructor, static method, descriptor, arity, and default-value checks
+- Real PlayCanvas `UniformBufferFormat` and `BindGroupFormat` result objects
+- Open- and closed-world artifacts checked independently
+- No algorithm substitutions or property mangling
 
 ## Reproduce
 
@@ -68,35 +55,22 @@ git clone https://github.com/yeargun/lilscript.git ../lilscript
 git -C ../lilscript checkout "$(cat LILSCRIPT_REVISION)"
 cargo build --release --bins --manifest-path ../lilscript/Cargo.toml
 npm ci
-npm test
-npm run measure
-npm run benchmark
-npm run check:site
+npm run check
 ```
 
-By default, scripts use the compiler and codec scorer from `../lilscript` at the
-revision in `LILSCRIPT_REVISION`. Override them with `LILSCRIPT_COMPILER` and
-`LILSCRIPT_CODEC`, or set `LILSCRIPT_ROOT`. Reports retain the compiler binary,
-codec binary, config, and output hashes, and record whether the compiler source
-tree was dirty. Measurement rejects a dirty or mismatched compiler by default;
-`PLAYCANVASLIL_ALLOW_DIRTY_COMPILER=1` is an explicit local-only escape hatch.
+Set `LILSCRIPT_ROOT`, `LILSCRIPT_COMPILER`, or `LILSCRIPT_CODEC` to use another location. Measurement
+rejects a dirty or mismatched compiler unless `PLAYCANVASLIL_ALLOW_DIRTY_COMPILER=1` is explicitly
+set for local investigation.
 
-`npm run test:artifact` and the Pages workflow validate the checked-in artifacts
-without requiring a compiler checkout.
+## Port Rules
 
-## Rules For Each File
-
-1. Pin the upstream source and tests before translation.
-2. Keep algorithms, operation ordering, mutations, and explicit performance
-   techniques unchanged.
-3. Make numeric and aggregate types explicit in `.lil`.
-4. Gate public API shape and deterministic differential behavior before size or
-   speed measurements.
-5. Report open-world and closed-world results independently, including losses.
-6. Convert one source file at a time and update the ledger only after all gates
-   pass.
+1. Pin the exact upstream revision and source list.
+2. Translate one file at a time without changing algorithms or explicit performance techniques.
+3. Keep unavoidable host/facade JavaScript narrow and include every byte in the result.
+4. Run behavior and API gates before recording size or runtime.
+5. Keep open-world and closed-world evidence separate.
+6. Report losses as well as wins; property-mangled bundles are not a comparison lane.
 
 ## License
 
-MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). PlayCanvas is copyright
-PlayCanvas Ltd.
+MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). PlayCanvas is copyright PlayCanvas Ltd.

@@ -15,8 +15,10 @@ describe("GitHub Pages artifact", () => {
       "app.js",
       "results.json",
       "performance.json",
-      "artifacts/bit-packing.js",
-      "artifacts/bit-packing.official.js",
+      "artifacts/shader-processing.js",
+      "artifacts/shader-processing.official.js",
+      "artifacts/shader-processing.closed.js",
+      "artifacts/shader-processing.closed.official.js",
       ".nojekyll",
     ]) {
       assert.equal(existsSync(resolve(site, path)), true, path);
@@ -25,7 +27,7 @@ describe("GitHub Pages artifact", () => {
 
   it("states the narrow scope and separates both contracts", () => {
     const html = readFileSync(resolve(site, "index.html"), "utf8");
-    assert.match(html, /core\/math/);
+    assert.match(html, /shader-processing core/i);
     assert.match(html, /Open world/i);
     assert.match(html, /Closed world/i);
     assert.match(html, /not affiliated/i);
@@ -35,11 +37,12 @@ describe("GitHub Pages artifact", () => {
   it("publishes measured provenance", () => {
     const results = JSON.parse(readFileSync(resolve(site, "results.json"), "utf8"));
     assert.equal(results.scope.gitSubmodulePath, "upstream/engine");
-    assert.equal(results.scope.sourceSubtree, "src/core/math");
-    assert.deepEqual(results.scope.convertedFiles, ["bit-packing.js"]);
+    assert.equal(results.scope.name, "shader-processing core");
+    assert.equal(results.scope.convertedFiles.length, 4);
     assert.match(results.upstream.revision, /^[0-9a-f]{40}$/);
     assert.match(results.compiler.binarySha256, /^[0-9a-f]{64}$/);
-    assert.ok(results.matched.open.brotli11.differencePercent > 0);
-    assert.equal(Number.isFinite(results.matched.closed.brotli11.differencePercent), true);
+    assert.ok(results.comparison.open.brotli11.differencePercent < 0);
+    assert.ok(results.comparison.closed.brotli11.differencePercent < 0);
+    assert.equal(results.contract.propertyMangling, false);
   });
 });

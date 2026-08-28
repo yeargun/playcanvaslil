@@ -2,8 +2,14 @@
 priority = "size-first"
 optimization_level = 15
 cost_model = "brotli"
-candidate_search = "production"
+candidate_search = "always"
+candidate_proposal_limit = 1536
+terminal_codec_probe_limit = 1536
+candidate_byte_budget = 16777216
 local_name_reserve = 48
+function_spelling = "arrow"
+assume_pristine_builtins = true
+assume_pure_property_reads = true
 
 [mangle]
 identifiers = true

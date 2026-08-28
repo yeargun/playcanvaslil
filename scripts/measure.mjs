@@ -1,7 +1,7 @@
 import { accessSync, constants, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { dirname, relative, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -30,46 +30,32 @@ function sha256(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
 }
 
-function percent(candidate, baseline) {
-  return Number((((candidate / baseline) - 1) * 100).toFixed(1));
+function difference(candidate, baseline) {
+  return Number((((candidate / baseline) - 1) * 100).toFixed(2));
 }
 
-const codec = executable(
-  [
-    process.env.LILSCRIPT_CODEC,
-    resolve(lilscriptRoot, "target", "release", "lilscript-codec"),
-    resolve(lilscriptRoot, "target", "debug", "lilscript-codec"),
-  ],
-  "LilScript codec scorer",
-);
-const compiler = executable(
-  [
-    process.env.LILSCRIPT_COMPILER,
-    resolve(lilscriptRoot, "target", "release", "lilscript"),
-    resolve(lilscriptRoot, "target", "debug", "lilscript"),
-  ],
-  "LilScript compiler",
-);
+const codec = executable([
+  process.env.LILSCRIPT_CODEC,
+  resolve(lilscriptRoot, "target", "release", "lilscript-codec"),
+  resolve(lilscriptRoot, "target", "debug", "lilscript-codec"),
+], "LilScript codec scorer");
+const compiler = executable([
+  process.env.LILSCRIPT_COMPILER,
+  resolve(lilscriptRoot, "target", "release", "lilscript"),
+  resolve(lilscriptRoot, "target", "debug", "lilscript"),
+], "LilScript compiler");
 
 const definitions = [
-  ["open-lil-raw", "open", "LilScript", "raw", "dist/bit-packing.raw.js"],
-  ["open-lil-gzip", "open", "LilScript", "gzip", "dist/bit-packing.gzip.js"],
-  ["open-lil-brotli", "open", "LilScript", "brotli", "dist/bit-packing.brotli.js"],
-  ["open-esbuild", "open", "Official + esbuild", null, "dist/bit-packing.official-esbuild.js"],
-  ["open-terser", "open", "Official + Terser", null, "dist/bit-packing.official-terser.js"],
-  ["closed-lil-raw", "closed", "LilScript", "raw", "dist/closed-world.raw.js"],
-  ["closed-lil-gzip", "closed", "LilScript", "gzip", "dist/closed-world.gzip.js"],
-  ["closed-lil-brotli", "closed", "LilScript", "brotli", "dist/closed-world.brotli.js"],
-  ["closed-esbuild", "closed", "Official + esbuild", null, "dist/closed-world.official-esbuild.js"],
-  ["closed-terser", "closed", "Official + Terser", null, "dist/closed-world.official-terser.js"],
+  ["open-lilscript", "open", "LilScript", "dist/shader-processing.js"],
+  ["open-official", "open", "Official PlayCanvas", "dist/shader-processing.official.js"],
+  ["closed-lilscript", "closed", "LilScript", "dist/shader-processing.closed.js"],
+  ["closed-official", "closed", "Official PlayCanvas", "dist/shader-processing.closed.official.js"],
 ];
-const paths = definitions.map((definition) => resolve(root, definition[4]));
-const measured = JSON.parse(command(codec, ["--json", ...paths]));
-const artifacts = definitions.map(([id, world, label, costModel, path], index) => ({
+const measured = JSON.parse(command(codec, ["--json", ...definitions.map((item) => resolve(root, item[3]))]));
+const artifacts = definitions.map(([id, world, label, path], index) => ({
   id,
   world,
   label,
-  costModel,
   path,
   raw: measured.artifacts[index].raw,
   gzip9: measured.artifacts[index].gzip9,
@@ -77,41 +63,14 @@ const artifacts = definitions.map(([id, world, label, costModel, path], index) =
   sha256: sha256(resolve(root, path)),
 }));
 
-function matched(world) {
-  const lanes = artifacts.filter((artifact) => artifact.world === world);
-  const official = lanes.filter((artifact) => artifact.label !== "LilScript");
-  const metrics = [
-    ["raw", "raw"],
-    ["gzip", "gzip9"],
-    ["brotli", "brotli11"],
-  ];
-  return Object.fromEntries(metrics.map(([objective, metric]) => {
-    const candidate = lanes.find((artifact) => artifact.costModel === objective);
-    const baseline = official.reduce((best, artifact) => artifact[metric] < best[metric] ? artifact : best);
-    return [metric, {
-      candidate: candidate[metric],
-      baseline: baseline[metric],
-      baselineId: baseline.id,
-      differencePercent: percent(candidate[metric], baseline[metric]),
-    }];
-  }));
-}
-
-function frontier(world) {
-  const lanes = artifacts.filter((artifact) => artifact.world === world);
-  const candidates = lanes.filter((artifact) => artifact.label === "LilScript");
-  const official = lanes.filter((artifact) => artifact.label !== "LilScript");
-  return Object.fromEntries(["raw", "gzip9", "brotli11"].map((metric) => {
-    const candidate = candidates.reduce((best, artifact) => artifact[metric] < best[metric] ? artifact : best);
-    const baseline = official.reduce((best, artifact) => artifact[metric] < best[metric] ? artifact : best);
-    return [metric, {
-      candidate: candidate[metric],
-      candidateId: candidate.id,
-      baseline: baseline[metric],
-      baselineId: baseline.id,
-      differencePercent: percent(candidate[metric], baseline[metric]),
-    }];
-  }));
+function comparison(world) {
+  const candidate = artifacts.find((artifact) => artifact.id === `${world}-lilscript`);
+  const baseline = artifacts.find((artifact) => artifact.id === `${world}-official`);
+  return Object.fromEntries(["raw", "gzip9", "brotli11"].map((metric) => [metric, {
+    candidate: candidate[metric],
+    baseline: baseline[metric],
+    differencePercent: difference(candidate[metric], baseline[metric]),
+  }]));
 }
 
 const compilerStatus = command("git", ["status", "--porcelain"], lilscriptRoot);
@@ -123,25 +82,58 @@ if (compilerRevision !== pinnedCompilerRevision) {
 if (compilerStatus.length > 0 && process.env.PLAYCANVASLIL_ALLOW_DIRTY_COMPILER !== "1") {
   throw new Error("LilScript source is dirty; set PLAYCANVASLIL_ALLOW_DIRTY_COMPILER=1 for local-only measurements");
 }
+
+const selectedSources = [
+  "src/core/preprocessor.js",
+  "src/platform/graphics/shader-definition-utils.js",
+  "src/platform/graphics/shader-processor-glsl.js",
+  "src/platform/graphics/webgpu/webgpu-shader-processor-wgsl.js",
+];
+const portSources = [
+  "src/shader-processing/entry.lil",
+  "src/shader-processing/preprocessor.lil",
+  "src/shader-processing/shader-definition-utils.lil",
+  "src/shader-processing/shader-processor-glsl.lil",
+  "src/shader-processing/webgpu-shader-processor-wgsl.lil",
+  "src/shader-processing/facade-utils.js",
+  "src/shader-processing/index.facade.js",
+  "src/shader-processing/preprocessor.facade.js",
+  "src/shader-processing/shader-definition-utils.facade.js",
+  "src/shader-processing/shader-definition-utils.debug.js",
+  "src/shader-processing/shader-definition-utils.host.js",
+  "src/shader-processing/shader-processor-glsl.facade.js",
+  "src/shader-processing/shader-processor-glsl.host.js",
+  "src/shader-processing/webgpu-shader-processor-wgsl.facade.js",
+  "src/shader-processing/webgpu-shader-processor-wgsl.host.js",
+  "src/shader-processing/closed-world.js",
+  "scripts/build.mjs",
+];
+const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
 const result = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   scope: {
     upstream: "playcanvas/engine",
+    name: "shader-processing core",
     gitSubmodulePath: "upstream/engine",
-    sourceSubtree: "src/core/math",
-    sourceFileCount: 17,
-    convertedFiles: ["bit-packing.js"],
+    selectedSources,
+    convertedFiles: selectedSources,
+    sourceBytes: selectedSources.reduce((sum, path) => sum + readFileSync(resolve(root, "upstream/engine", path)).length, 0),
+  },
+  contract: {
+    build: "PlayCanvas release Debug stripping; Terser compression; identifier and property mangling disabled",
+    propertyMangling: false,
+    downstreamIdentifierMangling: false,
+    objective: "brotli11",
   },
   upstream: {
     revision: command("git", ["rev-parse", "HEAD"], resolve(root, "upstream", "engine")),
-    bitPackingSourceSha256: sha256(resolve(root, "upstream", "engine", "src", "core", "math", "bit-packing.js")),
+    sourceSha256: Object.fromEntries(selectedSources.map((path) => [path, sha256(resolve(root, "upstream/engine", path))])),
   },
-  sourceSha256: {
-    lilscript: sha256(resolve(root, "src", "core", "math", "bit-packing.lil")),
-    facade: sha256(resolve(root, "src", "core", "math", "bit-packing.facade.js")),
-    closedLilscript: sha256(resolve(root, "benchmarks", "closed-world.lil")),
-    closedJavaScript: sha256(resolve(root, "benchmarks", "closed-world.js")),
+  portSourceSha256: Object.fromEntries(portSources.map((path) => [path, sha256(resolve(root, path))])),
+  tools: {
+    esbuild: packageJson.devDependencies.esbuild,
+    terser: packageJson.devDependencies.terser,
   },
   compiler: {
     revision: compilerRevision,
@@ -149,32 +141,16 @@ const result = {
     binarySha256: sha256(compiler),
   },
   codecBinarySha256: sha256(codec),
-  configSha256: Object.fromEntries([
-    "lilscript.toml",
-    "lilscript.gzip.toml",
-    "lilscript.raw.toml",
-    "lilscript.closed.toml",
-    "lilscript.closed-gzip.toml",
-    "lilscript.closed-raw.toml",
-  ].map((path) => [path, sha256(resolve(root, path))])),
+  configSha256: sha256(resolve(root, "lilscript.toml")),
   codecs: measured.codecs,
   artifacts,
-  matched: {
-    open: matched("open"),
-    closed: matched("closed"),
-  },
-  frontier: {
-    open: frontier("open"),
-    closed: frontier("closed"),
-  },
-  notes: {
-    open: "Reusable ESM with exact BitPacking object keys, method arities, defaults, and non-constructible methods. Includes the JavaScript ABI facade.",
-    closed: "Equivalent single-entry kernel. Both sources call a BitPacking object; the complete internal graph may be optimized.",
+  comparison: {
+    open: comparison("open"),
+    closed: comparison("closed"),
   },
 };
 
 mkdirSync(reports, { recursive: true });
 writeFileSync(resolve(reports, "results.json"), `${JSON.stringify(result, null, 2)}\n`);
-console.log(`Open Brotli: ${result.matched.open.brotli11.candidate} vs ${result.matched.open.brotli11.baseline} bytes`);
-console.log(`Closed Brotli: ${result.matched.closed.brotli11.candidate} vs ${result.matched.closed.brotli11.baseline} bytes`);
-console.log(`Wrote ${relative(root, resolve(reports, "results.json"))}`);
+console.log(`Open Brotli: ${result.comparison.open.brotli11.candidate} vs ${result.comparison.open.brotli11.baseline} bytes`);
+console.log(`Closed Brotli: ${result.comparison.closed.brotli11.candidate} vs ${result.comparison.closed.brotli11.baseline} bytes`);

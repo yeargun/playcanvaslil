@@ -1,2 +1,0 @@
-/*! PlayCanvas core/math BitPacking | PlayCanvas Ltd. | MIT */
-var e={set:null,get:null,all:null,any:null};e.set=(e2,i,n,t,r)=>i&(r<<t^-1)|n<<t,e.get=(e2,i,n,t)=>i>>n&t,e.all=(e2,i,n,t)=>(e2=t<<n,(i&e2)==e2),e.any=(e2,i,n,t)=>0!=(i&t<<n);var BitPacking={set(storage,value,shift,mask=1){return e.set(e,storage,value,shift,mask)},get(storage,shift,mask=1){return e.get(e,storage,shift,mask)},all(storage,shift,mask=1){return e.all(e,storage,shift,mask)},any(storage,shift,mask=1){return e.any(e,storage,shift,mask)}};export{BitPacking};

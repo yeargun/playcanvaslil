@@ -1,0 +1,406 @@
+import extern {
+  SEMANTIC_BLENDINDICES,
+  SEMANTIC_BLENDWEIGHT,
+  SEMANTIC_COLOR,
+  SEMANTIC_NORMAL,
+  SEMANTIC_POSITION,
+  SEMANTIC_TANGENT,
+  SEMANTIC_TEXCOORD0,
+  SEMANTIC_TEXCOORD1,
+  SEMANTIC_TEXCOORD2,
+  SEMANTIC_TEXCOORD3,
+  SEMANTIC_TEXCOORD4,
+  SEMANTIC_TEXCOORD5,
+  SEMANTIC_TEXCOORD6,
+  SEMANTIC_TEXCOORD7,
+  SHADERLANGUAGE_GLSL,
+  SHADERLANGUAGE_WGSL,
+  primitiveGlslToWgslTypeMap
+} from "../../upstream/engine/src/platform/graphics/constants.js";
+import extern {
+  debugDefinitionOptions,
+  debugDuplicateAttribute,
+  debugFragmentCode,
+  debugOutputType,
+  debugVertexCode
+} from "./shader-definition-utils.debug.js";
+import extern {
+  gles3FS,
+  gles3VS,
+  halfTypes,
+  sharedGLSL,
+  sharedWGSL,
+  webgpuFS,
+  webgpuVS,
+  wgslFS,
+  wgslVS
+} from "./shader-definition-utils.host.js";
+
+extern string SEMANTIC_BLENDINDICES;
+extern string SEMANTIC_BLENDWEIGHT;
+extern string SEMANTIC_COLOR;
+extern string SEMANTIC_NORMAL;
+extern string SEMANTIC_POSITION;
+extern string SEMANTIC_TANGENT;
+extern string SEMANTIC_TEXCOORD0;
+extern string SEMANTIC_TEXCOORD1;
+extern string SEMANTIC_TEXCOORD2;
+extern string SEMANTIC_TEXCOORD3;
+extern string SEMANTIC_TEXCOORD4;
+extern string SEMANTIC_TEXCOORD5;
+extern string SEMANTIC_TEXCOORD6;
+extern string SEMANTIC_TEXCOORD7;
+extern string SHADERLANGUAGE_GLSL;
+extern string SHADERLANGUAGE_WGSL;
+extern JsValue primitiveGlslToWgslTypeMap;
+extern string gles3FS;
+extern string gles3VS;
+extern string halfTypes;
+extern string sharedGLSL;
+extern string sharedWGSL;
+extern string webgpuFS;
+extern string webgpuVS;
+extern string wgslFS;
+extern string wgslVS;
+extern void debugDefinitionOptions(JsValue options, JsValue device);
+extern void debugDuplicateAttribute(string attribName, string vsCode);
+extern void debugFragmentCode(JsValue options);
+extern void debugOutputType(JsValue wgslOutType, string glslOutType);
+extern void debugVertexCode(JsValue options);
+
+extern class GraphicsDeviceHost {
+  bool isWebGPU;
+  int maxColorAttachments;
+  string maxPrecision;
+  string precision;
+  JsValue capsDefines;
+  bool supportsDualSourceBlending;
+  bool supportsShaderF16;
+  bool supportsPrimitiveIndex;
+  bool supportsSubgroups;
+  bool supportsSubgroupId;
+  bool supportsLinearIndexing;
+  bool supportsUnrestrictedPointerParameters;
+  bool supportsPointerCompositeAccess;
+  bool supportsPacked4x8IntegerDotProduct;
+  bool supportsTextureAndSamplerLet;
+}
+
+extern class ShaderDefinitionOptionsHost {
+  JsValue name;
+  JsValue attributes;
+  JsValue vertexCode;
+  JsValue fragmentCode;
+  JsValue fragmentPreamble;
+  JsValue feedbackVaryings;
+  JsValue feedbackVaryingsMode;
+  JsValue useTransformFeedback;
+  JsValue vertexIncludes;
+  JsValue vertexDefines;
+  JsValue fragmentIncludes;
+  JsValue fragmentDefines;
+  JsValue fragmentOutputTypes;
+  JsValue useDualSourceBlending;
+  JsValue shaderLanguage;
+  JsValue meshUniformBufferFormat;
+  JsValue meshBindGroupFormat;
+}
+
+extern class ShaderDefinitionUtilsHost {
+  string getWGSLEnables(GraphicsDeviceHost device, string shaderType, bool useDualSourceBlending);
+  string getDefinesCode(GraphicsDeviceHost device, JsValue defines);
+  string getShaderNameCode(string name);
+  string versionCode(GraphicsDeviceHost device);
+  string precisionCode(GraphicsDeviceHost device, JsValue forcePrecision);
+}
+
+JsValue attrib2Semantic = JS.object(
+  "vertex_position", SEMANTIC_POSITION,
+  "vertex_normal", SEMANTIC_NORMAL,
+  "vertex_tangent", SEMANTIC_TANGENT,
+  "vertex_texCoord0", SEMANTIC_TEXCOORD0,
+  "vertex_texCoord1", SEMANTIC_TEXCOORD1,
+  "vertex_texCoord2", SEMANTIC_TEXCOORD2,
+  "vertex_texCoord3", SEMANTIC_TEXCOORD3,
+  "vertex_texCoord4", SEMANTIC_TEXCOORD4,
+  "vertex_texCoord5", SEMANTIC_TEXCOORD5,
+  "vertex_texCoord6", SEMANTIC_TEXCOORD6,
+  "vertex_texCoord7", SEMANTIC_TEXCOORD7,
+  "vertex_color", SEMANTIC_COLOR,
+  "vertex_boneIndices", SEMANTIC_BLENDINDICES,
+  "vertex_boneWeights", SEMANTIC_BLENDWEIGHT
+);
+
+string substring(string value, int start, int end) {
+  return JS.string(JS.invoke(value, "substring", start, end));
+}
+
+JsValue normalizedOutputTypes(ShaderDefinitionOptionsHost options) {
+  JsValue outputTypes = options.fragmentOutputTypes;
+  if (JS.isNullish(outputTypes)) outputTypes = "vec4";
+  if (!JS.isArray(outputTypes)) return JS.array(outputTypes);
+  return outputTypes;
+}
+
+string getDefines(
+  GraphicsDeviceHost device,
+  string gpu,
+  string gl2,
+  bool isVertex,
+  ShaderDefinitionOptionsHost options
+) {
+  string deviceIntro = gl2;
+  if (device.isWebGPU) deviceIntro = gpu;
+  string attachmentsDefine = "";
+
+  if (!isVertex) {
+    if (options.useDualSourceBlending.truthy()) {
+      attachmentsDefine += "#define DUAL_SOURCE_BLENDING\n";
+    }
+
+    JsValue fragmentOutputTypes = normalizedOutputTypes(options);
+    for (int index = 0; index < device.maxColorAttachments; index++) {
+      attachmentsDefine += "#define COLOR_ATTACHMENT_" + index + "\n";
+      JsValue maybeOutType = fragmentOutputTypes[index];
+      string outType = "vec4";
+      if (!JS.isNullish(maybeOutType)) outType = JS.string(maybeOutType);
+      attachmentsDefine += "#define outType_" + index + " " + outType + "\n";
+    }
+  }
+
+  return attachmentsDefine + deviceIntro;
+}
+
+string getDefinesWgsl(
+  ShaderDefinitionUtilsHost processor,
+  GraphicsDeviceHost device,
+  bool isVertex,
+  ShaderDefinitionOptionsHost options
+) {
+  string shaderType = "fragment";
+  if (isVertex) shaderType = "vertex";
+  string code = processor.getWGSLEnables(
+    device,
+    shaderType,
+    !isVertex && options.useDualSourceBlending.truthy()
+  );
+
+  if (!isVertex) {
+    JsValue fragmentOutputTypes = normalizedOutputTypes(options);
+    for (int index = 0; index < device.maxColorAttachments; index++) {
+      JsValue maybeGlslOutType = fragmentOutputTypes[index];
+      string glslOutType = "vec4";
+      if (!JS.isNullish(maybeGlslOutType)) glslOutType = JS.string(maybeGlslOutType);
+      JsValue wgslOutType = JS.invoke(primitiveGlslToWgslTypeMap, "get", glslOutType);
+      debugOutputType(wgslOutType, glslOutType);
+      code += "alias pcOutType" + index + " = " + JS.string(wgslOutType) + ";\n";
+    }
+  }
+
+  return code;
+}
+
+export JsValue createDefinition(
+  ShaderDefinitionUtilsHost processor,
+  GraphicsDeviceHost device,
+  ShaderDefinitionOptionsHost options
+) {
+  debugDefinitionOptions(JS.assume(options), JS.assume(device));
+
+  JsValue maybeName = options.name;
+  string name = "Untitled";
+  if (!JS.isNullish(maybeName)) name = JS.string(maybeName);
+  string vertexDefinesCode = processor.getDefinesCode(device, options.vertexDefines);
+  string fragmentDefinesCode = processor.getDefinesCode(device, options.fragmentDefines);
+  bool wgsl = JS.strictEqual(options.shaderLanguage, SHADERLANGUAGE_WGSL);
+  string vertCode = "";
+  string fragCode = "";
+
+  if (wgsl) {
+    vertCode = "\n                " + getDefinesWgsl(processor, device, true, options) +
+      "\n                " + vertexDefinesCode +
+      "\n                " + halfTypes +
+      "\n                " + wgslVS +
+      "\n                " + sharedWGSL +
+      "\n                " + JS.string(options.vertexCode) +
+      "\n            ";
+
+    fragCode = "\n                " + getDefinesWgsl(processor, device, false, options) +
+      "\n                " + fragmentDefinesCode +
+      "\n                " + halfTypes +
+      "\n                " + wgslFS +
+      "\n                " + sharedWGSL +
+      "\n                " + JS.string(options.fragmentCode) +
+      "\n            ";
+  } else {
+    debugVertexCode(JS.assume(options));
+    vertCode = processor.versionCode(device) +
+      getDefines(device, webgpuVS, gles3VS, true, options) +
+      vertexDefinesCode +
+      JS.string(JS.invoke(JS.assume(processor), "precisionCode", device)) +
+      "\n                " + sharedGLSL +
+      "\n                " + processor.getShaderNameCode(name) +
+      "\n                " + JS.string(options.vertexCode);
+
+    debugFragmentCode(JS.assume(options));
+    JsValue preamble = options.fragmentPreamble;
+    string fragmentPreamble = "";
+    if (preamble.truthy()) fragmentPreamble = JS.string(preamble);
+    fragCode = fragmentPreamble +
+      processor.versionCode(device) +
+      getDefines(device, webgpuFS, gles3FS, false, options) +
+      fragmentDefinesCode +
+      JS.string(JS.invoke(JS.assume(processor), "precisionCode", device)) +
+      "\n                " + sharedGLSL +
+      "\n                " + processor.getShaderNameCode(name) +
+      "\n                " + JS.string(options.fragmentCode);
+  }
+
+  JsValue shaderLanguage = options.shaderLanguage;
+  if (JS.isNullish(shaderLanguage)) shaderLanguage = SHADERLANGUAGE_GLSL;
+  return JS.object(
+    "name", name,
+    "shaderLanguage", shaderLanguage,
+    "attributes", options.attributes,
+    "vshader", vertCode,
+    "vincludes", options.vertexIncludes,
+    "fincludes", options.fragmentIncludes,
+    "fshader", fragCode,
+    "feedbackVaryings", options.feedbackVaryings,
+    "feedbackVaryingsMode", options.feedbackVaryingsMode,
+    "useTransformFeedback", options.useTransformFeedback,
+    "meshUniformBufferFormat", options.meshUniformBufferFormat,
+    "meshBindGroupFormat", options.meshBindGroupFormat,
+    "useDualSourceBlending", options.useDualSourceBlending.truthy()
+  );
+}
+
+export string getWGSLEnables(
+  GraphicsDeviceHost device,
+  string shaderType,
+  bool useDualSourceBlending
+) {
+  string code = "";
+  if (device.supportsShaderF16) code += "enable f16;\n";
+  if (shaderType == "fragment" && device.supportsPrimitiveIndex) {
+    code += "enable primitive_index;\n";
+  }
+  if (shaderType == "fragment" && useDualSourceBlending) {
+    code += "enable dual_source_blending;\n";
+  }
+  if (device.supportsSubgroups) code += "enable subgroups;\n";
+  if (device.supportsSubgroupId) code += "requires subgroup_id;\n";
+  if (shaderType == "compute" && device.supportsLinearIndexing) {
+    code += "requires linear_indexing;\n";
+  }
+  if (device.supportsUnrestrictedPointerParameters) {
+    code += "requires unrestricted_pointer_parameters;\n";
+  }
+  if (device.supportsPointerCompositeAccess) {
+    code += "requires pointer_composite_access;\n";
+  }
+  if (device.supportsPacked4x8IntegerDotProduct) {
+    code += "requires packed_4x8_integer_dot_product;\n";
+  }
+  if (device.supportsTextureAndSamplerLet) {
+    code += "requires texture_and_sampler_let;\n";
+  }
+  return code;
+}
+
+export string getDefinesCode(GraphicsDeviceHost device, JsValue defines) {
+  string code = "";
+  auto appendDefine = (JsValue value, JsValue key) => {
+    code += "#define " + JS.string(key) + " " + JS.string(value) + "\n";
+  };
+  JS.invoke(device.capsDefines, "forEach", appendDefine);
+  code += "\n";
+
+  if (!JS.isNullish(defines)) JS.invoke(defines, "forEach", appendDefine);
+  code += "\n";
+  return code;
+}
+
+export string getShaderNameCode(string name) {
+  return "#define SHADER_NAME " + name + "\n";
+}
+
+export string versionCode(GraphicsDeviceHost device) {
+  if (device.isWebGPU) return "#version 450\n";
+  return "#version 300 es\n";
+}
+
+export string precisionCode(GraphicsDeviceHost device, JsValue forcePrecision) {
+  if (
+    forcePrecision.truthy() &&
+    !JS.strictEqual(forcePrecision, "highp") &&
+    !JS.strictEqual(forcePrecision, "mediump") &&
+    !JS.strictEqual(forcePrecision, "lowp")
+  ) {
+    forcePrecision = null;
+  }
+
+  if (forcePrecision.truthy()) {
+    if (JS.strictEqual(forcePrecision, "highp") && device.maxPrecision != "highp") {
+      forcePrecision = "mediump";
+    }
+    if (JS.strictEqual(forcePrecision, "mediump") && device.maxPrecision == "lowp") {
+      forcePrecision = "lowp";
+    }
+  }
+
+  string precision = device.precision;
+  if (forcePrecision.truthy()) precision = JS.string(forcePrecision);
+  return "\n            precision " + precision + " float;\n" +
+    "            precision " + precision + " int;\n" +
+    "            precision " + precision + " usampler2D;\n" +
+    "            precision " + precision + " isampler2D;\n" +
+    "            precision " + precision + " sampler2DShadow;\n" +
+    "            precision " + precision + " samplerCubeShadow;\n" +
+    "            precision " + precision + " sampler2DArray;\n" +
+    "        ";
+}
+
+export JsValue collectAttributes(string vsCode) {
+  JsValue attribs = JS.object();
+  int attrs = 0;
+  int found = vsCode.indexOf("attribute");
+
+  while (found >= 0) {
+    if (found > 0 && vsCode.charAt(found - 1) == "/") break;
+
+    bool ignore = false;
+    if (found > 0) {
+      int startOfLine = vsCode.lastIndexOf("\n", found);
+      if (startOfLine != -1) {
+        startOfLine++;
+      } else {
+        startOfLine = 0;
+      }
+      string lineStartString = substring(vsCode, startOfLine, found);
+      if (lineStartString.includes("#")) ignore = true;
+    }
+
+    if (!ignore) {
+      int endOfLine = vsCode.indexOf(";", found);
+      int startOfAttribName = vsCode.lastIndexOf(" ", endOfLine);
+      string attribName = substring(vsCode, startOfAttribName + 1, endOfLine);
+
+      if (attribs[attribName].truthy()) {
+        debugDuplicateAttribute(attribName, vsCode);
+      } else {
+        JsValue semantic = attrib2Semantic[attribName];
+        if (!JS.isUndefined(semantic)) {
+          attribs[attribName] = semantic;
+        } else {
+          attribs[attribName] = "ATTR" + attrs;
+          attrs++;
+        }
+      }
+    }
+
+    found = vsCode.indexOf("attribute", found + 1);
+  }
+
+  return attribs;
+}

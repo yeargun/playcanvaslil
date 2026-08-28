@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#08100f" />
     <meta
       name="description"
-      content="A truthful open-world and closed-world LilScript study of PlayCanvas engine core/math."
+      content="A verified LilScript rewrite of the PlayCanvas shader-processing core."
     />
     <title>PlayCanvasLil | One subsystem, two worlds</title>
     <link rel="stylesheet" href="./styles.css" />
@@ -26,10 +26,11 @@
     <main id="top">
       <section class="hero shell">
         <div class="hero-copy">
-          <p class="kicker">Independent experiment / engine core math</p>
+          <p class="kicker">Independent experiment / shader-processing core</p>
           <h1>One subsystem.<br /><em>Two worlds.</em><br />No shortcuts.</h1>
           <p class="intro">
-            A file-by-file LilScript port of <code>playcanvas/engine/src/core/math</code>.
+            A complete LilScript port of four PlayCanvas shader-processing modules totaling
+            <code>124,613</code> source bytes.
             Algorithms stay fixed. Public APIs stay observable. Open and closed builds get
             separate scoreboards.
           </p>
@@ -41,12 +42,12 @@
         <div class="scope-card">
           <div class="orbit" aria-hidden="true"><span></span></div>
           <p>Current slice</p>
-          <strong><span id="converted-count">1</span><small>/ 17 files</small></strong>
-          <h2>BitPacking</h2>
+          <strong><span id="converted-count">4</span><small>/ 4 files</small></strong>
+          <h2>Shader Core</h2>
           <dl>
-            <div><dt>Parity vectors</dt><dd>100,000</dd></div>
+            <div><dt>Upstream tests</dt><dd>78</dd></div>
             <div><dt>Upstream</dt><dd id="upstream-revision">dbd2f58</dd></div>
-            <div><dt>Scope</dt><dd>core/math only</dd></div>
+            <div><dt>Scope</dt><dd>shader core</dd></div>
           </dl>
         </div>
       </section>
@@ -66,28 +67,28 @@
         <div class="world-grid">
           <article class="world-card open">
             <p class="card-index">01 / OPEN WORLD</p>
-            <h3>Reusable PlayCanvas API</h3>
-            <strong id="open-delta">+34.9%</strong>
-            <p class="metric">Brotli-target compile vs the smallest valid official build</p>
+            <h3>Static class API</h3>
+            <strong id="open-delta">-0.36%</strong>
+            <p class="metric">Brotli-11, Terser mangle off</p>
             <p>
-              Exact <code>BitPacking</code> keys, defaults, arities, and method semantics remain
-              public. The required ABI facade costs more than this tiny algorithm body.
+              Five exported constructors preserve their static methods, descriptors, arities, and
+              defaults. Property names remain untouched.
             </p>
             <div class="bar"><span id="open-bar"></span></div>
-            <output id="open-bytes">228 B / 169 B</output>
+            <output id="open-bytes">14,580 B / 14,633 B</output>
             <p class="runtime" id="open-runtime">Local runtime samples loading...</p>
           </article>
           <article class="world-card closed">
             <p class="card-index">02 / CLOSED WORLD</p>
-            <h3>Complete consumer graph</h3>
-            <strong id="closed-delta">+5.7%</strong>
-            <p class="metric">Brotli-target compile vs the smallest valid official build</p>
+            <h3>Linked processing entry</h3>
+            <strong id="closed-delta">-5.93%</strong>
+            <p class="metric">Brotli-11, Terser mangle off</p>
             <p>
-              No unknown consumer observes the namespace. LilScript inlines the four operations,
-              but the current compiler still emits an unreachable method table.
+              The same four algorithms sit behind a narrow functional entry, allowing class facade
+              overhead and unused public helpers to disappear.
             </p>
             <div class="bar"><span id="closed-bar"></span></div>
-            <output id="closed-bytes">277 B / 262 B</output>
+            <output id="closed-bytes">13,810 B / 14,681 B</output>
             <p class="runtime" id="closed-runtime">Local runtime samples loading...</p>
           </article>
         </div>
@@ -104,19 +105,21 @@
         <div class="shell verify-grid">
           <div>
             <p class="kicker">Run the artifact</p>
-            <h2>Touch the bits.</h2>
+            <h2>Run the preprocessor.</h2>
             <p class="verify-copy">
-              This calls the checked-in open-world LilScript artifact and the pinned official
-              implementation with the same inputs. Green means all four operations agree.
+              This sends the same shader text through the checked-in LilScript artifact and pinned
+              PlayCanvas implementation. Green means their generated source is byte-identical.
             </p>
           </div>
-          <form id="bit-form" class="bit-console">
-            <label>storage <input name="storage" value="51" inputmode="numeric" /></label>
-            <label>value <input name="value" value="3" inputmode="numeric" /></label>
-            <label>shift <input name="shift" value="4" inputmode="numeric" /></label>
-            <label>mask <input name="mask" value="3" inputmode="numeric" /></label>
+          <form id="shader-form" class="shader-console">
+            <label class="source-field">shader source<textarea name="source" rows="9">#define ENABLE_FOG
+#if defined(ENABLE_FOG)
+uniform fogDensity: f32;
+#else
+uniform fallback: f32;
+#endif</textarea></label>
             <button type="submit">Compare artifacts</button>
-            <output id="bit-output">Loading modules...</output>
+            <output id="shader-output">Loading modules...</output>
           </form>
         </div>
       </section>
@@ -133,7 +136,7 @@
           <li><span>04</span><strong>Measure</strong><p>Raw, gzip-9, Brotli-11, then isolated runtime samples.</p></li>
         </ol>
         <p class="disclaimer">
-          Current runtime data is a small Node kernel, not an engine-wide performance claim.
+          Current runtime data is a shader preprocessing corpus, not an engine-wide performance claim.
           This project is independent and is not affiliated with PlayCanvas Ltd.
         </p>
       </section>

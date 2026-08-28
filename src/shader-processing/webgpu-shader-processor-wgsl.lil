@@ -1,0 +1,1190 @@
+import extern {
+  appendMatch,
+  assertPc,
+  assertPcContext,
+  debugCall,
+  errorPc,
+  warnPc,
+  gpuTextureFormats,
+  newBindGroup,
+  newStorageBufferBinding,
+  newStorageTextureBinding,
+  newTextureBinding,
+  newUniformBinding,
+  newUniformBuffer,
+  newUniform,
+  semanticToLocation,
+  uniformTypeToNameMapWGSL,
+  uniformTypeName
+} from "./webgpu-shader-processor-wgsl.host.js";
+
+extern class GraphicsDevice {
+  int maxColorAttachments;
+  bool supportsPrimitiveIndex;
+}
+
+extern class Shader {
+  bool failed;
+}
+
+extern class VertexElement {
+  int dataType;
+  bool normalize;
+  bool asInt;
+}
+
+extern class UniformFormatHost {
+  int type;
+  number count;
+  string shortName;
+}
+
+extern class UniformBufferFormatHost {
+  UniformFormatHost[] uniforms;
+}
+
+extern class TextureFormatHost {
+  string textureDimension;
+  int sampleType;
+  bool multisampled;
+  int slot;
+  string name;
+  bool hasSampler;
+  string samplerName;
+}
+
+extern class StorageBufferFormatHost {
+  bool readOnly;
+  int slot;
+  string name;
+  string format;
+}
+
+extern class StorageTextureFormatHost {
+  string textureDimension;
+  int format;
+  bool read;
+  bool write;
+  int slot;
+  string name;
+}
+
+extern class UniformBindingFormatHost {
+  int slot;
+}
+
+extern class BindGroupFormatHost {
+  TextureFormatHost[] textureFormats;
+  StorageBufferFormatHost[] storageBufferFormats;
+  StorageTextureFormatHost[] storageTextureFormats;
+}
+
+extern class ProcessingOptions {
+  (UniformBufferFormatHost?)[] uniformFormats;
+  (BindGroupFormatHost?)[]? bindGroupFormats;
+  bool hasUniform(string name);
+  VertexElement? getVertexElement(string semantic);
+}
+
+extern class ShaderDefinition {
+  string vshader;
+  string fshader;
+  JsValue attributes;
+  ProcessingOptions processingOptions;
+  bool useDualSourceBlending;
+}
+
+extern void appendMatch(JsValue target, JsValue regexMatch);
+extern void assertPc(bool condition, string message);
+extern void assertPcContext(bool condition, string message, JsValue context);
+extern void debugCall(func()->void callback);
+extern void errorPc(string message, JsValue context);
+extern void warnPc(string message, JsValue context);
+extern string[] gpuTextureFormats;
+extern Record<int> semanticToLocation;
+extern Map<string, int> uniformTypeToNameMapWGSL;
+extern UniformFormatHost newUniform(string name, JsValue type, number count);
+extern UniformBufferFormatHost newUniformBuffer(GraphicsDevice device, UniformFormatHost[] uniforms);
+extern UniformBindingFormatHost newUniformBinding(string name, int visibility);
+extern TextureFormatHost newTextureBinding(string name, int visibility, string dimension, int sampleType, bool hasSampler, string? samplerName, bool multisampled);
+extern StorageBufferFormatHost newStorageBufferBinding(string name, int visibility, bool readOnly);
+extern StorageTextureFormatHost newStorageTextureBinding(string name, int format, string dimension, bool write, bool read);
+extern BindGroupFormatHost newBindGroup(GraphicsDevice device, (TextureFormatHost | StorageBufferFormatHost | StorageTextureFormatHost | UniformBindingFormatHost)[] formats);
+extern JsValue uniformTypeName(int type);
+
+int BINDGROUP_MESH = 1;
+int BINDGROUP_MESH_UB = 2;
+int SHADERSTAGE_VERTEX = 1;
+int SHADERSTAGE_FRAGMENT = 2;
+int SHADERSTAGE_COMPUTE = 4;
+int SAMPLETYPE_FLOAT = 0;
+int SAMPLETYPE_UNFILTERABLE_FLOAT = 1;
+int SAMPLETYPE_DEPTH = 2;
+int SAMPLETYPE_INT = 3;
+int SAMPLETYPE_UINT = 4;
+int TYPE_INT8 = 0;
+int TYPE_INT16 = 2;
+int TYPE_INT32 = 4;
+int TYPE_FLOAT32 = 6;
+int TYPE_FLOAT16 = 7;
+int UNIFORMTYPE_FLOAT = 2;
+string TEXTUREDIMENSION_1D = "1d";
+string TEXTUREDIMENSION_2D = "2d";
+string TEXTUREDIMENSION_2D_ARRAY = "2d-array";
+string TEXTUREDIMENSION_CUBE = "cube";
+string TEXTUREDIMENSION_CUBE_ARRAY = "cube-array";
+string TEXTUREDIMENSION_3D = "3d";
+string UNUSED_UNIFORM_NAME = "_unused_float_uniform";
+string MARKER = "@@@";
+
+Regex KEYWORD = new Regex("^[ \\t]*(attribute|varying|uniform)[\\t ]+", "gm");
+Regex KEYWORD_LINE = new Regex("^[ \\t]*(attribute|varying|uniform)[ \\t]*([^;]+)(;+)", "gm");
+Regex KEYWORD_RESOURCE = new Regex("^[ \\t]*var\\s*(?:(<storage,[^>]*>)\\s*([\\w\\d_]+)\\s*:\\s*(.*?)\\s*;|(<(?!storage,)[^>]*>)?\\s*([\\w\\d_]+)\\s*:\\s*(texture_.*|storage_texture_.*|storage\\w.*|external_texture|sampler(?:_comparison)?)\\s*;)\\s*$", "gm");
+Regex VARYING = new Regex("(?:@interpolate\\([^)]*\\)\\s*)?([\\w]+)\\s*:\\s*([\\w<>]+)");
+Regex ENTRY_FUNCTION = new Regex("(@vertex|@fragment)\\s*fn\\s+\\w+\\s*\\(\\s*(\\w+)\\s*:[\\s\\S]*?\\{");
+Regex FRAG_DEPTH_ASSIGN = new Regex("\\.fragDepth\\s*=");
+Regex SAMPLE_MASK_ASSIGN = new Regex("\\.sampleMask\\s*=(?!=)");
+Regex SPACES = new Regex("\\s+", "g");
+Regex WORD_SPLIT = new Regex("[\\s:]+");
+Regex UNIFORM_ARRAY_REGEX = new Regex("array<([^,]+),\\s*([^>]+)>");
+Regex TEXTURE_REGEX = new Regex("^\\s*var\\s+(\\w+)\\s*:\\s*(texture_\\w+)(?:<(\\w+)>)?;\\s*$");
+Regex STORAGE_TEXTURE_REGEX = new Regex("^\\s*var\\s+([\\w\\d_]+)\\s*:\\s*(texture_storage_2d|texture_storage_2d_array)<([\\w\\d_]+),\\s*(\\w+)>\\s*;\\s*$");
+Regex STORAGE_BUFFER_REGEX = new Regex("^\\s*var\\s*<storage,\\s*(read_write|read)?>\\s*([\\w\\d_]+)\\s*:\\s*(.*)\\s*;\\s*$");
+Regex EXTERNAL_TEXTURE_REGEX = new Regex("^\\s*var\\s+([\\w\\d_]+)\\s*:\\s*texture_external;\\s*$");
+Regex SAMPLER_REGEX = new Regex("^\\s*var\\s+([\\w\\d_]+)\\s*:\\s*(sampler|sampler_comparison)\\s*;\\s*$");
+
+struct Builtin {
+  string wgslName;
+  string wgslType;
+  string wgslBuiltin;
+  string pcName;
+  bool requiresPrimitiveIndex;
+  bool isFallback;
+}
+
+Builtin[] FRAGMENT_BUILTINS = [
+  Builtin{"position", "vec4f", "position", "pcPosition", false, true},
+  Builtin{"frontFacing", "bool", "front_facing", "pcFrontFacing", false, false},
+  Builtin{"sampleIndex", "u32", "sample_index", "pcSampleIndex", false, false},
+  Builtin{"sampleMask", "u32", "sample_mask", "pcSampleMask", false, false},
+  Builtin{"primitiveIndex", "u32", "primitive_index", "pcPrimitiveIndex", true, false}
+];
+
+Builtin[] VERTEX_BUILTINS = [
+  Builtin{"vertexIndex", "u32", "vertex_index", "pcVertexIndex", false, true},
+  Builtin{"instanceIndex", "u32", "instance_index", "pcInstanceIndex", false, false}
+];
+
+class Extracted {
+  string src;
+  JsValue[] attributes;
+  JsValue[] varyings;
+  JsValue[] uniforms;
+  JsValue[] resources;
+
+  init(string src, JsValue[] attributes, JsValue[] varyings, JsValue[] uniforms, JsValue[] resources) {
+    this.src = src;
+    this.attributes = attributes;
+    this.varyings = varyings;
+    this.uniforms = uniforms;
+    this.resources = resources;
+  }
+}
+
+class UniformLine {
+  string line;
+  string name;
+  string type;
+  string? ubName;
+  number arraySize;
+
+  init(string line, Shader shader) {
+    this.line = line;
+
+    string[] parts = splitToWords(line);
+    if (parts.length < 2) {
+      errorPc("Invalid uniform line format: " + line, shader);
+      shader.failed = true;
+      return;
+    }
+
+    JsValue rawParts = parts;
+    this.name = JS.assume(rawParts[0]);
+    this.type = parts.slice(1).join(" ");
+
+    if (this.type.includes("array<")) {
+      JsValue regexMatch = JS.stringMatch(this.type, UNIFORM_ARRAY_REGEX);
+      assertPc(!JS.isNullish(regexMatch), "Array type on line [" + line + "] is not supported.");
+      if (!JS.isNullish(regexMatch)) {
+        this.type = matchString(regexMatch, 1).trim();
+        this.arraySize = JS.number(regexMatch[2]);
+        if (this.arraySize != this.arraySize) {
+          shader.failed = true;
+          errorPc("Only numerically specified uniform array sizes are supported, this uniform is not supported: '" + line + "'", shader);
+        }
+      }
+    }
+  }
+}
+
+class ResourceLine {
+  string originalLine;
+  string line;
+  string name;
+  string type;
+  bool isTexture;
+  bool isSampler;
+  bool isStorageTexture;
+  bool isStorageBuffer;
+  bool isExternalTexture;
+  bool multisampled;
+  string? textureFormat;
+  string? textureDimension;
+  int? sampleType;
+  string? textureType;
+  string? format;
+  string? access;
+  string? accessMode;
+  string? samplerType;
+  JsValue[] matchedElements;
+
+  init(string line, Shader shader) {
+    this.originalLine = line;
+    this.line = line;
+
+    JsValue textureMatch = JS.stringMatch(this.line, TEXTURE_REGEX);
+    if (!JS.isNullish(textureMatch)) {
+      this.name = matchString(textureMatch, 1);
+      this.type = matchString(textureMatch, 2);
+      this.textureFormat = matchOptionalString(textureMatch, 3);
+      this.isTexture = true;
+      appendMatch(this.matchedElements, textureMatch);
+
+      setTextureInfo(this);
+    }
+
+    JsValue storageTextureMatch = JS.stringMatch(this.line, STORAGE_TEXTURE_REGEX);
+    if (!JS.isNullish(storageTextureMatch)) {
+      this.isStorageTexture = true;
+      this.name = matchString(storageTextureMatch, 1);
+      this.textureType = matchString(storageTextureMatch, 2);
+      this.format = matchString(storageTextureMatch, 3);
+      this.access = matchString(storageTextureMatch, 4);
+      appendMatch(this.matchedElements, storageTextureMatch);
+    }
+
+    JsValue storageBufferMatch = JS.stringMatch(this.line, STORAGE_BUFFER_REGEX);
+    if (!JS.isNullish(storageBufferMatch)) {
+      this.isStorageBuffer = true;
+      string? mode = matchOptionalString(storageBufferMatch, 1);
+      if (mode == null) {
+        this.accessMode = "none";
+      } else {
+        this.accessMode = mode;
+      }
+      this.name = matchString(storageBufferMatch, 2);
+      this.type = matchString(storageBufferMatch, 3);
+      appendMatch(this.matchedElements, storageBufferMatch);
+    }
+
+    JsValue externalTextureMatch = JS.stringMatch(this.line, EXTERNAL_TEXTURE_REGEX);
+    if (!JS.isNullish(externalTextureMatch)) {
+      this.name = matchString(externalTextureMatch, 1);
+      this.isExternalTexture = true;
+      // Preserve the upstream spread of storageBufferMatch, including its throw for this path.
+      appendMatch(this.matchedElements, storageBufferMatch);
+    }
+
+    JsValue samplerMatch = JS.stringMatch(this.line, SAMPLER_REGEX);
+    if (!JS.isNullish(samplerMatch)) {
+      this.name = matchString(samplerMatch, 1);
+      this.samplerType = matchString(samplerMatch, 2);
+      this.isSampler = true;
+      appendMatch(this.matchedElements, samplerMatch);
+    }
+
+    if (this.matchedElements.length == 0) {
+      errorPc("Invalid / unsupported resource line format: " + line, shader);
+      shader.failed = true;
+    }
+  }
+
+  bool equals(ResourceLine other) {
+    if (this.name != other.name) return false;
+    if (this.type != other.type) return false;
+    if (this.isTexture != other.isTexture) return false;
+    if (this.isSampler != other.isSampler) return false;
+    if (this.isStorageTexture != other.isStorageTexture) return false;
+    if (this.isStorageBuffer != other.isStorageBuffer) return false;
+    if (this.isExternalTexture != other.isExternalTexture) return false;
+    if (this.textureFormat != other.textureFormat) return false;
+    if (this.textureDimension != other.textureDimension) return false;
+    if (this.sampleType != other.sampleType) return false;
+    if (this.multisampled != other.multisampled) return false;
+    if (this.textureType != other.textureType) return false;
+    if (this.format != other.format) return false;
+    if (this.access != other.access) return false;
+    if (this.accessMode != other.accessMode) return false;
+    if (this.samplerType != other.samplerType) return false;
+    return true;
+  }
+}
+
+struct UniformData {
+  string code;
+  UniformBufferFormatHost meshUniformBufferFormat;
+}
+
+struct ResourcesData {
+  string code;
+  BindGroupFormatHost meshBindGroupFormat;
+}
+
+string matchString(JsValue regexMatch, int index) {
+  return JS.assume(regexMatch[index]);
+}
+
+string? matchOptionalString(JsValue regexMatch, int index) {
+  JsValue value = regexMatch[index];
+  if (JS.isNullish(value)) return null;
+  return JS.assume(value);
+}
+
+string substring(string value, int start, int end) {
+  return JS.string(JS.invoke(value, "substring", start, end));
+}
+
+string[] splitToWords(string line) {
+  line = line.replace(SPACES, " ").trim();
+  return JS.assume(JS.invoke(line, "split", WORD_SPLIT));
+}
+
+UniformLine[] parseUniformLines(JsValue[] lines, Shader shader) {
+  UniformLine[] result = [];
+  JsValue rawLines = lines;
+  for (int index = 0; index < lines.length; index++) {
+    result.push(new UniformLine(JS.assume(rawLines[index]), shader));
+  }
+  return result;
+}
+
+ResourceLine[] parseResourceLines(JsValue[] lines, Shader shader) {
+  ResourceLine[] result = [];
+  JsValue rawLines = lines;
+  for (int index = 0; index < lines.length; index++) {
+    result.push(new ResourceLine(JS.assume(rawLines[index]), shader));
+  }
+  return result;
+}
+
+void setTextureInfo(ResourceLine resource) {
+  string baseType = resource.type;
+  string? componentType = resource.textureFormat;
+  string viewDimension = "";
+  int baseSampleType = SAMPLETYPE_FLOAT;
+  bool multisampled = false;
+  bool found = true;
+
+  if (baseType == "texture_1d") {
+    viewDimension = TEXTUREDIMENSION_1D;
+  } else if (baseType == "texture_2d") {
+    viewDimension = TEXTUREDIMENSION_2D;
+  } else if (baseType == "texture_2d_array") {
+    viewDimension = TEXTUREDIMENSION_2D_ARRAY;
+  } else if (baseType == "texture_3d") {
+    viewDimension = TEXTUREDIMENSION_3D;
+  } else if (baseType == "texture_cube") {
+    viewDimension = TEXTUREDIMENSION_CUBE;
+  } else if (baseType == "texture_cube_array") {
+    viewDimension = TEXTUREDIMENSION_CUBE_ARRAY;
+  } else if (baseType == "texture_multisampled_2d") {
+    viewDimension = TEXTUREDIMENSION_2D;
+    multisampled = true;
+  } else if (baseType == "texture_depth_2d") {
+    viewDimension = TEXTUREDIMENSION_2D;
+    baseSampleType = SAMPLETYPE_DEPTH;
+  } else if (baseType == "texture_depth_2d_array") {
+    viewDimension = TEXTUREDIMENSION_2D_ARRAY;
+    baseSampleType = SAMPLETYPE_DEPTH;
+  } else if (baseType == "texture_depth_cube") {
+    viewDimension = TEXTUREDIMENSION_CUBE;
+    baseSampleType = SAMPLETYPE_DEPTH;
+  } else if (baseType == "texture_depth_cube_array") {
+    viewDimension = TEXTUREDIMENSION_CUBE_ARRAY;
+    baseSampleType = SAMPLETYPE_DEPTH;
+  } else if (baseType == "texture_depth_multisampled_2d") {
+    viewDimension = TEXTUREDIMENSION_2D;
+    baseSampleType = SAMPLETYPE_DEPTH;
+    multisampled = true;
+  } else if (baseType == "texture_external") {
+    viewDimension = TEXTUREDIMENSION_2D;
+    baseSampleType = SAMPLETYPE_UNFILTERABLE_FLOAT;
+  } else {
+    found = false;
+  }
+  assertPc(found, "Unknown texture base type.");
+
+  int finalSampleType = baseSampleType;
+  if (baseSampleType == SAMPLETYPE_FLOAT) {
+    if (componentType == "u32") {
+      finalSampleType = SAMPLETYPE_UINT;
+    } else if (componentType == "i32") {
+      finalSampleType = SAMPLETYPE_INT;
+    } else if (componentType == "f32") {
+      finalSampleType = SAMPLETYPE_FLOAT;
+    } else if (componentType == "uff") {
+      finalSampleType = SAMPLETYPE_UNFILTERABLE_FLOAT;
+    }
+    if (multisampled && finalSampleType == SAMPLETYPE_FLOAT) {
+      finalSampleType = SAMPLETYPE_UNFILTERABLE_FLOAT;
+    }
+  }
+
+  resource.textureDimension = viewDimension;
+  resource.sampleType = finalSampleType;
+  resource.multisampled = multisampled;
+}
+
+string getTextureDeclarationType(string viewDimension, int sampleType, bool multisampled) {
+  if (multisampled) {
+    assertPc(viewDimension == TEXTUREDIMENSION_2D, "Multisampled textures must be 2d, got '" + viewDimension + "'");
+    if (sampleType == SAMPLETYPE_DEPTH) return "texture_depth_multisampled_2d";
+    string msFormat = "";
+    if (sampleType == SAMPLETYPE_FLOAT || sampleType == SAMPLETYPE_UNFILTERABLE_FLOAT) {
+      msFormat = "f32";
+    } else if (sampleType == SAMPLETYPE_UINT) {
+      msFormat = "u32";
+    } else if (sampleType == SAMPLETYPE_INT) {
+      msFormat = "i32";
+    } else {
+      assertPc(false, "Invalid multisampled texture sample type.");
+    }
+    return "texture_multisampled_2d<" + msFormat + ">";
+  }
+
+  if (sampleType == SAMPLETYPE_DEPTH) {
+    if (viewDimension == TEXTUREDIMENSION_2D) return "texture_depth_2d";
+    if (viewDimension == TEXTUREDIMENSION_2D_ARRAY) return "texture_depth_2d_array";
+    if (viewDimension == TEXTUREDIMENSION_CUBE) return "texture_depth_cube";
+    if (viewDimension == TEXTUREDIMENSION_CUBE_ARRAY) return "texture_depth_cube_array";
+    assertPc(false, "Invalid depth texture dimension.");
+  }
+
+  string baseTypeString = "";
+  if (viewDimension == TEXTUREDIMENSION_1D) baseTypeString = "texture_1d";
+  if (viewDimension == TEXTUREDIMENSION_2D) baseTypeString = "texture_2d";
+  if (viewDimension == TEXTUREDIMENSION_2D_ARRAY) baseTypeString = "texture_2d_array";
+  if (viewDimension == TEXTUREDIMENSION_3D) baseTypeString = "texture_3d";
+  if (viewDimension == TEXTUREDIMENSION_CUBE) baseTypeString = "texture_cube";
+  if (viewDimension == TEXTUREDIMENSION_CUBE_ARRAY) baseTypeString = "texture_cube_array";
+  assertPc(baseTypeString != "", "Invalid texture dimension.");
+
+  string coreFormatString = "";
+  if (sampleType == SAMPLETYPE_FLOAT || sampleType == SAMPLETYPE_UNFILTERABLE_FLOAT) {
+    coreFormatString = "f32";
+  } else if (sampleType == SAMPLETYPE_UINT) {
+    coreFormatString = "u32";
+  } else if (sampleType == SAMPLETYPE_INT) {
+    coreFormatString = "i32";
+  } else {
+    assertPc(false, "Invalid texture sample type.");
+  }
+  return baseTypeString + "<" + coreFormatString + ">";
+}
+
+Map<string, int> createGpuFormatToPixelFormat() {
+  Map<string, int> result = new Map<string, int>();
+  int count = gpuTextureFormats.length;
+  JsValue rawFormats = gpuTextureFormats;
+  for (int pixelFormat = 0; pixelFormat < count; pixelFormat++) {
+    string value = JS.assume(rawFormats[pixelFormat]);
+    if (value != "") result.set(value, pixelFormat);
+  }
+  return result;
+}
+
+Map<string, int> gpuFormatToPixelFormat = createGpuFormatToPixelFormat();
+
+Builtin[] detectUsedBuiltins(Builtin[] builtins, string source, string entryInputName, GraphicsDevice device) {
+  Builtin[] used = [];
+  for (int index = 0; index < builtins.length; index++) {
+    Builtin builtin = JS.assume(builtins[index]);
+    if (builtin.requiresPrimitiveIndex && !device.supportsPrimitiveIndex) continue;
+    Regex usage = new Regex("\\b(?:" + builtin.pcName + "|" + entryInputName + "\\." + builtin.wgslName + ")\\b");
+    if (usage.test(source)) used.push(builtin);
+  }
+  return used;
+}
+
+Builtin[] ensureNonEmptyStruct(Builtin[] used, Builtin[] builtins, GraphicsDevice device, bool otherFieldsPresent) {
+  if (used.length == 0 && !otherFieldsPresent) {
+    for (int index = 0; index < builtins.length; index++) {
+      Builtin builtin = JS.assume(builtins[index]);
+      if (builtin.isFallback && (!builtin.requiresPrimitiveIndex || device.supportsPrimitiveIndex)) {
+        return [builtin];
+      }
+    }
+  }
+  return used;
+}
+
+string renderBuiltinStructFields(Builtin[] used) {
+  string result = "";
+  for (int index = 0; index < used.length; index++) {
+    Builtin builtin = JS.assume(used[index]);
+    result += "    @builtin(" + builtin.wgslBuiltin + ") " + builtin.wgslName + " : " + builtin.wgslType + ",\n";
+  }
+  return result;
+}
+
+string renderBuiltinPrivates(Builtin[] used) {
+  string result = "";
+  for (int index = 0; index < used.length; index++) {
+    Builtin builtin = JS.assume(used[index]);
+    result += "    var<private> " + builtin.pcName + ": " + builtin.wgslType + ";\n";
+  }
+  return result;
+}
+
+string renderBuiltinCopies(Builtin[] used) {
+  string result = "";
+  for (int index = 0; index < used.length; index++) {
+    Builtin builtin = JS.assume(used[index]);
+    result += "    " + builtin.pcName + " = input." + builtin.wgslName + ";\n";
+  }
+  return result;
+}
+
+string cutOutImpl(string src, int start, int end, string replacement) {
+  return substring(src, 0, start) + replacement + substring(src, end, src.length);
+}
+
+Extracted extractImpl(string src) {
+  JsValue[] attributes = [];
+  JsValue[] varyings = [];
+  JsValue[] uniforms = [];
+  JsValue[] resources = [];
+  string replacement = MARKER + "\n";
+  JsValue regexMatch = null;
+
+  while (true) {
+    regexMatch = KEYWORD.exec(src);
+    if (JS.isNullish(regexMatch)) break;
+    string keyword = matchString(regexMatch, 1);
+    int matchIndex = JS.number(regexMatch["index"]).toInt();
+    KEYWORD_LINE.lastIndex = matchIndex;
+    JsValue lineMatch = KEYWORD_LINE.exec(src);
+
+    if (keyword == "attribute") {
+      attributes.push(matchString(lineMatch, 2));
+    } else if (keyword == "varying") {
+      varyings.push(matchString(lineMatch, 2));
+    } else if (keyword == "uniform") {
+      uniforms.push(matchString(lineMatch, 2));
+    }
+
+    int lineEnd = KEYWORD_LINE.lastIndex.toInt();
+    src = cutOutImpl(src, matchIndex, lineEnd, replacement);
+    KEYWORD.lastIndex = matchIndex + replacement.length;
+    replacement = "";
+  }
+
+  while (true) {
+    regexMatch = KEYWORD_RESOURCE.exec(src);
+    if (JS.isNullish(regexMatch)) break;
+    resources.push(matchString(regexMatch, 0));
+    int matchIndex = JS.number(regexMatch["index"]).toInt();
+    int matchEnd = KEYWORD_RESOURCE.lastIndex.toInt();
+    src = cutOutImpl(src, matchIndex, matchEnd, replacement);
+    KEYWORD_RESOURCE.lastIndex = matchIndex + replacement.length;
+    replacement = "";
+  }
+
+  if (replacement != "") {
+    Regex directivesPattern = new Regex("^(?:\\s*(?:enable|requires)\\s+\\w+\\s*;)*");
+    JsValue directivesMatch = JS.stringMatch(src, directivesPattern);
+    string directives = "";
+    if (!JS.isNullish(directivesMatch)) directives = matchString(directivesMatch, 0);
+    src = directives + "\n" + replacement + src.slice(directives.length);
+  }
+
+  return new Extracted(src, attributes, varyings, uniforms, resources);
+}
+
+UniformData processUniformsImpl(GraphicsDevice device, UniformLine[] uniforms, ProcessingOptions processingOptions, Shader shader) {
+  UniformFormatHost[] meshUniforms = [];
+  for (int index = 0; index < uniforms.length; index++) {
+    UniformLine uniform = JS.assume(uniforms[index]);
+    bool alreadyPresent = processingOptions.hasUniform(uniform.name);
+    if (!alreadyPresent) {
+      uniform.ubName = "ub_mesh_ub";
+      int? typeIndex = uniformTypeToNameMapWGSL.get(uniform.type);
+      assertPc(typeIndex != null, "Uniform type " + uniform.type + " is not recognised on line [" + uniform.line + "]");
+      meshUniforms.push(newUniform(uniform.name, typeIndex, uniform.arraySize));
+    } else {
+      uniform.ubName = "ub_view";
+      assertPc(true, "Uniform " + uniform.name + " already processed, skipping additional validation.");
+    }
+  }
+
+  if (meshUniforms.length == 0) {
+    meshUniforms.push(newUniform(UNUSED_UNIFORM_NAME, UNIFORMTYPE_FLOAT, 0));
+  }
+
+  UniformBufferFormatHost meshUniformBufferFormat = newUniformBuffer(device, meshUniforms);
+  string code = "";
+  (UniformBufferFormatHost?)[] formats = processingOptions.uniformFormats;
+  int formatCount = formats.length;
+  for (int bindGroupIndex = 0; bindGroupIndex < formatCount; bindGroupIndex++) {
+    UniformBufferFormatHost? format = JS.assume(formats[bindGroupIndex]);
+    if (format != null) code += getUniformShaderDeclarationImpl(format, bindGroupIndex, 0, bindGroupName(bindGroupIndex));
+  }
+  code += getUniformShaderDeclarationImpl(meshUniformBufferFormat, BINDGROUP_MESH_UB, 0, bindGroupName(BINDGROUP_MESH_UB));
+  return UniformData{code, meshUniformBufferFormat};
+}
+
+string renameUniformAccessImpl(string source, UniformLine[] uniforms) {
+  for (int index = 0; index < uniforms.length; index++) {
+    UniformLine uniform = JS.assume(uniforms[index]);
+    string srcName = "uniform." + uniform.name;
+    string? ubName = uniform.ubName;
+    string actualUbName = "null";
+    if (ubName != null) actualUbName = ubName;
+    string dstName = actualUbName + "." + uniform.name;
+    Regex regex = new Regex("\\b" + srcName + "\\b", "g");
+    source = source.replace(regex, dstName);
+  }
+  return source;
+}
+
+ResourceLine[] mergeResourcesImpl(JsValue[] vertex, JsValue[] fragment, Shader shader) {
+  ResourceLine[] resources = parseResourceLines(vertex, shader);
+  ResourceLine[] fragmentResources = parseResourceLines(fragment, shader);
+
+  for (int fragmentIndex = 0; fragmentIndex < fragmentResources.length; fragmentIndex++) {
+    ResourceLine fragmentResource = JS.assume(fragmentResources[fragmentIndex]);
+    ResourceLine? existing = null;
+    for (int resourceIndex = 0; resourceIndex < resources.length; resourceIndex++) {
+      ResourceLine resource = JS.assume(resources[resourceIndex]);
+      if (resource.name == fragmentResource.name) {
+        existing = resource;
+        break;
+      }
+    }
+    if (existing != null) {
+      if (!existing.equals(fragmentResource)) {
+        errorPc(
+          "Resource '" + fragmentResource.name + "' is declared with different types in vertex and fragment shaders.",
+          JS.object(
+            "vertexLine", existing.line,
+            "fragmentLine", fragmentResource.line,
+            "shader", shader,
+            "vertexResource", existing,
+            "fragmentResource", fragmentResource
+          )
+        );
+        shader.failed = true;
+      }
+    } else {
+      resources.push(fragmentResource);
+    }
+  }
+  return resources;
+}
+
+(TextureFormatHost | StorageBufferFormatHost | StorageTextureFormatHost | UniformBindingFormatHost)[] buildResourceFormatsImpl(ResourceLine[] resources, int visibility, Shader shader) {
+  (TextureFormatHost | StorageBufferFormatHost | StorageTextureFormatHost | UniformBindingFormatHost)[] formats = [];
+  for (int index = 0; index < resources.length; index++) {
+    ResourceLine resource = JS.assume(resources[index]);
+    if (resource.isTexture) {
+      bool samplerPresent = index + 1 < resources.length;
+      if (samplerPresent) {
+        ResourceLine nextResource = JS.assume(resources[index + 1]);
+        samplerPresent = nextResource.isSampler;
+      }
+      assertPc(!resource.multisampled || !samplerPresent,
+        "Sampler uniform cannot follow a multisampled texture '" + resource.name + "' on line [" + resource.originalLine + "]");
+      bool hasSampler = samplerPresent && !resource.multisampled;
+      int sampleType = 0;
+      string dimension = "";
+      int? maybeSampleType = resource.sampleType;
+      if (maybeSampleType != null) sampleType = maybeSampleType;
+      string? maybeDimension = resource.textureDimension;
+      if (maybeDimension != null) dimension = maybeDimension;
+      string? samplerName = null;
+      if (hasSampler) {
+        ResourceLine nextResource = JS.assume(resources[index + 1]);
+        samplerName = nextResource.name;
+      }
+      formats.push(newTextureBinding(resource.name, visibility, dimension, sampleType, hasSampler, samplerName, resource.multisampled));
+      if (hasSampler) index++;
+    }
+
+    if (resource.isStorageBuffer) {
+      bool readOnly = resource.accessMode != "read_write";
+      StorageBufferFormatHost bufferFormat = newStorageBufferBinding(resource.name, visibility, readOnly);
+      bufferFormat.format = resource.type;
+      formats.push(bufferFormat);
+    }
+
+    if (resource.isStorageTexture) {
+      string dimension = TEXTUREDIMENSION_2D;
+      if (resource.textureType == "texture_storage_2d_array") dimension = TEXTUREDIMENSION_2D_ARRAY;
+      int? pixelFormat = null;
+      string? maybeFormatName = resource.format;
+      if (maybeFormatName != null) pixelFormat = gpuFormatToPixelFormat.get(maybeFormatName);
+      assertPc(pixelFormat != null, "Unsupported storage texture format '" + (maybeFormatName ?? "null") + "' on line [" + resource.originalLine + "]");
+      bool write = resource.access == "write" || resource.access == "read_write";
+      bool read = resource.access == "read" || resource.access == "read_write";
+      formats.push(newStorageTextureBinding(resource.name, JS.assume(pixelFormat), dimension, write, read));
+    }
+
+    assertPc(!resource.isSampler, "Sampler uniform needs to follow a texture uniform, but does not on line [" + resource.originalLine + "]");
+    assertPc(true, "TODO: add support for external textures here");
+  }
+  return formats;
+}
+
+ResourcesData processResourcesImpl(GraphicsDevice device, ResourceLine[] resources, ProcessingOptions? processingOptions, Shader shader, int visibility, int bindGroupIndex) {
+  (TextureFormatHost | StorageBufferFormatHost | StorageTextureFormatHost | UniformBindingFormatHost)[] textureFormats = buildResourceFormatsImpl(resources, visibility, shader);
+  BindGroupFormatHost meshBindGroupFormat = newBindGroup(device, textureFormats);
+  string code = "";
+  if (processingOptions != null) {
+    (BindGroupFormatHost?)[]? suppliedFormats = processingOptions.bindGroupFormats;
+    if (suppliedFormats != null) {
+      int suppliedCount = suppliedFormats.length;
+      for (int index = 0; index < suppliedCount; index++) {
+        BindGroupFormatHost? format = JS.assume(suppliedFormats[index]);
+        if (format != null) code += getTextureShaderDeclarationImpl(format, index);
+      }
+    }
+  }
+  code += getTextureShaderDeclarationImpl(meshBindGroupFormat, bindGroupIndex);
+  return ResourcesData{code, meshBindGroupFormat};
+}
+
+string bindGroupName(int bindGroup) {
+  if (bindGroup == 0) return "view";
+  if (bindGroup == 1) return "mesh";
+  if (bindGroup == 2) return "mesh_ub";
+  return "undefined";
+}
+
+string wrappedArrayType(string typeString) {
+  if (typeString == "f32") return "WrappedF32";
+  if (typeString == "i32") return "WrappedI32";
+  if (typeString == "u32") return "WrappedU32";
+  if (typeString == "vec2f") return "WrappedVec2F";
+  if (typeString == "vec2i") return "WrappedVec2I";
+  if (typeString == "vec2u") return "WrappedVec2U";
+  return typeString;
+}
+
+string getUniformShaderDeclarationImpl(UniformBufferFormatHost ubFormat, int bindGroup, int bindIndex, string name) {
+  string actualName = name;
+  string code = "struct struct_ub_" + actualName + " {\n";
+  UniformFormatHost[] uniforms = ubFormat.uniforms;
+  int count = uniforms.length;
+  for (int index = 0; index < count; index++) {
+    UniformFormatHost uniform = JS.assume(uniforms[index]);
+    int type = uniform.type;
+    JsValue maybeTypeString = uniformTypeName(type);
+    assertPc(!JS.isUndefined(maybeTypeString), "Uniform type " + type + " is not handled.");
+    string typeString = JS.assume(maybeTypeString);
+    number uniformCount = uniform.count;
+    string shortName = uniform.shortName;
+    if (uniformCount > 0) {
+      typeString = wrappedArrayType(typeString);
+      code += "    " + shortName + ": array<" + typeString + ", " + uniformCount + ">,\n";
+    } else {
+      code += "    " + shortName + ": " + typeString + ",\n";
+    }
+  }
+  code += "};\n";
+  code += "@group(" + bindGroup + ") @binding(" + bindIndex + ") var<uniform> ub_" + actualName + " : struct_ub_" + actualName + ";\n\n";
+  return code;
+}
+
+string getTextureShaderDeclarationImpl(BindGroupFormatHost format, int bindGroup) {
+  string code = "";
+  TextureFormatHost[] textureFormats = format.textureFormats;
+  int textureCount = textureFormats.length;
+  for (int index = 0; index < textureCount; index++) {
+    TextureFormatHost textureFormat = JS.assume(textureFormats[index]);
+    string dimension = textureFormat.textureDimension;
+    int sampleType = textureFormat.sampleType;
+    bool multisampled = textureFormat.multisampled;
+    string textureTypeName = getTextureDeclarationType(dimension, sampleType, multisampled);
+    int slot = textureFormat.slot;
+    string name = textureFormat.name;
+    code += "@group(" + bindGroup + ") @binding(" + slot + ") var " + name + ": " + textureTypeName + ";\n";
+
+    bool hasSampler = textureFormat.hasSampler;
+    if (hasSampler) {
+      string samplerName = "sampler";
+      if (sampleType == SAMPLETYPE_DEPTH) samplerName = "sampler_comparison";
+      string declaredSamplerName = textureFormat.samplerName;
+      code += "@group(" + bindGroup + ") @binding(" + (slot + 1) + ") var " + declaredSamplerName + ": " + samplerName + ";\n";
+    }
+  }
+
+  StorageBufferFormatHost[] storageBufferFormats = format.storageBufferFormats;
+  int storageBufferCount = storageBufferFormats.length;
+  for (int index = 0; index < storageBufferCount; index++) {
+    StorageBufferFormatHost storageFormat = JS.assume(storageBufferFormats[index]);
+    bool readOnly = storageFormat.readOnly;
+    string access = "read_write";
+    if (readOnly) access = "read";
+    int slot = storageFormat.slot;
+    string name = storageFormat.name;
+    string type = storageFormat.format;
+    code += "@group(" + bindGroup + ") @binding(" + slot + ") var<storage, " + access + "> " + name + " : " + type + ";\n";
+  }
+
+  StorageTextureFormatHost[] storageTextureFormats = format.storageTextureFormats;
+  int storageTextureCount = storageTextureFormats.length;
+  for (int index = 0; index < storageTextureCount; index++) {
+    StorageTextureFormatHost storageFormat = JS.assume(storageTextureFormats[index]);
+    string storageType = "texture_storage_2d";
+    if (storageFormat.textureDimension == TEXTUREDIMENSION_2D_ARRAY) storageType = "texture_storage_2d_array";
+    int pixelFormat = storageFormat.format;
+    string formatString = gpuTextureFormats[pixelFormat];
+    bool read = storageFormat.read;
+    bool write = storageFormat.write;
+    string access = "write";
+    if (read) {
+      access = "read";
+      if (write) access = "read_write";
+    }
+    int slot = storageFormat.slot;
+    string name = storageFormat.name;
+    code += "@group(" + bindGroup + ") @binding(" + slot + ") var " + name + ": " + storageType + "<" + formatString + ", " + access + ">;\n";
+  }
+  return code;
+}
+
+string processVaryingsImpl(JsValue[] varyingLines, Map<string, int> varyingMap, bool isVertex, GraphicsDevice device, string source, string entryInputName) {
+  string block = "";
+  string blockPrivates = "";
+  string blockCopy = "";
+  JsValue rawVaryingLines = varyingLines;
+
+  for (int varyingIndex = 0; varyingIndex < varyingLines.length; varyingIndex++) {
+    string line = JS.assume(rawVaryingLines[varyingIndex]);
+    JsValue regexMatch = JS.stringMatch(line, VARYING);
+    assertPc(!JS.isNullish(regexMatch), "Varying line is not valid: " + line);
+    if (!JS.isNullish(regexMatch)) {
+      string name = matchString(regexMatch, 1);
+      string type = matchString(regexMatch, 2);
+      int location = varyingIndex;
+      if (isVertex) {
+        varyingMap.set(name, location);
+      } else {
+        assertPc(varyingMap.has(name), "Fragment shader requires varying [" + name + "] but vertex shader does not generate it.");
+        int? mappedLocation = varyingMap.get(name);
+        if (mappedLocation != null) location = mappedLocation;
+      }
+      block += "    @location(" + location + ") " + line + ",\n";
+      if (!isVertex) {
+        blockPrivates += "    var<private> " + name + ": " + type + ";\n";
+        blockCopy += "    " + name + " = input." + name + ";\n";
+      }
+    }
+  }
+
+  if (isVertex) {
+    block += "    @builtin(position) position : vec4f,\n";
+    return "\n                struct VertexOutput {\n                    " + block + "\n                };\n            ";
+  }
+
+  Builtin[] usedBuiltins = ensureNonEmptyStruct(
+    detectUsedBuiltins(FRAGMENT_BUILTINS, source, entryInputName, device),
+    FRAGMENT_BUILTINS,
+    device,
+    block.length > 0
+  );
+  block += renderBuiltinStructFields(usedBuiltins);
+
+  return "\n            struct FragmentInput {\n                " + block +
+    "\n            };\n\n            " + renderBuiltinPrivates(usedBuiltins) +
+    "\n            " + blockPrivates +
+    "\n\n            // function to copy inputs (varyings) to private global variables" +
+    "\n            fn _pcCopyInputs(input: FragmentInput) {\n                " + blockCopy +
+    "\n                " + renderBuiltinCopies(usedBuiltins) + "\n            }\n        ";
+}
+
+string generateFragmentOutputStructImpl(string src, int numRenderTargets, bool useDualSourceBlending) {
+  string structCode = "struct FragmentOutput {\n";
+  if (useDualSourceBlending) {
+    assertPc(new Regex("\\.color\\s*=").test(src), "Dual-source blending shader must write output.color.");
+    assertPc(new Regex("\\.colorSecondary\\s*=").test(src), "Dual-source blending shader must write output.colorSecondary.");
+    structCode += "    @location(0) @blend_src(0) color : pcOutType0,\n";
+    structCode += "    @location(0) @blend_src(1) colorSecondary : pcOutType0,\n";
+  } else {
+    for (int index = 0; index < numRenderTargets; index++) {
+      string name = "color";
+      if (index > 0) name += index;
+      if (src.search(new Regex("\\." + name + "\\s*=")) != -1) {
+        structCode += "    @location(" + index + ") " + name + " : pcOutType" + index + ",\n";
+      }
+    }
+  }
+  if (src.search(FRAG_DEPTH_ASSIGN) != -1) {
+    structCode += "    @builtin(frag_depth) fragDepth : f32,\n";
+  }
+  if (src.search(SAMPLE_MASK_ASSIGN) != -1) {
+    structCode += "    @builtin(sample_mask) sampleMask : u32,\n";
+  }
+  return structCode + "};\n";
+}
+
+string? floatAttributeToIntImpl(string type, bool signed) {
+  string shortType = type;
+  if (type == "vec2<f32>") shortType = "vec2f";
+  if (type == "vec3<f32>") shortType = "vec3f";
+  if (type == "vec4<f32>") shortType = "vec4f";
+
+  if (shortType == "f32") {
+    if (signed) return "i32";
+    return "u32";
+  }
+  if (shortType == "vec2f") {
+    if (signed) return "vec2i";
+    return "vec2u";
+  }
+  if (shortType == "vec3f") {
+    if (signed) return "vec3i";
+    return "vec3u";
+  }
+  if (shortType == "vec4f") {
+    if (signed) return "vec4i";
+    return "vec4u";
+  }
+  return null;
+}
+
+string attributeType(string type, string name, VertexElement? element) {
+  if (element == null) return type;
+  int dataType = element.dataType;
+  if (dataType == TYPE_FLOAT32 || dataType == TYPE_FLOAT16) return type;
+  if (element.normalize || element.asInt) return type;
+
+  bool isSignedType = dataType == TYPE_INT8 || dataType == TYPE_INT16 || dataType == TYPE_INT32;
+  string? convertedType = floatAttributeToIntImpl(type, isSignedType);
+  assertPc(convertedType != null, "Attribute " + name + " has a type that cannot be converted to int: " + dataType);
+  if (convertedType != null) return convertedType;
+  return type;
+}
+
+string processAttributesImpl(JsValue[] attributeLines, JsValue shaderDefinitionAttributes, Map<int, string> attributesMap, ProcessingOptions processingOptions, Shader shader, GraphicsDevice device, string source, string entryInputName) {
+  string blockAttributes = "";
+  string blockPrivates = "";
+  string blockCopy = "";
+  Map<int, string> usedLocations = new Map<int, string>();
+  JsValue rawAttributeLines = attributeLines;
+
+  for (int index = 0; index < attributeLines.length; index++) {
+    string line = JS.assume(rawAttributeLines[index]);
+    string[] words = splitToWords(line);
+    string name = words[0];
+    string type = words[1];
+    string originalType = type;
+
+    if (JS.assume(JS.invoke(shaderDefinitionAttributes, "hasOwnProperty", name))) {
+      string semantic = JS.assume(shaderDefinitionAttributes[name]);
+      int? maybeLocation = semanticToLocation[semantic];
+      assertPc(maybeLocation != null, "Semantic " + semantic + " used by the attribute " + name + " is not known - make sure it's one of the supported semantics.");
+      int location = 0;
+      if (maybeLocation != null) location = maybeLocation;
+      debugCall(() => {
+        string? prior = usedLocations.get(location);
+        assertPc(prior == null, "WARNING: Two vertex attributes are mapped to the same location in a shader: " + (prior ?? "undefined") + " and " + semantic);
+        usedLocations.set(location, semantic);
+      });
+      attributesMap.set(location, name);
+
+      type = attributeType(type, name, processingOptions.getVertexElement(semantic));
+
+      blockAttributes += "    @location(" + location + ") " + name + ": " + type + ",\n";
+      blockPrivates += "    var<private> " + line + ";\n";
+      blockCopy += "    " + name + " = " + originalType + "(input." + name + ");\n";
+    } else {
+      errorPc(
+        "Attribute " + name + " is specified in the shader source, but is not defined in the shader definition, and so will be removed from the shader, as it cannot be used without a known semantic.",
+        JS.object("shaderDefinitionAttributes", shaderDefinitionAttributes, "shader", shader)
+      );
+    }
+  }
+
+  Builtin[] usedBuiltins = ensureNonEmptyStruct(
+    detectUsedBuiltins(VERTEX_BUILTINS, source, entryInputName, device),
+    VERTEX_BUILTINS,
+    device,
+    blockAttributes.length > 0
+  );
+
+  return "\n            struct VertexInput {\n                " + blockAttributes +
+    "\n                " + renderBuiltinStructFields(usedBuiltins) +
+    "\n            };\n\n            " + blockPrivates +
+    "\n            " + renderBuiltinPrivates(usedBuiltins) +
+    "\n\n            fn _pcCopyInputs(input: VertexInput) {\n                " + blockCopy +
+    "\n                " + renderBuiltinCopies(usedBuiltins) + "\n            }\n        ";
+}
+
+string copyInputsImpl(string src, Shader shader) {
+  JsValue regexMatch = JS.stringMatch(src, ENTRY_FUNCTION);
+  if (JS.isNullish(regexMatch) || JS.isNullish(regexMatch[2])) {
+    warnPc("No entry function found or input parameter name not captured.", JS.object("shader", shader, "src", src));
+    return src;
+  }
+  string inputName = matchString(regexMatch, 2);
+  int braceIndex = JS.number(regexMatch["index"]).toInt() + matchString(regexMatch, 0).length - 1;
+  string beginning = src.slice(0, braceIndex + 1);
+  string end = src.slice(braceIndex + 1);
+  string lineToInject = "\n    _pcCopyInputs(" + inputName + ");";
+  return beginning + lineToInject + end;
+}
+
+JsValue runImpl(GraphicsDevice device, ShaderDefinition shaderDefinition, Shader shader) {
+  Map<string, int> varyingMap = new Map<string, int>();
+  Extracted vertexExtracted = extractImpl(shaderDefinition.vshader);
+  Extracted fragmentExtracted = extractImpl(shaderDefinition.fshader);
+
+  string vertexInputName = "";
+  JsValue vertexEntry = JS.stringMatch(vertexExtracted.src, ENTRY_FUNCTION);
+  if (!JS.isNullish(vertexEntry) && !JS.isNullish(vertexEntry[2])) vertexInputName = matchString(vertexEntry, 2);
+  string fragmentInputName = "";
+  JsValue fragmentEntry = JS.stringMatch(fragmentExtracted.src, ENTRY_FUNCTION);
+  if (!JS.isNullish(fragmentEntry) && !JS.isNullish(fragmentEntry[2])) fragmentInputName = matchString(fragmentEntry, 2);
+
+  Map<int, string> attributesMap = new Map<int, string>();
+  ProcessingOptions processingOptions = shaderDefinition.processingOptions;
+  string attributesBlock = processAttributesImpl(
+    vertexExtracted.attributes,
+    shaderDefinition.attributes,
+    attributesMap,
+    processingOptions,
+    shader,
+    device,
+    vertexExtracted.src,
+    vertexInputName
+  );
+  string vertexVaryingsBlock = processVaryingsImpl(vertexExtracted.varyings, varyingMap, true, device, "", "");
+  string fragmentVaryingsBlock = processVaryingsImpl(fragmentExtracted.varyings, varyingMap, false, device, fragmentExtracted.src, fragmentInputName);
+
+  JsValue[] concatUniforms = vertexExtracted.uniforms.concat(fragmentExtracted.uniforms);
+  JsValue rawConcatUniforms = concatUniforms;
+  Set<string> seenUniforms = new Set<string>();
+  JsValue[] uniforms = [];
+  for (int index = 0; index < concatUniforms.length; index++) {
+    string line = JS.assume(rawConcatUniforms[index]);
+    if (!seenUniforms.has(line)) {
+      seenUniforms.add(line);
+      uniforms.push(line);
+    }
+  }
+  UniformLine[] parsedUniforms = parseUniformLines(uniforms, shader);
+
+  debugCall(() => {
+    Map<string, string> uniformMap = new Map<string, string>();
+    for (int index = 0; index < parsedUniforms.length; index++) {
+      UniformLine uniform = JS.assume(parsedUniforms[index]);
+      string? existing = uniformMap.get(uniform.name);
+      string existingText = "undefined";
+      if (existing != null) existingText = existing;
+      assertPcContext(existing == null, "Vertex and fragment shaders cannot use the same uniform name with different types: '" + existingText + "' and '" + uniform.line + "'", shader);
+      uniformMap.set(uniform.name, uniform.line);
+    }
+  });
+
+  UniformData uniformsData = processUniformsImpl(device, parsedUniforms, processingOptions, shader);
+  vertexExtracted.src = renameUniformAccessImpl(vertexExtracted.src, parsedUniforms);
+  fragmentExtracted.src = renameUniformAccessImpl(fragmentExtracted.src, parsedUniforms);
+  ResourceLine[] parsedResources = mergeResourcesImpl(vertexExtracted.resources, fragmentExtracted.resources, shader);
+  ResourcesData resourcesData = processResourcesImpl(device, parsedResources, processingOptions, shader, SHADERSTAGE_VERTEX | SHADERSTAGE_FRAGMENT, BINDGROUP_MESH);
+
+  int maxColorAttachments = device.maxColorAttachments;
+  bool useDualSourceBlending = shaderDefinition.useDualSourceBlending;
+  string fragmentOutput = generateFragmentOutputStructImpl(fragmentExtracted.src, maxColorAttachments, useDualSourceBlending);
+  vertexExtracted.src = copyInputsImpl(vertexExtracted.src, shader);
+  fragmentExtracted.src = copyInputsImpl(fragmentExtracted.src, shader);
+
+  string vertexBlock = attributesBlock + "\n" + vertexVaryingsBlock + "\n" + uniformsData.code + "\n" + resourcesData.code + "\n";
+  string vshader = JS.string(JS.invoke(vertexExtracted.src, "replace", MARKER, vertexBlock));
+  string fragmentBlock = fragmentVaryingsBlock + "\n" + fragmentOutput + "\n" + uniformsData.code + "\n" + resourcesData.code + "\n";
+  string fshader = JS.string(JS.invoke(fragmentExtracted.src, "replace", MARKER, fragmentBlock));
+
+  return JS.object(
+    "vshader", vshader,
+    "fshader", fshader,
+    "attributes", attributesMap,
+    "meshUniformBufferFormat", uniformsData.meshUniformBufferFormat,
+    "meshBindGroupFormat", resourcesData.meshBindGroupFormat
+  );
+}
+
+JsValue runComputeImpl(GraphicsDevice device, string source, JsValue shaderDefinition, Shader shader, int reflectedGroupIndex) {
+  Extracted extracted = extractImpl(source);
+  UniformLine[] parsedUniforms = parseUniformLines(extracted.uniforms, shader);
+
+  UniformFormatHost[] meshUniforms = [];
+  for (int index = 0; index < parsedUniforms.length; index++) {
+    UniformLine uniform = JS.assume(parsedUniforms[index]);
+    uniform.ubName = "ub_compute";
+    int? typeIndex = uniformTypeToNameMapWGSL.get(uniform.type);
+    assertPc(typeIndex != null, "Uniform type " + uniform.type + " is not recognised on line [" + uniform.line + "]");
+    meshUniforms.push(newUniform(uniform.name, typeIndex, uniform.arraySize));
+  }
+
+  UniformBufferFormatHost? computeUniformBufferFormat = null;
+  if (meshUniforms.length > 0) computeUniformBufferFormat = newUniformBuffer(device, meshUniforms);
+  ResourceLine[] parsedResources = mergeResourcesImpl(extracted.resources, [], shader);
+  (TextureFormatHost | StorageBufferFormatHost | StorageTextureFormatHost | UniformBindingFormatHost)[] resourceFormats = buildResourceFormatsImpl(parsedResources, SHADERSTAGE_COMPUTE, shader);
+  UniformBindingFormatHost? ubBindFormat = null;
+  if (computeUniformBufferFormat != null) ubBindFormat = newUniformBinding("ub_compute", SHADERSTAGE_COMPUTE);
+  (TextureFormatHost | StorageBufferFormatHost | StorageTextureFormatHost | UniformBindingFormatHost)[] allFormats = resourceFormats;
+  if (ubBindFormat != null) allFormats.push(ubBindFormat);
+
+  string cshader = source;
+  BindGroupFormatHost? computeBindGroupFormat = null;
+  if (allFormats.length > 0) {
+    BindGroupFormatHost reflectedFormat = newBindGroup(device, allFormats);
+    computeBindGroupFormat = reflectedFormat;
+    string code = getTextureShaderDeclarationImpl(reflectedFormat, reflectedGroupIndex);
+    if (computeUniformBufferFormat != null && ubBindFormat != null) {
+      int slot = ubBindFormat.slot;
+      code += getUniformShaderDeclarationImpl(computeUniformBufferFormat, reflectedGroupIndex, slot, "compute");
+    }
+    string src = renameUniformAccessImpl(extracted.src, parsedUniforms);
+    if (src.includes(MARKER)) {
+      cshader = JS.string(JS.invoke(src, "replace", MARKER, code));
+    } else {
+      cshader = code + "\n" + src;
+    }
+  }
+
+  return JS.object(
+    "cshader", cshader,
+    "computeBindGroupFormat", computeBindGroupFormat,
+    "computeUniformBufferFormat", computeUniformBufferFormat
+  );
+}
+
+export {
+  runImpl as run,
+  runComputeImpl as runCompute,
+  extractImpl as extract,
+  processUniformsImpl as processUniforms,
+  renameUniformAccessImpl as renameUniformAccess,
+  mergeResourcesImpl as mergeResources,
+  buildResourceFormatsImpl as buildResourceFormats,
+  processResourcesImpl as processResources,
+  processVaryingsImpl as processVaryings,
+  generateFragmentOutputStructImpl as generateFragmentOutputStruct,
+  floatAttributeToIntImpl as floatAttributeToInt,
+  processAttributesImpl as processAttributes,
+  getUniformShaderDeclarationImpl as getUniformShaderDeclaration,
+  getTextureShaderDeclarationImpl as getTextureShaderDeclaration,
+  copyInputsImpl as copyInputs,
+  cutOutImpl as cutOut
+};

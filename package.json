@@ -2,7 +2,7 @@
   "name": "playcanvaslil",
   "version": "0.1.0",
   "private": true,
-  "description": "A file-by-file LilScript port and differential study of PlayCanvas engine core/math.",
+  "description": "A LilScript port and differential study of PlayCanvas shader processing.",
   "homepage": "https://yeargun.github.io/playcanvaslil/",
   "repository": {
     "type": "git",
@@ -13,7 +13,9 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "npm run build && npm run test:artifact",
-    "test:artifact": "node --test test/bit-packing.test.mjs",
+    "test:artifact": "npm run test:upstream && npm run test:differential && node --test test/shader-processing.test.mjs",
+    "test:upstream": "node scripts/test-upstream.mjs dist/shader-processing.js dist/shader-processing.official.js",
+    "test:differential": "node src/shader-processing/shader-processor-glsl.differential.mjs && node src/shader-processing/shader-definition-utils.differential.mjs",
     "measure": "node scripts/measure.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "build:site": "node scripts/build-site.mjs",
@@ -21,7 +23,11 @@
     "check": "npm test && npm run measure && npm run benchmark && npm run check:site"
   },
   "devDependencies": {
+    "@rollup/plugin-strip": "3.0.4",
+    "acorn": "8.17.0",
+    "chai": "6.2.2",
     "esbuild": "0.28.1",
+    "mocha": "11.7.6",
     "terser": "5.43.1"
   },
   "engines": {

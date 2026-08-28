@@ -1,24 +1,61 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-08-28T13:16:25.484Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-28T23:46:26.434Z",
   "scope": {
     "upstream": "playcanvas/engine",
+    "name": "shader-processing core",
     "gitSubmodulePath": "upstream/engine",
-    "sourceSubtree": "src/core/math",
-    "sourceFileCount": 17,
+    "selectedSources": [
+      "src/core/preprocessor.js",
+      "src/platform/graphics/shader-definition-utils.js",
+      "src/platform/graphics/shader-processor-glsl.js",
+      "src/platform/graphics/webgpu/webgpu-shader-processor-wgsl.js"
+    ],
     "convertedFiles": [
-      "bit-packing.js"
-    ]
+      "src/core/preprocessor.js",
+      "src/platform/graphics/shader-definition-utils.js",
+      "src/platform/graphics/shader-processor-glsl.js",
+      "src/platform/graphics/webgpu/webgpu-shader-processor-wgsl.js"
+    ],
+    "sourceBytes": 124613
+  },
+  "contract": {
+    "build": "PlayCanvas release Debug stripping; Terser compression; identifier and property mangling disabled",
+    "propertyMangling": false,
+    "downstreamIdentifierMangling": false,
+    "objective": "brotli11"
   },
   "upstream": {
     "revision": "dbd2f580915273d50cfb12936af25d45ae636a04",
-    "bitPackingSourceSha256": "dfa2363f5f66302bbf9bb99c7c1c542512afeb6569af9845758c4a47bd35eb5d"
+    "sourceSha256": {
+      "src/core/preprocessor.js": "29af1c33e59c613802d461bfe3675192535309b0c8e7a92b80bf2bdffb7555c6",
+      "src/platform/graphics/shader-definition-utils.js": "527c5cd621d758dd5e058cb1aa8b2ac9217d6dd8f72205e2ff43abc9f82024b5",
+      "src/platform/graphics/shader-processor-glsl.js": "71273ffcfc2c763bd39f14fbddef6a050a85c6cefc14e2f355ba51e80ff02fa8",
+      "src/platform/graphics/webgpu/webgpu-shader-processor-wgsl.js": "0e29bc7add44c224c92f32725248ae99bb3432eaa61fdc60c94885dc5ba17e23"
+    }
   },
-  "sourceSha256": {
-    "lilscript": "36cddf0275655d47f28eff255925f51b21406dca0f18bb6d49f36a8ed10678e3",
-    "facade": "887e1e49ec389c1c206b6a09ff64fb61da58dcb20f8521363d035775a508809f",
-    "closedLilscript": "c466d265febb3c4ae9ae73aed4c788af7de37df9c192d956f7f3c6a99d371fd4",
-    "closedJavaScript": "6e1f47c51294732125c667cef9235243dd5d70b7a0d42dce140b70943778708e"
+  "portSourceSha256": {
+    "src/shader-processing/entry.lil": "ee32f1b85e165521bc83210a3e643c2b3fbc5df65b3f088568955b30652cdc28",
+    "src/shader-processing/preprocessor.lil": "19a8dd1c2d4306ca7897604be6d8a869bd2a6fdf05a5fa7ec62cbd5603adb25b",
+    "src/shader-processing/shader-definition-utils.lil": "c29b7a6dfcc95032bb1f9c2d63ad152a4f7d7d184bf27141e0a71fbca8ecd537",
+    "src/shader-processing/shader-processor-glsl.lil": "5427fdadfa1882e4b2cd2b65ac97bfd840d484f4c8a648478e1c80c886a08af3",
+    "src/shader-processing/webgpu-shader-processor-wgsl.lil": "70c93625443675a3215292beb567c4ee380d4c992de7e7ea01e4abf59803e3d6",
+    "src/shader-processing/facade-utils.js": "3b923ffe002d909b57be09a17c01b2eafa768fa80c480db618488846a5daf7ca",
+    "src/shader-processing/index.facade.js": "c1dd633d9dfa0f6e24c4fce7ece630a5fccc256f4f486f92bfef3b3a8ba37194",
+    "src/shader-processing/preprocessor.facade.js": "ab6ff60b9671e113175e08258510cdf4746347fce002abd5f04e147bf8d559c3",
+    "src/shader-processing/shader-definition-utils.facade.js": "ede29f6c7425d37d834dc3036f58ad59fe4bbcaf6de0473aae6374fa4a58efaf",
+    "src/shader-processing/shader-definition-utils.debug.js": "a47daf8256bdb0046a7b111eec52099e3278bd4e64788d4772cfa87967021060",
+    "src/shader-processing/shader-definition-utils.host.js": "0da2b4963a4f690efddf636fa926e68a476080be552fbba047862bd6bfb74b87",
+    "src/shader-processing/shader-processor-glsl.facade.js": "cef3180d4d3f3710d15148194d60b4c56178ec4f827e8fbc4cfe75cee4337355",
+    "src/shader-processing/shader-processor-glsl.host.js": "98177b20e7b75bf4b25feabb9be658e5de524eca95df0c82f41cf23a34a5be8b",
+    "src/shader-processing/webgpu-shader-processor-wgsl.facade.js": "e86fb7e6ed946a159654e51ad1c3b92003af8a4b6812c3da3eab178cadc24f91",
+    "src/shader-processing/webgpu-shader-processor-wgsl.host.js": "33c255eda64f70a1f8ba6861c53066f8b716405e90d0b90d827d2cdd8cf62653",
+    "src/shader-processing/closed-world.js": "0789b6e1f0d8e9d969591e9e568f80983d47a8e236a1f98a3f63c15db2b84077",
+    "scripts/build.mjs": "1fe5c684f5523ec562b6fb3dbbf44526c6e0509227d48e5296ee77a60d0d0a87"
+  },
+  "tools": {
+    "esbuild": "0.28.1",
+    "terser": "5.43.1"
   },
   "compiler": {
     "revision": "bcef1c42efa5df287af76bfe1a7eca9bba9ccc46",
@@ -26,14 +63,7 @@
     "binarySha256": "08f3eedf4fb1e1f6329ee9fef31bb71d50bd03ca7905b35307d90e34129d1509"
   },
   "codecBinarySha256": "33ec73bd6243525b2bd484b2461db2a1d914a219f50c1536aa120cba14245061",
-  "configSha256": {
-    "lilscript.toml": "c04d1b2c90cefdc4ad55d6569aaf3b28fab045fb4e1d8d52d5fd79d37e00a976",
-    "lilscript.gzip.toml": "b9add792b957f78fed1eaa334880e7c0e0549590529d3f32277eb9c0d68d5a64",
-    "lilscript.raw.toml": "e950976f37f7fdedc53a767b70b6b9ae2200e5746b82aa622fbf1c093fa3dfb1",
-    "lilscript.closed.toml": "0e0b131ba6c9c3ea94ab658e438ec528947005af92bb3970c1ab7607fb850a8f",
-    "lilscript.closed-gzip.toml": "0570a688069f3736c0dd4a51640c1af0f35c9ed168ea6c8fa67afe86886af550",
-    "lilscript.closed-raw.toml": "16c67fc0903079d748e696ee4c8f4d63464b249da0245d8b443826947d624a42"
-  },
+  "configSha256": "3f1a798fd1b048db4d90e8788112144088c7df09daf605a8dac3bafbae107f04",
   "codecs": {
     "gzip9": {
       "encoder": "upstream-stock-zlib-c",
@@ -55,208 +85,80 @@
   },
   "artifacts": [
     {
-      "id": "open-lil-raw",
+      "id": "open-lilscript",
       "world": "open",
       "label": "LilScript",
-      "costModel": "raw",
-      "path": "dist/bit-packing.raw.js",
-      "raw": 537,
-      "gzip9": 263,
-      "brotli11": 230,
-      "sha256": "3e8e25159bf715b93bfced7382c2e614d5216b5a00a7fab1a47c77d9ccb3c12a"
+      "path": "dist/shader-processing.js",
+      "raw": 53783,
+      "gzip9": 16337,
+      "brotli11": 14580,
+      "sha256": "6e6e78110d8e18d909c157defa114a521e255c88ea027af9a3015e87f6d6d9a6"
     },
     {
-      "id": "open-lil-gzip",
+      "id": "open-official",
       "world": "open",
-      "label": "LilScript",
-      "costModel": "gzip",
-      "path": "dist/bit-packing.gzip.js",
-      "raw": 541,
-      "gzip9": 264,
-      "brotli11": 233,
-      "sha256": "0f704920bc5d682a31605f0c991da5fca54e61d0cf9636f20596d6857b697100"
+      "label": "Official PlayCanvas",
+      "path": "dist/shader-processing.official.js",
+      "raw": 67112,
+      "gzip9": 16267,
+      "brotli11": 14633,
+      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
     },
     {
-      "id": "open-lil-brotli",
-      "world": "open",
-      "label": "LilScript",
-      "costModel": "brotli",
-      "path": "dist/bit-packing.brotli.js",
-      "raw": 535,
-      "gzip9": 262,
-      "brotli11": 228,
-      "sha256": "770fb05391328ec8c89aa3974cdd5790b84d813ec053f5fa6a3e37f7b84c8119"
-    },
-    {
-      "id": "open-esbuild",
-      "world": "open",
-      "label": "Official + esbuild",
-      "costModel": null,
-      "path": "dist/bit-packing.official-esbuild.js",
-      "raw": 236,
-      "gzip9": 179,
-      "brotli11": 169,
-      "sha256": "1c9217d11cc34daf5fd1a3f5c5be6b44a77504f8040caad5ef7be3809e2c4f1a"
-    },
-    {
-      "id": "open-terser",
-      "world": "open",
-      "label": "Official + Terser",
-      "costModel": null,
-      "path": "dist/bit-packing.official-terser.js",
-      "raw": 241,
-      "gzip9": 181,
-      "brotli11": 180,
-      "sha256": "a3e0cb724bbcd96c72d9d521a113bbf64f062f5d1589778d1f194c80d67514a5"
-    },
-    {
-      "id": "closed-lil-raw",
+      "id": "closed-lilscript",
       "world": "closed",
       "label": "LilScript",
-      "costModel": "raw",
-      "path": "dist/closed-world.raw.js",
-      "raw": 403,
-      "gzip9": 294,
-      "brotli11": 289,
-      "sha256": "9de533418965a8c1ca05b72900d0cca92d033e06cdc905cdf26eb8df06b3d4ef"
+      "path": "dist/shader-processing.closed.js",
+      "raw": 51123,
+      "gzip9": 15536,
+      "brotli11": 13810,
+      "sha256": "ea727b17ceb3f210b6da1752e1e4225a777c9fab27b16ed9d5253df2bd752b86"
     },
     {
-      "id": "closed-lil-gzip",
+      "id": "closed-official",
       "world": "closed",
-      "label": "LilScript",
-      "costModel": "gzip",
-      "path": "dist/closed-world.gzip.js",
-      "raw": 405,
-      "gzip9": 284,
-      "brotli11": 278,
-      "sha256": "77b7269b20dd1f2e324692c0bd1b59fcaaad5dd161de3639699fb940cae52efe"
-    },
-    {
-      "id": "closed-lil-brotli",
-      "world": "closed",
-      "label": "LilScript",
-      "costModel": "brotli",
-      "path": "dist/closed-world.brotli.js",
-      "raw": 404,
-      "gzip9": 286,
-      "brotli11": 277,
-      "sha256": "3e2e5a1291c426e7bf4247169927bb3f01b4e6a08a4d1681fa7d2d6275f53904"
-    },
-    {
-      "id": "closed-esbuild",
-      "world": "closed",
-      "label": "Official + esbuild",
-      "costModel": null,
-      "path": "dist/closed-world.official-esbuild.js",
-      "raw": 410,
-      "gzip9": 283,
-      "brotli11": 262,
-      "sha256": "096cf9b02f10ad0919a5795f1e5fd35796ed5405c425ddfb9b1196923614e76a"
-    },
-    {
-      "id": "closed-terser",
-      "world": "closed",
-      "label": "Official + Terser",
-      "costModel": null,
-      "path": "dist/closed-world.official-terser.js",
-      "raw": 415,
-      "gzip9": 287,
-      "brotli11": 267,
-      "sha256": "e266ac9f81e8b8c68db28206f4112d87aae49684209bcbbcdfe1bb318e489369"
+      "label": "Official PlayCanvas",
+      "path": "dist/shader-processing.closed.official.js",
+      "raw": 67422,
+      "gzip9": 16333,
+      "brotli11": 14681,
+      "sha256": "3002b5e49f6a2671cc2b43a72f38600fa55ec43cbf51797a5d4ddee29dac067a"
     }
   ],
-  "matched": {
+  "comparison": {
     "open": {
       "raw": {
-        "candidate": 537,
-        "baseline": 236,
-        "baselineId": "open-esbuild",
-        "differencePercent": 127.5
+        "candidate": 53783,
+        "baseline": 67112,
+        "differencePercent": -19.86
       },
       "gzip9": {
-        "candidate": 264,
-        "baseline": 179,
-        "baselineId": "open-esbuild",
-        "differencePercent": 47.5
+        "candidate": 16337,
+        "baseline": 16267,
+        "differencePercent": 0.43
       },
       "brotli11": {
-        "candidate": 228,
-        "baseline": 169,
-        "baselineId": "open-esbuild",
-        "differencePercent": 34.9
+        "candidate": 14580,
+        "baseline": 14633,
+        "differencePercent": -0.36
       }
     },
     "closed": {
       "raw": {
-        "candidate": 403,
-        "baseline": 410,
-        "baselineId": "closed-esbuild",
-        "differencePercent": -1.7
+        "candidate": 51123,
+        "baseline": 67422,
+        "differencePercent": -24.17
       },
       "gzip9": {
-        "candidate": 284,
-        "baseline": 283,
-        "baselineId": "closed-esbuild",
-        "differencePercent": 0.4
+        "candidate": 15536,
+        "baseline": 16333,
+        "differencePercent": -4.88
       },
       "brotli11": {
-        "candidate": 277,
-        "baseline": 262,
-        "baselineId": "closed-esbuild",
-        "differencePercent": 5.7
+        "candidate": 13810,
+        "baseline": 14681,
+        "differencePercent": -5.93
       }
     }
-  },
-  "frontier": {
-    "open": {
-      "raw": {
-        "candidate": 535,
-        "candidateId": "open-lil-brotli",
-        "baseline": 236,
-        "baselineId": "open-esbuild",
-        "differencePercent": 126.7
-      },
-      "gzip9": {
-        "candidate": 262,
-        "candidateId": "open-lil-brotli",
-        "baseline": 179,
-        "baselineId": "open-esbuild",
-        "differencePercent": 46.4
-      },
-      "brotli11": {
-        "candidate": 228,
-        "candidateId": "open-lil-brotli",
-        "baseline": 169,
-        "baselineId": "open-esbuild",
-        "differencePercent": 34.9
-      }
-    },
-    "closed": {
-      "raw": {
-        "candidate": 403,
-        "candidateId": "closed-lil-raw",
-        "baseline": 410,
-        "baselineId": "closed-esbuild",
-        "differencePercent": -1.7
-      },
-      "gzip9": {
-        "candidate": 284,
-        "candidateId": "closed-lil-gzip",
-        "baseline": 283,
-        "baselineId": "closed-esbuild",
-        "differencePercent": 0.4
-      },
-      "brotli11": {
-        "candidate": 277,
-        "candidateId": "closed-lil-brotli",
-        "baseline": 262,
-        "baselineId": "closed-esbuild",
-        "differencePercent": 5.7
-      }
-    }
-  },
-  "notes": {
-    "open": "Reusable ESM with exact BitPacking object keys, method arities, defaults, and non-constructible methods. Includes the JavaScript ABI facade.",
-    "closed": "Equivalent single-entry kernel. Both sources call a BitPacking object; the complete internal graph may be optimized."
   }
 }

@@ -1,28 +1,15 @@
-# `core/math` Port Status
+# Shader Processing Port Status
 
-Scope: `playcanvas/engine/src/core/math` at
-`dbd2f580915273d50cfb12936af25d45ae636a04`.
+Upstream: `playcanvas/engine@dbd2f580915273d50cfb12936af25d45ae636a04`.
 
-| Upstream file | Status | Evidence |
-| --- | --- | --- |
-| `bit-packing.js` | converted | upstream examples, API shape, 100,000 differential vectors, open/closed size and runtime |
-| `constants.js` | queued | not yet translated |
-| `math.js` | queued | not yet translated; overload and random host boundary required |
-| `random.js` | queued | not yet translated |
-| `kernel.js` | queued | not yet translated |
-| `float-packing.js` | queued | not yet translated |
-| `blue-noise.js` | queued | not yet translated |
-| `vec2.js` | queued | not yet translated; exported constructor identity must be preserved |
-| `vec3.js` | queued | not yet translated; exported constructor identity must be preserved |
-| `vec4.js` | queued | not yet translated; exported constructor identity must be preserved |
-| `quat.js` | queued | not yet translated; depends on vector/matrix types |
-| `mat3.js` | queued | not yet translated; exported constructor identity must be preserved |
-| `mat4.js` | queued | not yet translated; exported constructor identity must be preserved |
-| `color.js` | queued | not yet translated; exported constructor identity must be preserved |
-| `curve-evaluator.js` | queued | not yet translated |
-| `curve.js` | queued | not yet translated |
-| `curve-set.js` | queued | not yet translated |
+| Upstream file | Source bytes | Status | Evidence |
+| --- | ---: | --- | --- |
+| `src/core/preprocessor.js` | 30,000 | converted | 52 unchanged upstream tests plus generated differential cases |
+| `src/platform/graphics/shader-definition-utils.js` | 15,921 | converted | 13 differential fixture groups covering every static method |
+| `src/platform/graphics/shader-processor-glsl.js` | 22,945 | converted | 14 differential fixture groups covering every static method and `UniformLine` |
+| `src/platform/graphics/webgpu/webgpu-shader-processor-wgsl.js` | 55,747 | converted | 26 unchanged upstream tests plus render/compute differential cases |
 
-“Converted” means the file has an algorithm-preserving `.lil` implementation,
-open-world API checks, closed-world consumer checks, differential behavior
-coverage, and measured artifacts. It does not mean all of `core/math` is ready.
+The measured module is complete at **4 / 4 selected files**. Shared imports such as graphics
+constants, format classes, shader chunks, and Debug are host dependencies, not claimed as converted.
+They are bundled identically into both size lanes. PlayCanvas release Debug stripping is applied to
+both artifacts.

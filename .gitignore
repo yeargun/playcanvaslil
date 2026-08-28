@@ -2,5 +2,6 @@ node_modules/
 _site/
 .tmp/
 .lilscript/
+src/shader-processing/*.compiled.js
 .DS_Store
 *.log

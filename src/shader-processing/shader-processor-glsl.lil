@@ -1,0 +1,486 @@
+import extern {
+  bindGroupNames,
+  newBindGroupFormat,
+  newBindTextureFormat,
+  newUniformBufferFormat,
+  newUniformFormat,
+  semanticToLocation,
+  uniformTypeToName
+} from "./shader-processor-glsl.host.js";
+
+extern class Shader {
+  bool failed;
+}
+
+extern class VertexElement {
+  int dataType;
+  bool normalize;
+  bool asInt;
+}
+
+extern class UniformLineHost {
+  string line;
+  string? precision;
+  string type;
+  string name;
+  number arraySize;
+  bool isSampler;
+  bool isSignedInt;
+  bool isUnsignedInt;
+}
+
+extern class UniformFormatHost {
+  int type;
+  number count;
+  string shortName;
+}
+
+extern class UniformBufferFormatHost {
+  UniformFormatHost[] uniforms;
+}
+
+extern class BindTextureFormatHost {
+  string name;
+  int slot;
+  string textureDimension;
+  int sampleType;
+  bool hasSampler;
+}
+
+extern class BindGroupFormatHost {
+  BindTextureFormatHost[] textureFormats;
+}
+
+extern class ProcessingOptions {
+  (UniformBufferFormatHost?)[] uniformFormats;
+  (BindGroupFormatHost?)[] bindGroupFormats;
+  bool hasUniform(string name);
+  bool hasTexture(string name);
+  VertexElement? getVertexElement(string semantic);
+}
+
+extern class ShaderDefinition {
+  string vshader;
+  string fshader;
+  JsValue attributes;
+  ProcessingOptions processingOptions;
+}
+
+extern class Extracted {
+  string src;
+  string[] attributes;
+  string[] varyings;
+  string[] outs;
+  string[] uniforms;
+}
+
+extern JsValue[] bindGroupNames;
+extern JsValue semanticToLocation;
+extern JsValue[] uniformTypeToName;
+extern UniformFormatHost newUniformFormat(string name, int type, number count);
+extern UniformBufferFormatHost newUniformBufferFormat(JsValue device, UniformFormatHost[] uniforms);
+extern BindTextureFormatHost newBindTextureFormat(string name, int visibility, string dimension, int sampleType);
+extern BindGroupFormatHost newBindGroupFormat(JsValue device, BindTextureFormatHost[] formats);
+extern number parseInt(string value, int radix);
+
+int BINDGROUP_MESH = 1;
+int BINDGROUP_MESH_UB = 2;
+int SHADERSTAGE_VERTEX = 1;
+int SHADERSTAGE_FRAGMENT = 2;
+int SAMPLETYPE_FLOAT = 0;
+int SAMPLETYPE_UNFILTERABLE_FLOAT = 1;
+int SAMPLETYPE_DEPTH = 2;
+int SAMPLETYPE_INT = 3;
+int SAMPLETYPE_UINT = 4;
+int TYPE_INT8 = 0;
+int TYPE_INT16 = 2;
+int TYPE_INT32 = 4;
+int TYPE_FLOAT32 = 6;
+int TYPE_FLOAT16 = 7;
+int UNIFORMTYPE_FLOAT = 2;
+string TEXTUREDIMENSION_2D = "2d";
+string TEXTUREDIMENSION_2D_ARRAY = "2d-array";
+string TEXTUREDIMENSION_CUBE = "cube";
+string TEXTUREDIMENSION_3D = "3d";
+string UNUSED_UNIFORM_NAME = "_unused_float_uniform";
+string MARKER = "@@@";
+
+Regex KEYWORD = new Regex("[ \\t]*(\\battribute\\b|\\bvarying\\b|\\buniform\\b)", "g");
+Regex KEYWORD_LINE = new Regex("(\\battribute\\b|\\bvarying\\b|\\bout\\b|\\buniform\\b)[ \\t]*([^;]+)(;+)", "g");
+Regex ARRAY_IDENTIFIER = new Regex("([\\w-]+)\\[(.*?)\\]");
+Regex SPACES = new Regex("\\s+", "g");
+
+Set<string> precisionQualifiers = new Set<string>();
+precisionQualifiers.add("highp");
+precisionQualifiers.add("mediump");
+precisionQualifiers.add("lowp");
+Set<string> shadowSamplers = new Set<string>();
+shadowSamplers.add("sampler2DShadow");
+shadowSamplers.add("samplerCubeShadow");
+shadowSamplers.add("sampler2DArrayShadow");
+JsValue textureDimensions = JS.object(
+  "sampler2D", TEXTUREDIMENSION_2D,
+  "sampler3D", TEXTUREDIMENSION_3D,
+  "samplerCube", TEXTUREDIMENSION_CUBE,
+  "samplerCubeShadow", TEXTUREDIMENSION_CUBE,
+  "sampler2DShadow", TEXTUREDIMENSION_2D,
+  "sampler2DArray", TEXTUREDIMENSION_2D_ARRAY,
+  "sampler2DArrayShadow", TEXTUREDIMENSION_2D_ARRAY,
+  "isampler2D", TEXTUREDIMENSION_2D,
+  "usampler2D", TEXTUREDIMENSION_2D,
+  "isampler3D", TEXTUREDIMENSION_3D,
+  "usampler3D", TEXTUREDIMENSION_3D,
+  "isamplerCube", TEXTUREDIMENSION_CUBE,
+  "usamplerCube", TEXTUREDIMENSION_CUBE,
+  "isampler2DArray", TEXTUREDIMENSION_2D_ARRAY,
+  "usampler2DArray", TEXTUREDIMENSION_2D_ARRAY
+);
+JsValue textureDimensionInfo = JS.object(
+  "2d", "texture2D",
+  "cube", "textureCube",
+  "3d", "texture3D",
+  "2d-array", "texture2DArray"
+);
+
+string substring(string value, int start, int end) {
+  return JS.string(JS.invoke(value, "substring", start, end));
+}
+
+string matchString(JsValue matched, int index) {
+  return JS.assume(matched[index]);
+}
+
+export UniformLineHost parseUniformLine(string line, Shader shader) {
+  JsValue uniform = JS.object("line", line);
+  string[] words = JS.assume(JS.invoke(line.trim(), "split", SPACES));
+  string firstWord = JS.assume(words[0]);
+
+  if (precisionQualifiers.has(firstWord)) {
+    uniform["precision"] = JS.invoke(words, "shift");
+  }
+
+  uniform["type"] = JS.invoke(words, "shift");
+
+  if (line.includes("[")) {
+    string rest = words.join(" ");
+    JsValue matched = ARRAY_IDENTIFIER.exec(rest);
+    uniform["name"] = matched[1];
+    number arraySize = JS.number(matched[2]);
+    uniform["arraySize"] = arraySize;
+    if (arraySize != arraySize) {
+      shader.failed = true;
+    }
+  } else {
+    uniform["name"] = JS.invoke(words, "shift");
+    uniform["arraySize"] = 0;
+  }
+
+  string type = JS.assume(uniform["type"]);
+  uniform["isSampler"] = type.indexOf("sampler") != -1;
+  uniform["isSignedInt"] = type.indexOf("isampler") != -1;
+  uniform["isUnsignedInt"] = type.indexOf("usampler") != -1;
+  return JS.assume(uniform);
+}
+
+export UniformLineHost[] parseUniformLines(string[] uniformLines, Shader shader) {
+  UniformLineHost[] parsed = [];
+  for (int index = 0; index < uniformLines.length; index++) {
+    parsed.push(parseUniformLine(uniformLines[index], shader));
+  }
+  return parsed;
+}
+
+export string[] splitToWords(string line) {
+  line = line.replace(SPACES, " ").trim();
+  return line.split(" ");
+}
+
+export string cutOut(string src, int start, int end, string replacement) {
+  return substring(src, 0, start) + replacement + substring(src, end, src.length);
+}
+
+export JsValue extract(string source, bool uniformsOnly = false) {
+  string[] attributes = [];
+  string[] varyings = [];
+  string[] outs = [];
+  string[] uniforms = [];
+  string replacement = MARKER + "\n";
+
+  while (true) {
+    JsValue matched = KEYWORD.exec(source);
+    if (JS.isNullish(matched)) break;
+
+    string keyword = matchString(matched, 1);
+    if (uniformsOnly && keyword != "uniform") continue;
+
+    int matchIndex = JS.number(matched["index"]).toInt();
+    KEYWORD_LINE.lastIndex = matchIndex;
+    JsValue lineMatch = KEYWORD_LINE.exec(source);
+
+    if (keyword == "attribute") {
+      attributes.push(matchString(lineMatch, 2));
+    } else if (keyword == "varying") {
+      varyings.push(matchString(lineMatch, 2));
+    } else if (keyword == "out") {
+      outs.push(matchString(lineMatch, 2));
+    } else if (keyword == "uniform") {
+      uniforms.push(matchString(lineMatch, 2));
+    }
+
+    int lineEnd = KEYWORD_LINE.lastIndex.toInt();
+    source = cutOut(source, matchIndex, lineEnd, replacement);
+    KEYWORD.lastIndex = matchIndex + replacement.length;
+    replacement = "";
+  }
+
+  return JS.object(
+    "src", source,
+    "attributes", attributes,
+    "varyings", varyings,
+    "outs", outs,
+    "uniforms", uniforms
+  );
+}
+
+export JsValue processUniforms(JsValue device, UniformLineHost[] uniforms, ProcessingOptions processingOptions, Shader shader) {
+  UniformLineHost[] uniformLinesSamplers = [];
+  UniformLineHost[] uniformLinesNonSamplers = [];
+  for (int index = 0; index < uniforms.length; index++) {
+    UniformLineHost uniform = JS.assume(uniforms[index]);
+    if (uniform.isSampler) {
+      uniformLinesSamplers.push(uniform);
+    } else {
+      uniformLinesNonSamplers.push(uniform);
+    }
+  }
+
+  UniformFormatHost[] meshUniforms = [];
+  for (int index = 0; index < uniformLinesNonSamplers.length; index++) {
+    UniformLineHost uniform = JS.assume(uniformLinesNonSamplers[index]);
+    if (!processingOptions.hasUniform(uniform.name)) {
+      int uniformType = JS.number(JS.invoke(uniformTypeToName, "indexOf", uniform.type)).toInt();
+      meshUniforms.push(newUniformFormat(uniform.name, uniformType, uniform.arraySize));
+    }
+  }
+
+  if (meshUniforms.length == 0) {
+    meshUniforms.push(newUniformFormat(UNUSED_UNIFORM_NAME, UNIFORMTYPE_FLOAT, 0));
+  }
+
+  UniformBufferFormatHost meshUniformBufferFormat = newUniformBufferFormat(device, meshUniforms);
+  BindTextureFormatHost[] textureFormats = [];
+  for (int index = 0; index < uniformLinesSamplers.length; index++) {
+    UniformLineHost uniform = JS.assume(uniformLinesSamplers[index]);
+    if (!processingOptions.hasTexture(uniform.name)) {
+      int sampleType = SAMPLETYPE_FLOAT;
+      if (uniform.isSignedInt) {
+        sampleType = SAMPLETYPE_INT;
+      } else if (uniform.isUnsignedInt) {
+        sampleType = SAMPLETYPE_UINT;
+      } else {
+        if (uniform.precision == "highp") sampleType = SAMPLETYPE_UNFILTERABLE_FLOAT;
+        if (shadowSamplers.has(uniform.type)) sampleType = SAMPLETYPE_DEPTH;
+      }
+
+      string dimension = JS.assume(textureDimensions[uniform.type]);
+      textureFormats.push(newBindTextureFormat(
+        uniform.name,
+        SHADERSTAGE_VERTEX | SHADERSTAGE_FRAGMENT,
+        dimension,
+        sampleType
+      ));
+    }
+  }
+  BindGroupFormatHost meshBindGroupFormat = newBindGroupFormat(device, textureFormats);
+
+  string code = "";
+  (UniformBufferFormatHost?)[] uniformFormats = processingOptions.uniformFormats;
+  for (int bindGroupIndex = 0; bindGroupIndex < uniformFormats.length; bindGroupIndex++) {
+    UniformBufferFormatHost? format = JS.assume(uniformFormats[bindGroupIndex]);
+    if (format != null) code += getUniformShaderDeclaration(format, bindGroupIndex, 0);
+  }
+  code += getUniformShaderDeclaration(meshUniformBufferFormat, BINDGROUP_MESH_UB, 0);
+
+  (BindGroupFormatHost?)[] bindGroupFormats = processingOptions.bindGroupFormats;
+  for (int bindGroupIndex = 0; bindGroupIndex < bindGroupFormats.length; bindGroupIndex++) {
+    BindGroupFormatHost? format = JS.assume(bindGroupFormats[bindGroupIndex]);
+    if (format != null) code += getTexturesShaderDeclaration(format, bindGroupIndex);
+  }
+  code += getTexturesShaderDeclaration(meshBindGroupFormat, BINDGROUP_MESH);
+
+  return JS.object(
+    "code", code,
+    "meshUniformBufferFormat", meshUniformBufferFormat,
+    "meshBindGroupFormat", meshBindGroupFormat
+  );
+}
+
+export string processVaryings(string[] varyingLines, JsValue varyingMap, bool isVertex) {
+  string block = "";
+  string direction = "in";
+  if (isVertex) direction = "out";
+  for (int index = 0; index < varyingLines.length; index++) {
+    string[] words = splitToWords(varyingLines[index]);
+    string type = words.slice(0, -1).join(" ");
+    string name = words[words.length - 1];
+    JsValue location = index;
+
+    if (isVertex) {
+      JS.invoke(varyingMap, "set", name, index);
+    } else {
+      location = JS.invoke(varyingMap, "get", name);
+    }
+
+    block += "layout(location = " + JS.string(location) + ") " + direction + " " + type + " " + name + ";\n";
+  }
+  return block;
+}
+
+export string processOuts(string[] outsLines) {
+  string block = "";
+  for (int index = 0; index < outsLines.length; index++) {
+    block += "layout(location = " + index + ") out " + outsLines[index] + ";\n";
+  }
+  return block;
+}
+
+export number getTypeCount(string type) {
+  string lastChar = substring(type, type.length - 1, type.length);
+  number num = parseInt(lastChar, 10);
+  if (num != num) return 1;
+  return num;
+}
+
+export string processAttributes(string[] attributeLines, JsValue shaderDefinitionAttributes, JsValue attributesMap, ProcessingOptions processingOptions) {
+  string block = "";
+  JsValue usedLocations = JS.object();
+
+  for (int index = 0; index < attributeLines.length; index++) {
+    string[] words = splitToWords(attributeLines[index]);
+    string type = words[0];
+    string name = words[1];
+
+    if (JS.invoke(shaderDefinitionAttributes, "hasOwnProperty", name).truthy()) {
+      string semantic = JS.assume(shaderDefinitionAttributes[name]);
+      JsValue location = semanticToLocation[semantic];
+      usedLocations[location] = semantic;
+      JS.invoke(attributesMap, "set", location, name);
+
+      string? copyCode = null;
+      VertexElement? element = processingOptions.getVertexElement(semantic);
+      if (element != null) {
+        int dataType = element.dataType;
+        if (dataType != TYPE_FLOAT32 && dataType != TYPE_FLOAT16 && !element.normalize && !element.asInt) {
+          number attribNumElements = getTypeCount(type);
+          string newName = "_private_" + name;
+          copyCode = "vec" + attribNumElements + " " + name + " = vec" + attribNumElements + "(" + newName + ");\n";
+          name = newName;
+
+          bool isSignedType = dataType == TYPE_INT8 || dataType == TYPE_INT16 || dataType == TYPE_INT32;
+          if (attribNumElements == 1) {
+            type = "uint";
+            if (isSignedType) type = "int";
+          } else {
+            string prefix = "uvec";
+            if (isSignedType) prefix = "ivec";
+            type = prefix + attribNumElements;
+          }
+        }
+      }
+
+      block += "layout(location = " + JS.string(location) + ") in " + type + " " + name + ";\n";
+      if (copyCode != null) block += copyCode;
+    }
+  }
+  return block;
+}
+
+export string getUniformShaderDeclaration(UniformBufferFormatHost format, int bindGroup, int bindIndex) {
+  string name = JS.assume(bindGroupNames[bindGroup]);
+  string code = "layout(set = " + bindGroup + ", binding = " + bindIndex + ", std140) uniform ub_" + name + " {\n";
+  UniformFormatHost[] uniforms = format.uniforms;
+
+  for (int index = 0; index < uniforms.length; index++) {
+    UniformFormatHost uniform = JS.assume(uniforms[index]);
+    string typeString = JS.assume(uniformTypeToName[uniform.type]);
+    string suffix = "";
+    if (uniform.count != 0) suffix = "[" + uniform.count + "]";
+    code += "    " + typeString + " " + uniform.shortName + suffix + ";\n";
+  }
+  return code + "};\n";
+}
+
+export string getTexturesShaderDeclaration(BindGroupFormatHost bindGroupFormat, int bindGroup) {
+  string code = "";
+  BindTextureFormatHost[] textureFormats = bindGroupFormat.textureFormats;
+  for (int index = 0; index < textureFormats.length; index++) {
+    BindTextureFormatHost format = JS.assume(textureFormats[index]);
+    string textureType = JS.string(textureDimensionInfo[format.textureDimension]);
+    bool isArray = textureType == "texture2DArray";
+    string sampleTypePrefix = "";
+    if (format.sampleType == SAMPLETYPE_UINT) {
+      sampleTypePrefix = "u";
+    } else if (format.sampleType == SAMPLETYPE_INT) {
+      sampleTypePrefix = "i";
+    }
+    textureType = sampleTypePrefix + textureType;
+
+    string namePostfix = "";
+    string extraCode = "";
+    if (isArray) {
+      namePostfix = "_texture";
+      extraCode = "#define " + format.name + " " + sampleTypePrefix + "sampler2DArray(" + format.name + namePostfix + ", " + format.name + "_sampler)\n";
+    }
+
+    code += "layout(set = " + bindGroup + ", binding = " + format.slot + ") uniform " + textureType + " " + format.name + namePostfix + ";\n";
+    if (format.hasSampler) {
+      code += "layout(set = " + bindGroup + ", binding = " + (format.slot + 1) + ") uniform sampler " + format.name + "_sampler;\n";
+    }
+    code += extraCode;
+  }
+  return code;
+}
+
+export JsValue run(JsValue device, ShaderDefinition shaderDefinition, Shader shader) {
+  JsValue varyingMap = new Map<string, int>();
+  Extracted vertexExtracted = JS.assume(extract(shaderDefinition.vshader, false));
+  Extracted fragmentExtracted = JS.assume(extract(shaderDefinition.fshader, false));
+
+  JsValue attributesMap = new Map<int, string>();
+  string attributesBlock = processAttributes(
+    vertexExtracted.attributes,
+    shaderDefinition.attributes,
+    attributesMap,
+    shaderDefinition.processingOptions
+  );
+  string vertexVaryingsBlock = processVaryings(vertexExtracted.varyings, varyingMap, true);
+  string fragmentVaryingsBlock = processVaryings(fragmentExtracted.varyings, varyingMap, false);
+  string outBlock = processOuts(fragmentExtracted.outs);
+
+  string[] concatUniforms = vertexExtracted.uniforms.concat(fragmentExtracted.uniforms);
+  Set<string> seenUniforms = new Set<string>();
+  string[] uniforms = [];
+  for (int index = 0; index < concatUniforms.length; index++) {
+    string line = concatUniforms[index];
+    if (!seenUniforms.has(line)) {
+      seenUniforms.add(line);
+      uniforms.push(line);
+    }
+  }
+  UniformLineHost[] parsedUniforms = parseUniformLines(uniforms, shader);
+  JsValue uniformsData = processUniforms(device, parsedUniforms, shaderDefinition.processingOptions, shader);
+
+  string uniformCode = JS.assume(uniformsData["code"]);
+  string vertexBlock = attributesBlock + "\n" + vertexVaryingsBlock + "\n" + uniformCode;
+  string vshader = JS.string(JS.invoke(vertexExtracted.src, "replace", MARKER, vertexBlock));
+  string fragmentBlock = fragmentVaryingsBlock + "\n" + outBlock + "\n" + uniformCode;
+  string fshader = JS.string(JS.invoke(fragmentExtracted.src, "replace", MARKER, fragmentBlock));
+
+  return JS.object(
+    "vshader", vshader,
+    "fshader", fshader,
+    "attributes", attributesMap,
+    "meshUniformBufferFormat", uniformsData["meshUniformBufferFormat"],
+    "meshBindGroupFormat", uniformsData["meshBindGroupFormat"]
+  );
+}
