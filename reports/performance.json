@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-28T13:12:03.833Z",
+  "environment": {
+    "node": "v20.12.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M3 Pro"
+  },
+  "open": {
+    "checksum": 1371553953,
+    "iterations": 20000000,
+    "samplesPerLane": 12,
+    "timing": "inside fresh Node processes after two warmups",
+    "lanes": [
+      {
+        "id": "lilscript",
+        "label": "LilScript",
+        "path": "dist/bit-packing.js",
+        "medianMs": 41.68,
+        "minMs": 41.596,
+        "maxMs": 43.17,
+        "ratioToFastestOfficial": 2.344,
+        "samplesMs": [
+          42.363,
+          41.884,
+          41.727,
+          41.663,
+          41.596,
+          41.631,
+          41.66,
+          43.17,
+          41.664,
+          41.65,
+          41.714,
+          41.696
+        ]
+      },
+      {
+        "id": "esbuild",
+        "label": "Official + esbuild",
+        "path": "dist/bit-packing.official-esbuild.js",
+        "medianMs": 17.814,
+        "minMs": 17.493,
+        "maxMs": 18.202,
+        "ratioToFastestOfficial": 1.002,
+        "samplesMs": [
+          18.202,
+          17.493,
+          18.057,
+          17.566,
+          17.749,
+          17.862,
+          17.597,
+          17.918,
+          17.615,
+          17.954,
+          17.851,
+          17.776
+        ]
+      },
+      {
+        "id": "terser",
+        "label": "Official + Terser",
+        "path": "dist/bit-packing.official-terser.js",
+        "medianMs": 17.779,
+        "minMs": 17.559,
+        "maxMs": 18.071,
+        "ratioToFastestOfficial": 1,
+        "samplesMs": [
+          17.765,
+          17.853,
+          17.771,
+          17.786,
+          17.632,
+          17.802,
+          18.071,
+          17.871,
+          17.559,
+          17.765,
+          17.969,
+          17.584
+        ]
+      }
+    ]
+  },
+  "closed": {
+    "checksum": 1371553953,
+    "iterations": 20000000,
+    "samplesPerLane": 12,
+    "timing": "inside fresh Node processes after two warmups",
+    "lanes": [
+      {
+        "id": "lilscript",
+        "label": "LilScript",
+        "path": "dist/closed-world.js",
+        "medianMs": 17.876,
+        "minMs": 17.651,
+        "maxMs": 29.865,
+        "ratioToFastestOfficial": 0.573,
+        "samplesMs": [
+          17.919,
+          17.764,
+          17.784,
+          17.87,
+          17.651,
+          17.882,
+          17.757,
+          18.032,
+          17.893,
+          17.786,
+          29.865,
+          19.284
+        ]
+      },
+      {
+        "id": "esbuild",
+        "label": "Official + esbuild",
+        "path": "dist/closed-world.official-esbuild.js",
+        "medianMs": 31.175,
+        "minMs": 31.025,
+        "maxMs": 31.672,
+        "ratioToFastestOfficial": 1,
+        "samplesMs": [
+          31.12,
+          31.065,
+          31.239,
+          31.138,
+          31.051,
+          31.247,
+          31.211,
+          31.672,
+          31.025,
+          31.427,
+          31.123,
+          31.223
+        ]
+      },
+      {
+        "id": "terser",
+        "label": "Official + Terser",
+        "path": "dist/closed-world.official-terser.js",
+        "medianMs": 31.281,
+        "minMs": 31.056,
+        "maxMs": 81.002,
+        "ratioToFastestOfficial": 1.003,
+        "samplesMs": [
+          31.056,
+          31.084,
+          31.354,
+          31.122,
+          31.059,
+          31.293,
+          31.81,
+          31.269,
+          32.234,
+          31.485,
+          81.002,
+          31.142
+        ]
+      }
+    ]
+  }
+}

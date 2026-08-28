@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08100f" />
+    <meta
+      name="description"
+      content="A truthful open-world and closed-world LilScript study of PlayCanvas engine core/math."
+    />
+    <title>PlayCanvasLil | One subsystem, two worlds</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <header class="nav shell">
+      <a class="brand" href="#top"><span>pc</span> PlayCanvasLil</a>
+      <nav aria-label="Main navigation">
+        <a href="#results">Results</a>
+        <a href="#verify">Verify</a>
+        <a href="https://github.com/yeargun/playcanvaslil">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero shell">
+        <div class="hero-copy">
+          <p class="kicker">Independent experiment / engine core math</p>
+          <h1>One subsystem.<br /><em>Two worlds.</em><br />No shortcuts.</h1>
+          <p class="intro">
+            A file-by-file LilScript port of <code>playcanvas/engine/src/core/math</code>.
+            Algorithms stay fixed. Public APIs stay observable. Open and closed builds get
+            separate scoreboards.
+          </p>
+          <div class="hero-links">
+            <a class="button solid" href="#results">Inspect evidence</a>
+            <a class="button outline" href="https://github.com/playcanvas/engine">Pinned upstream</a>
+          </div>
+        </div>
+        <div class="scope-card">
+          <div class="orbit" aria-hidden="true"><span></span></div>
+          <p>Current slice</p>
+          <strong><span id="converted-count">1</span><small>/ 17 files</small></strong>
+          <h2>BitPacking</h2>
+          <dl>
+            <div><dt>Parity vectors</dt><dd>100,000</dd></div>
+            <div><dt>Upstream</dt><dd id="upstream-revision">dbd2f58</dd></div>
+            <div><dt>Scope</dt><dd>core/math only</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="manifesto">
+        <div class="shell">
+          <span>same algorithms</span><i></i><span>typed source</span><i></i>
+          <span>exact API gate</span><i></i><span>losses stay visible</span>
+        </div>
+      </section>
+
+      <section class="results shell" id="results">
+        <header class="section-head">
+          <p class="kicker">Matched contracts</p>
+          <h2>Optimization depends<br />on who can observe.</h2>
+        </header>
+        <div class="world-grid">
+          <article class="world-card open">
+            <p class="card-index">01 / OPEN WORLD</p>
+            <h3>Reusable PlayCanvas API</h3>
+            <strong id="open-delta">+34.9%</strong>
+            <p class="metric">Brotli-target compile vs the smallest valid official build</p>
+            <p>
+              Exact <code>BitPacking</code> keys, defaults, arities, and method semantics remain
+              public. The required ABI facade costs more than this tiny algorithm body.
+            </p>
+            <div class="bar"><span id="open-bar"></span></div>
+            <output id="open-bytes">228 B / 169 B</output>
+            <p class="runtime" id="open-runtime">Local runtime samples loading...</p>
+          </article>
+          <article class="world-card closed">
+            <p class="card-index">02 / CLOSED WORLD</p>
+            <h3>Complete consumer graph</h3>
+            <strong id="closed-delta">+5.7%</strong>
+            <p class="metric">Brotli-target compile vs the smallest valid official build</p>
+            <p>
+              No unknown consumer observes the namespace. LilScript inlines the four operations,
+              but the current compiler still emits an unreachable method table.
+            </p>
+            <div class="bar"><span id="closed-bar"></span></div>
+            <output id="closed-bytes">277 B / 262 B</output>
+            <p class="runtime" id="closed-runtime">Local runtime samples loading...</p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Contract</th><th>Metric</th><th>LilScript</th><th>Official</th><th>Delta</th></tr></thead>
+            <tbody id="size-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="verify" id="verify">
+        <div class="shell verify-grid">
+          <div>
+            <p class="kicker">Run the artifact</p>
+            <h2>Touch the bits.</h2>
+            <p class="verify-copy">
+              This calls the checked-in open-world LilScript artifact and the pinned official
+              implementation with the same inputs. Green means all four operations agree.
+            </p>
+          </div>
+          <form id="bit-form" class="bit-console">
+            <label>storage <input name="storage" value="51" inputmode="numeric" /></label>
+            <label>value <input name="value" value="3" inputmode="numeric" /></label>
+            <label>shift <input name="shift" value="4" inputmode="numeric" /></label>
+            <label>mask <input name="mask" value="3" inputmode="numeric" /></label>
+            <button type="submit">Compare artifacts</button>
+            <output id="bit-output">Loading modules...</output>
+          </form>
+        </div>
+      </section>
+
+      <section class="method shell">
+        <header class="section-head">
+          <p class="kicker">Evidence before claims</p>
+          <h2>The conversion gate.</h2>
+        </header>
+        <ol>
+          <li><span>01</span><strong>Pin</strong><p>Git submodule and exact upstream revision.</p></li>
+          <li><span>02</span><strong>Type</strong><p>Rewrite one file without changing its algorithm.</p></li>
+          <li><span>03</span><strong>Diff</strong><p>API shape, upstream cases, and dense vectors first.</p></li>
+          <li><span>04</span><strong>Measure</strong><p>Raw, gzip-9, Brotli-11, then isolated runtime samples.</p></li>
+        </ol>
+        <p class="disclaimer">
+          Current runtime data is a small Node kernel, not an engine-wide performance claim.
+          This project is independent and is not affiliated with PlayCanvas Ltd.
+        </p>
+      </section>
+    </main>
+
+    <footer class="shell">
+      <span>PlayCanvasLil / evidence build</span>
+      <a href="https://github.com/yeargun/lilscript">Built with LilScript</a>
+    </footer>
+  </body>
+</html>

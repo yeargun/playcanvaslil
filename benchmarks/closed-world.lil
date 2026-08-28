@@ -1,0 +1,21 @@
+import { BitPacking } from "../src/core/math/bit-packing";
+
+export int runBitPackingWorkload(int iterations) {
+  int storage = 1831565813;
+  int checksum = 0;
+
+  for (int index = 0; index < iterations; index++) {
+    int shift = index & 31;
+    int mask = (index >>> 3) & 255;
+    storage = BitPacking.set(storage, index, shift, mask);
+    checksum ^= BitPacking.get(storage, shift, mask);
+    if (BitPacking.any(storage, shift, mask)) {
+      checksum ^= index;
+    }
+    if (BitPacking.all(storage, shift, mask)) {
+      checksum ^= storage;
+    }
+  }
+
+  return checksum;
+}

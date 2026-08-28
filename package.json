@@ -1,0 +1,30 @@
+{
+  "name": "playcanvaslil",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A file-by-file LilScript port and differential study of PlayCanvas engine core/math.",
+  "homepage": "https://yeargun.github.io/playcanvaslil/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeargun/playcanvaslil.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && npm run test:artifact",
+    "test:artifact": "node --test test/bit-packing.test.mjs",
+    "measure": "node scripts/measure.mjs",
+    "benchmark": "node scripts/benchmark.mjs",
+    "build:site": "node scripts/build-site.mjs",
+    "check:site": "npm run build:site && node --test test/site.test.mjs",
+    "check": "npm test && npm run measure && npm run benchmark && npm run check:site"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1",
+    "terser": "5.43.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

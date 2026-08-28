@@ -1,0 +1,2 @@
+/*! PlayCanvas core/math BitPacking | PlayCanvas Ltd. | MIT */
+function V(r){for(var a,c,l,b=1831565813,t=0,g=0;g<r;g++)a=g&31,c=g>>>3&255,l=c<<a,b=b&~l|g<<a,t^=b>>a&c,0!=(b&l)&&(t=t^g),a=c<<a,(b&a)==a&&(t=t^b);return t}let a=[null,null,null,null];a[0]=(l,b,d,a,c)=>b&(c<<a^-1)|d<<a,a[1]=(l,b,a,c)=>b>>a&c,a[2]=(e,b,a,c)=>(e=c<<a,(b&e)==e),a[3]=(l,b,a,c)=>0!=(b&c<<a);export{V as runBitPackingWorkload}

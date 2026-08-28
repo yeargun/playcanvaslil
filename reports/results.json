@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-28T13:12:03.569Z",
+  "scope": {
+    "upstream": "playcanvas/engine",
+    "gitSubmodulePath": "upstream/engine",
+    "sourceSubtree": "src/core/math",
+    "sourceFileCount": 17,
+    "convertedFiles": [
+      "bit-packing.js"
+    ]
+  },
+  "upstream": {
+    "revision": "dbd2f580915273d50cfb12936af25d45ae636a04",
+    "bitPackingSourceSha256": "dfa2363f5f66302bbf9bb99c7c1c542512afeb6569af9845758c4a47bd35eb5d"
+  },
+  "sourceSha256": {
+    "lilscript": "36cddf0275655d47f28eff255925f51b21406dca0f18bb6d49f36a8ed10678e3",
+    "facade": "887e1e49ec389c1c206b6a09ff64fb61da58dcb20f8521363d035775a508809f",
+    "closedLilscript": "c466d265febb3c4ae9ae73aed4c788af7de37df9c192d956f7f3c6a99d371fd4",
+    "closedJavaScript": "6e1f47c51294732125c667cef9235243dd5d70b7a0d42dce140b70943778708e"
+  },
+  "compiler": {
+    "revision": "bcef1c42efa5df287af76bfe1a7eca9bba9ccc46",
+    "dirty": false,
+    "binarySha256": "08f3eedf4fb1e1f6329ee9fef31bb71d50bd03ca7905b35307d90e34129d1509"
+  },
+  "codecBinarySha256": "33ec73bd6243525b2bd484b2461db2a1d914a219f50c1536aa120cba14245061",
+  "configSha256": {
+    "lilscript.toml": "c04d1b2c90cefdc4ad55d6569aaf3b28fab045fb4e1d8d52d5fd79d37e00a976",
+    "lilscript.gzip.toml": "b9add792b957f78fed1eaa334880e7c0e0549590529d3f32277eb9c0d68d5a64",
+    "lilscript.raw.toml": "e950976f37f7fdedc53a767b70b6b9ae2200e5746b82aa622fbf1c093fa3dfb1",
+    "lilscript.closed.toml": "0e0b131ba6c9c3ea94ab658e438ec528947005af92bb3970c1ab7607fb850a8f",
+    "lilscript.closed-gzip.toml": "0570a688069f3736c0dd4a51640c1af0f35c9ed168ea6c8fa67afe86886af550",
+    "lilscript.closed-raw.toml": "16c67fc0903079d748e696ee4c8f4d63464b249da0245d8b443826947d624a42"
+  },
+  "codecs": {
+    "gzip9": {
+      "encoder": "upstream-stock-zlib-c",
+      "libraryVersion": "1.3.1",
+      "cargoPackage": "libz-sys",
+      "cargoPackageVersion": "1.1.24",
+      "level": 9,
+      "mtime": 0
+    },
+    "brotli11": {
+      "encoder": "official-google-brotli-c",
+      "libraryVersion": "1.1.0",
+      "cargoPackage": "compu-brotli-sys",
+      "cargoPackageVersion": "1.1.0",
+      "quality": 11,
+      "lgwin": 22,
+      "mode": "generic"
+    }
+  },
+  "artifacts": [
+    {
+      "id": "open-lil-raw",
+      "world": "open",
+      "label": "LilScript",
+      "costModel": "raw",
+      "path": "dist/bit-packing.raw.js",
+      "raw": 537,
+      "gzip9": 263,
+      "brotli11": 230,
+      "sha256": "3e8e25159bf715b93bfced7382c2e614d5216b5a00a7fab1a47c77d9ccb3c12a"
+    },
+    {
+      "id": "open-lil-gzip",
+      "world": "open",
+      "label": "LilScript",
+      "costModel": "gzip",
+      "path": "dist/bit-packing.gzip.js",
+      "raw": 541,
+      "gzip9": 264,
+      "brotli11": 233,
+      "sha256": "0f704920bc5d682a31605f0c991da5fca54e61d0cf9636f20596d6857b697100"
+    },
+    {
+      "id": "open-lil-brotli",
+      "world": "open",
+      "label": "LilScript",
+      "costModel": "brotli",
+      "path": "dist/bit-packing.brotli.js",
+      "raw": 535,
+      "gzip9": 262,
+      "brotli11": 228,
+      "sha256": "770fb05391328ec8c89aa3974cdd5790b84d813ec053f5fa6a3e37f7b84c8119"
+    },
+    {
+      "id": "open-esbuild",
+      "world": "open",
+      "label": "Official + esbuild",
+      "costModel": null,
+      "path": "dist/bit-packing.official-esbuild.js",
+      "raw": 236,
+      "gzip9": 179,
+      "brotli11": 169,
+      "sha256": "1c9217d11cc34daf5fd1a3f5c5be6b44a77504f8040caad5ef7be3809e2c4f1a"
+    },
+    {
+      "id": "open-terser",
+      "world": "open",
+      "label": "Official + Terser",
+      "costModel": null,
+      "path": "dist/bit-packing.official-terser.js",
+      "raw": 241,
+      "gzip9": 181,
+      "brotli11": 180,
+      "sha256": "a3e0cb724bbcd96c72d9d521a113bbf64f062f5d1589778d1f194c80d67514a5"
+    },
+    {
+      "id": "closed-lil-raw",
+      "world": "closed",
+      "label": "LilScript",
+      "costModel": "raw",
+      "path": "dist/closed-world.raw.js",
+      "raw": 403,
+      "gzip9": 294,
+      "brotli11": 289,
+      "sha256": "9de533418965a8c1ca05b72900d0cca92d033e06cdc905cdf26eb8df06b3d4ef"
+    },
+    {
+      "id": "closed-lil-gzip",
+      "world": "closed",
+      "label": "LilScript",
+      "costModel": "gzip",
+      "path": "dist/closed-world.gzip.js",
+      "raw": 405,
+      "gzip9": 284,
+      "brotli11": 278,
+      "sha256": "77b7269b20dd1f2e324692c0bd1b59fcaaad5dd161de3639699fb940cae52efe"
+    },
+    {
+      "id": "closed-lil-brotli",
+      "world": "closed",
+      "label": "LilScript",
+      "costModel": "brotli",
+      "path": "dist/closed-world.brotli.js",
+      "raw": 404,
+      "gzip9": 286,
+      "brotli11": 277,
+      "sha256": "3e2e5a1291c426e7bf4247169927bb3f01b4e6a08a4d1681fa7d2d6275f53904"
+    },
+    {
+      "id": "closed-esbuild",
+      "world": "closed",
+      "label": "Official + esbuild",
+      "costModel": null,
+      "path": "dist/closed-world.official-esbuild.js",
+      "raw": 410,
+      "gzip9": 283,
+      "brotli11": 262,
+      "sha256": "096cf9b02f10ad0919a5795f1e5fd35796ed5405c425ddfb9b1196923614e76a"
+    },
+    {
+      "id": "closed-terser",
+      "world": "closed",
+      "label": "Official + Terser",
+      "costModel": null,
+      "path": "dist/closed-world.official-terser.js",
+      "raw": 415,
+      "gzip9": 287,
+      "brotli11": 267,
+      "sha256": "e266ac9f81e8b8c68db28206f4112d87aae49684209bcbbcdfe1bb318e489369"
+    }
+  ],
+  "matched": {
+    "open": {
+      "raw": {
+        "candidate": 537,
+        "baseline": 236,
+        "baselineId": "open-esbuild",
+        "differencePercent": 127.5
+      },
+      "gzip9": {
+        "candidate": 264,
+        "baseline": 179,
+        "baselineId": "open-esbuild",
+        "differencePercent": 47.5
+      },
+      "brotli11": {
+        "candidate": 228,
+        "baseline": 169,
+        "baselineId": "open-esbuild",
+        "differencePercent": 34.9
+      }
+    },
+    "closed": {
+      "raw": {
+        "candidate": 403,
+        "baseline": 410,
+        "baselineId": "closed-esbuild",
+        "differencePercent": -1.7
+      },
+      "gzip9": {
+        "candidate": 284,
+        "baseline": 283,
+        "baselineId": "closed-esbuild",
+        "differencePercent": 0.4
+      },
+      "brotli11": {
+        "candidate": 277,
+        "baseline": 262,
+        "baselineId": "closed-esbuild",
+        "differencePercent": 5.7
+      }
+    }
+  },
+  "frontier": {
+    "open": {
+      "raw": {
+        "candidate": 535,
+        "candidateId": "open-lil-brotli",
+        "baseline": 236,
+        "baselineId": "open-esbuild",
+        "differencePercent": 126.7
+      },
+      "gzip9": {
+        "candidate": 262,
+        "candidateId": "open-lil-brotli",
+        "baseline": 179,
+        "baselineId": "open-esbuild",
+        "differencePercent": 46.4
+      },
+      "brotli11": {
+        "candidate": 228,
+        "candidateId": "open-lil-brotli",
+        "baseline": 169,
+        "baselineId": "open-esbuild",
+        "differencePercent": 34.9
+      }
+    },
+    "closed": {
+      "raw": {
+        "candidate": 403,
+        "candidateId": "closed-lil-raw",
+        "baseline": 410,
+        "baselineId": "closed-esbuild",
+        "differencePercent": -1.7
+      },
+      "gzip9": {
+        "candidate": 284,
+        "candidateId": "closed-lil-gzip",
+        "baseline": 283,
+        "baselineId": "closed-esbuild",
+        "differencePercent": 0.4
+      },
+      "brotli11": {
+        "candidate": 277,
+        "candidateId": "closed-lil-brotli",
+        "baseline": 262,
+        "baselineId": "closed-esbuild",
+        "differencePercent": 5.7
+      }
+    }
+  },
+  "notes": {
+    "open": "Reusable ESM with exact BitPacking object keys, method arities, defaults, and non-constructible methods. Includes the JavaScript ABI facade.",
+    "closed": "Equivalent single-entry kernel. Both sources call a BitPacking object; the complete internal graph may be optimized."
+  }
+}
