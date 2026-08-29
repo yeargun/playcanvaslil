@@ -43,6 +43,7 @@ describe("GitHub Pages artifact", () => {
     assert.match(results.compiler.binarySha256, /^[0-9a-f]{64}$/);
     assert.ok(results.comparison.open.brotli11.differencePercent < 0);
     assert.ok(results.comparison.closed.brotli11.differencePercent < 0);
-    assert.equal(results.contract.propertyMangling, false);
+    assert.equal(results.contract.officialPropertyMangling, false);
+    assert.equal(results.contract.lilscriptInternalPropertyMangling, true);
   });
 });

@@ -117,4 +117,4 @@ await bundle("benchmarks/open-world.js", "shader-processing.official.js");
 await bundle("src/shader-processing/closed-world.js", "shader-processing.closed.js");
 await bundle("benchmarks/closed-world.js", "shader-processing.closed.official.js");
 
-console.log("Built shader-processing release artifacts (Terser compression; mangling off)");
+console.log("Built shader-processing release artifacts (Terser mangle off; LilScript-owned properties enabled)");

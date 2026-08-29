@@ -23,7 +23,10 @@ dependencies are present in both artifacts and are never subtracted from measure
 
 The primary comparison follows the requested library-delivery contract: PlayCanvas release Debug
 calls are stripped and Terser compression runs with **identifier and property mangling disabled**.
-LilScript still emits its own compiler-selected identifiers.
+LilScript still emits its own compiler-selected identifiers and may optimize compiler-owned internal
+properties. Public, facade, and extern PlayCanvas properties remain ABI-locked. Enabling that internal
+property pass is byte-neutral on this port because private aggregates are already dissolved and the
+remaining fields cross dynamic/public boundaries.
 
 | Contract | Raw | gzip-9 | Brotli-11 | Brotli difference |
 | --- | ---: | ---: | ---: | ---: |

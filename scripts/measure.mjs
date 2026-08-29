@@ -121,8 +121,9 @@ const result = {
     sourceBytes: selectedSources.reduce((sum, path) => sum + readFileSync(resolve(root, "upstream/engine", path)).length, 0),
   },
   contract: {
-    build: "PlayCanvas release Debug stripping; Terser compression; identifier and property mangling disabled",
-    propertyMangling: false,
+    build: "PlayCanvas release Debug stripping; Terser compression with mangling disabled; LilScript internal property optimization enabled",
+    officialPropertyMangling: false,
+    lilscriptInternalPropertyMangling: true,
     downstreamIdentifierMangling: false,
     objective: "brotli11",
   },
