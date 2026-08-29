@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-29T06:16:36.708Z",
+  "generatedAt": "2026-08-29T09:57:42.267Z",
   "scope": {
     "upstream": "playcanvas/engine",
     "name": "shader-processing core",
@@ -20,11 +20,14 @@
     "sourceBytes": 124613
   },
   "contract": {
-    "build": "PlayCanvas release Debug stripping; Terser compression with mangling disabled; LilScript internal property optimization enabled",
+    "build": "PlayCanvas release Debug stripping; Terser compression with identifier and property mangling disabled",
     "officialPropertyMangling": false,
-    "lilscriptInternalPropertyMangling": true,
+    "lilscriptInternalPropertyMangling": false,
     "downstreamIdentifierMangling": false,
-    "objective": "brotli11"
+    "objective": "brotli11",
+    "ablations": {
+      "lilscriptInternalPropertyMangling": "rejected: larger final open-world Brotli artifact"
+    }
   },
   "upstream": {
     "revision": "dbd2f580915273d50cfb12936af25d45ae636a04",
@@ -52,7 +55,7 @@
     "src/shader-processing/webgpu-shader-processor-wgsl.facade.js": "e86fb7e6ed946a159654e51ad1c3b92003af8a4b6812c3da3eab178cadc24f91",
     "src/shader-processing/webgpu-shader-processor-wgsl.host.js": "33c255eda64f70a1f8ba6861c53066f8b716405e90d0b90d827d2cdd8cf62653",
     "src/shader-processing/closed-world.js": "0789b6e1f0d8e9d969591e9e568f80983d47a8e236a1f98a3f63c15db2b84077",
-    "scripts/build.mjs": "17271253db2a21a4837082620759eef53c3f8f4180d4c385de254cb7531a89d7"
+    "scripts/build.mjs": "5fff734e8fd5756003e13cc02123decdf6790feea852fc80aba9ec48ae542d6f"
   },
   "tools": {
     "esbuild": "0.28.1",
@@ -64,7 +67,7 @@
     "binarySha256": "08f3eedf4fb1e1f6329ee9fef31bb71d50bd03ca7905b35307d90e34129d1509"
   },
   "codecBinarySha256": "33ec73bd6243525b2bd484b2461db2a1d914a219f50c1536aa120cba14245061",
-  "configSha256": "6137670d350be85464f1e619ebdfc8db5b2caabbdeb91872aa6f455a1a7a6156",
+  "configSha256": "3f1a798fd1b048db4d90e8788112144088c7df09daf605a8dac3bafbae107f04",
   "codecs": {
     "gzip9": {
       "encoder": "upstream-stock-zlib-c",

@@ -23,10 +23,9 @@ dependencies are present in both artifacts and are never subtracted from measure
 
 The primary comparison follows the requested library-delivery contract: PlayCanvas release Debug
 calls are stripped and Terser compression runs with **identifier and property mangling disabled**.
-LilScript still emits its own compiler-selected identifiers and may optimize compiler-owned internal
-properties. Public, facade, and extern PlayCanvas properties remain ABI-locked. Enabling that internal
-property pass is byte-neutral on this port because private aggregates are already dissolved and the
-remaining fields cross dynamic/public boundaries.
+LilScript still emits its own compiler-selected identifiers. Public, facade, and extern PlayCanvas
+properties remain ABI-locked. Internal property mangling was tested and rejected because its fresh
+final open-world artifact was larger after Brotli.
 
 | Contract | Raw | gzip-9 | Brotli-11 | Brotli difference |
 | --- | ---: | ---: | ---: | ---: |
@@ -35,9 +34,30 @@ remaining fields cross dynamic/public boundaries.
 | Official closed-world entry | 67,422 B | 16,333 B | 14,681 B | baseline |
 | **LilScript closed-world entry** | **51,123 B** | **15,536 B** | **13,810 B** | **-5.93%** |
 
-The open-world result is intentionally a narrow win, not rounded into a larger claim. Gzip is 70
-bytes larger in that lane. Closed-world linking removes public-class facade costs and wins all three
-size metrics.
+The fresh open-world result is intentionally reported as a narrow win. It removes 19.86% raw, loses
+70 bytes under gzip, and saves 53 bytes under Brotli. Closed-world linking removes public-class
+facade costs and wins all three size metrics.
+
+## Compression Investigation
+
+The open artifact removes **13,329 raw bytes**, but only **53 Brotli bytes**. The raw result is not
+fake; it is mostly repeated identifier spelling. Brotli already represents repeated names such as
+`processingOptions`, `fragmentExtracted`, and `source` with short back-references, so shortening every
+occurrence saves far less transfer information than raw bytes suggest.
+
+The remaining gap is structural:
+
+- exact open-world static-class facades and helper reachability cost about 0.8 KB Brotli relative to
+  the closed entry;
+- LilScript lowering currently emits more assignments, calls, commas, and concatenations than the
+  upstream class/template shape;
+- shader strings and shared PlayCanvas format/constant modules create a common compression floor;
+- internal property mangling was evaluated as an ablation and rejected because the final bundled
+  Brotli artifact regressed.
+
+`reports/compression-analysis.json` is generated from the shipped artifacts and records token/name
+counts plus compression density. The website renders the same evidence instead of extrapolating from
+raw bytes.
 
 ## Correctness
 

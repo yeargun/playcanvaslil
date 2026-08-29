@@ -15,6 +15,7 @@ describe("GitHub Pages artifact", () => {
       "app.js",
       "results.json",
       "performance.json",
+      "compression-analysis.json",
       "artifacts/shader-processing.js",
       "artifacts/shader-processing.official.js",
       "artifacts/shader-processing.closed.js",
@@ -44,6 +45,9 @@ describe("GitHub Pages artifact", () => {
     assert.ok(results.comparison.open.brotli11.differencePercent < 0);
     assert.ok(results.comparison.closed.brotli11.differencePercent < 0);
     assert.equal(results.contract.officialPropertyMangling, false);
-    assert.equal(results.contract.lilscriptInternalPropertyMangling, true);
+    assert.equal(results.contract.lilscriptInternalPropertyMangling, false);
+    const analysis = JSON.parse(readFileSync(resolve(site, "compression-analysis.json"), "utf8"));
+    assert.ok(analysis.transfer.rawDifferencePercent < -10);
+    assert.ok(analysis.transfer.brotliDifferencePercent < 0);
   });
 });

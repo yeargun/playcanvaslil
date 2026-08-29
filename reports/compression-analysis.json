@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T09:58:28.694Z",
+  "artifacts": {
+    "candidate": {
+      "rawBytes": 53783,
+      "totalTokens": 15723,
+      "nameTokens": 5319,
+      "nameBytes": 23558,
+      "uniqueNames": 508,
+      "repeatedNameBytes": 19114,
+      "punctuationTokens": 8813,
+      "literalTokens": 1591
+    },
+    "official": {
+      "rawBytes": 67112,
+      "totalTokens": 13888,
+      "nameTokens": 4732,
+      "nameBytes": 38625,
+      "uniqueNames": 640,
+      "repeatedNameBytes": 31601,
+      "punctuationTokens": 7678,
+      "literalTokens": 1478
+    }
+  },
+  "transfer": {
+    "rawDifferencePercent": -19.86,
+    "gzipDifferencePercent": 0.43,
+    "brotliDifferencePercent": -0.36,
+    "candidateBrotliDensity": 0.271089,
+    "officialBrotliDensity": 0.218039
+  },
+  "findings": [
+    "Most raw savings come from shorter repeated identifiers, which Brotli already represents as short back-references.",
+    "The translated artifact uses more tokens and punctuation because typed control flow lowers to procedural assignments and calls.",
+    "Large shader strings and shared PlayCanvas host modules are identical or nearly identical in both complete artifacts.",
+    "LilScript internal property mangling was rejected because it increased final-artifact Brotli size."
+  ]
+}

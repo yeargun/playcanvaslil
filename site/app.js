@@ -3,9 +3,10 @@ const bytes = (value) => new Intl.NumberFormat("en-US").format(value);
 const delta = (value) => `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
 
 async function start() {
-  const [results, performance, candidateModule, officialModule] = await Promise.all([
+  const [results, performance, analysis, candidateModule, officialModule] = await Promise.all([
     fetch("./results.json").then((response) => response.json()),
     fetch("./performance.json").then((response) => response.json()),
+    fetch("./compression-analysis.json").then((response) => response.json()),
     import("./artifacts/shader-processing.js"),
     import("./artifacts/shader-processing.official.js"),
   ]);
@@ -19,6 +20,11 @@ async function start() {
     byId(`${world}-bytes`).textContent = `${bytes(metric.candidate)} B / ${bytes(metric.baseline)} B`;
     byId(`${world}-bar`).style.width = `${Math.min(100, (metric.candidate / metric.baseline) * 100)}%`;
   }
+
+  byId("raw-reduction").textContent = `${Math.abs(analysis.transfer.rawDifferencePercent).toFixed(2)}%`;
+  byId("brotli-reduction").textContent = `${Math.abs(analysis.transfer.brotliDifferencePercent).toFixed(2)}%`;
+  byId("candidate-token-count").textContent = analysis.artifacts.candidate.totalTokens.toLocaleString();
+  byId("official-token-count").textContent = analysis.artifacts.official.totalTokens.toLocaleString();
 
   const labels = { raw: "raw", gzip9: "gzip-9", brotli11: "Brotli-11" };
   for (const world of ["open", "closed"]) {

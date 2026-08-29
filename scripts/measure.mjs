@@ -121,11 +121,14 @@ const result = {
     sourceBytes: selectedSources.reduce((sum, path) => sum + readFileSync(resolve(root, "upstream/engine", path)).length, 0),
   },
   contract: {
-    build: "PlayCanvas release Debug stripping; Terser compression with mangling disabled; LilScript internal property optimization enabled",
+    build: "PlayCanvas release Debug stripping; Terser compression with identifier and property mangling disabled",
     officialPropertyMangling: false,
-    lilscriptInternalPropertyMangling: true,
+    lilscriptInternalPropertyMangling: false,
     downstreamIdentifierMangling: false,
     objective: "brotli11",
+    ablations: {
+      lilscriptInternalPropertyMangling: "rejected: larger final open-world Brotli artifact",
+    },
   },
   upstream: {
     revision: command("git", ["rev-parse", "HEAD"], resolve(root, "upstream", "engine")),

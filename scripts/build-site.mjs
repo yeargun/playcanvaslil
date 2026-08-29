@@ -10,6 +10,7 @@ await mkdir(resolve(output, "artifacts"), { recursive: true });
 await cp(resolve(root, "site"), output, { recursive: true });
 await cp(resolve(root, "reports", "results.json"), resolve(output, "results.json"));
 await cp(resolve(root, "reports", "performance.json"), resolve(output, "performance.json"));
+await cp(resolve(root, "reports", "compression-analysis.json"), resolve(output, "compression-analysis.json"));
 await cp(resolve(root, "dist", "shader-processing.js"), resolve(output, "artifacts", "shader-processing.js"));
 await cp(
   resolve(root, "dist", "shader-processing.official.js"),

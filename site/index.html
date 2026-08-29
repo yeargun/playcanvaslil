@@ -69,7 +69,7 @@
             <p class="card-index">01 / OPEN WORLD</p>
             <h3>Static class API</h3>
             <strong id="open-delta">-0.36%</strong>
-            <p class="metric">Brotli-11, Terser mangle off; internal typed properties enabled</p>
+            <p class="metric">Brotli-11, Terser and property mangle off</p>
             <p>
               Five exported constructors preserve their static methods, descriptors, arities, and
               defaults. Property names remain untouched.
@@ -82,7 +82,7 @@
             <p class="card-index">02 / CLOSED WORLD</p>
             <h3>Linked processing entry</h3>
             <strong id="closed-delta">-5.93%</strong>
-            <p class="metric">Brotli-11, Terser mangle off; internal typed properties enabled</p>
+            <p class="metric">Brotli-11, Terser and property mangle off</p>
             <p>
               The same four algorithms sit behind a narrow functional entry, allowing class facade
               overhead and unused public helpers to disappear.
@@ -99,6 +99,20 @@
             <tbody id="size-table"></tbody>
           </table>
         </div>
+      </section>
+
+      <section class="analysis shell" id="analysis">
+        <header class="section-head">
+          <p class="kicker">Compression attribution</p>
+          <h2>Raw bytes are not<br />transfer information.</h2>
+        </header>
+        <div class="analysis-grid">
+          <article><span>Raw reduction</span><strong id="raw-reduction">19.86%</strong><p>Most comes from shortening repeated local identifiers.</p></article>
+          <article><span>Brotli reduction</span><strong id="brotli-reduction">0.36%</strong><p>Brotli already stores repeated readable names as short references.</p></article>
+          <article><span>LilScript tokens</span><strong id="candidate-token-count">—</strong><p>Typed lowering currently emits denser procedural punctuation.</p></article>
+          <article><span>Official tokens</span><strong id="official-token-count">—</strong><p>Class and template shapes repeat more efficiently for Brotli.</p></article>
+        </div>
+        <p class="analysis-note">Internal property mangling was tested and rejected because it made the final Brotli artifact larger. The dominant remaining costs are public facade reachability, procedural punctuation, and a large shared shader/host payload.</p>
       </section>
 
       <section class="verify" id="verify">

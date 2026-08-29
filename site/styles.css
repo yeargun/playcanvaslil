@@ -78,6 +78,13 @@ code { color: var(--paper); font-family: "DM Mono", monospace; font-size: .82em;
 .open .bar span { background: var(--coral); }
 .closed .bar span { background: var(--acid); }
 .table-wrap { margin-top: 28px; overflow-x: auto; border: 1px solid var(--line); }
+.analysis { padding-block: 20px 120px; }
+.analysis-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); background: var(--line); gap: 1px; }
+.analysis-grid article { min-height: 190px; padding: 24px; background: var(--panel); }
+.analysis-grid span { color: var(--muted); font: 500 10px "DM Mono", monospace; text-transform: uppercase; }
+.analysis-grid strong { display: block; margin: 34px 0 12px; color: var(--cyan); font-size: 38px; letter-spacing: -.06em; }
+.analysis-grid p, .analysis-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.analysis-note { margin: 24px 0 0; font-family: "DM Mono", monospace; }
 table { width: 100%; border-collapse: collapse; font: 400 12px "DM Mono", monospace; }
 th, td { padding: 18px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
 th:first-child, td:first-child { text-align: left; }
@@ -111,6 +118,7 @@ footer { min-height: 100px; display: flex; align-items: center; justify-content:
   .scope-card { min-height: 390px; }
   .manifesto .shell { justify-content: center; flex-wrap: wrap; padding-block: 18px; }
   .world-grid, .verify-grid { grid-template-columns: 1fr; }
+  .analysis-grid { grid-template-columns: 1fr 1fr; }
   .method ol { grid-template-columns: 1fr 1fr; }
 }
 
@@ -122,6 +130,7 @@ footer { min-height: 100px; display: flex; align-items: center; justify-content:
   .scope-card > strong { font-size: 84px; }
   .scope-card dl { grid-template-columns: 1fr; gap: 12px; }
   .world-card { padding: 24px; }
-  .bit-console, .method ol { grid-template-columns: 1fr; }
+  .shader-console, .method ol { grid-template-columns: 1fr; }
+  .analysis-grid { grid-template-columns: 1fr; }
   footer { align-items: flex-start; flex-direction: column; justify-content: center; gap: 10px; }
 }
