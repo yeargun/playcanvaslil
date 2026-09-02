@@ -68,27 +68,27 @@
           <article class="world-card open">
             <p class="card-index">01 / OPEN WORLD</p>
             <h3>Static class API</h3>
-            <strong id="open-delta">-0.36%</strong>
+            <strong id="open-delta">+0.38%</strong>
             <p class="metric">Brotli-11, Terser and property mangle off</p>
             <p>
               Five exported constructors preserve their static methods, descriptors, arities, and
               defaults. Property names remain untouched.
             </p>
             <div class="bar"><span id="open-bar"></span></div>
-            <output id="open-bytes">14,580 B / 14,633 B</output>
+            <output id="open-bytes">14,689 B / 14,633 B</output>
             <p class="runtime" id="open-runtime">Local runtime samples loading...</p>
           </article>
           <article class="world-card closed">
             <p class="card-index">02 / CLOSED WORLD</p>
             <h3>Linked processing entry</h3>
-            <strong id="closed-delta">-5.93%</strong>
+            <strong id="closed-delta">-5.00%</strong>
             <p class="metric">Brotli-11, Terser and property mangle off</p>
             <p>
               The same four algorithms sit behind a narrow functional entry, allowing class facade
               overhead and unused public helpers to disappear.
             </p>
             <div class="bar"><span id="closed-bar"></span></div>
-            <output id="closed-bytes">13,810 B / 14,681 B</output>
+            <output id="closed-bytes">13,947 B / 14,681 B</output>
             <p class="runtime" id="closed-runtime">Local runtime samples loading...</p>
           </article>
         </div>
@@ -107,8 +107,8 @@
           <h2>Raw bytes are not<br />transfer information.</h2>
         </header>
         <div class="analysis-grid">
-          <article><span>Raw reduction</span><strong id="raw-reduction">19.86%</strong><p>Most comes from shortening repeated local identifiers.</p></article>
-          <article><span>Brotli reduction</span><strong id="brotli-reduction">0.36%</strong><p>Brotli already stores repeated readable names as short references.</p></article>
+          <article><span>Raw reduction</span><strong id="raw-reduction">19.33%</strong><p>Most comes from shortening repeated local identifiers.</p></article>
+          <article><span>Brotli difference</span><strong id="brotli-reduction">+0.38%</strong><p>Brotli already stores repeated readable names as short references.</p></article>
           <article><span>LilScript tokens</span><strong id="candidate-token-count">—</strong><p>Typed lowering currently emits denser procedural punctuation.</p></article>
           <article><span>Official tokens</span><strong id="official-token-count">—</strong><p>Class and template shapes repeat more efficiently for Brotli.</p></article>
         </div>

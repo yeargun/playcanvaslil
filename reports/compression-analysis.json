@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T09:58:28.694Z",
+  "generatedAt": "2026-09-02T14:50:31.627Z",
   "artifacts": {
     "candidate": {
-      "rawBytes": 53783,
-      "totalTokens": 15723,
-      "nameTokens": 5319,
-      "nameBytes": 23558,
-      "uniqueNames": 508,
-      "repeatedNameBytes": 19114,
-      "punctuationTokens": 8813,
-      "literalTokens": 1591
+      "rawBytes": 54141,
+      "totalTokens": 15891,
+      "nameTokens": 5343,
+      "nameBytes": 23744,
+      "uniqueNames": 507,
+      "repeatedNameBytes": 19303,
+      "punctuationTokens": 8887,
+      "literalTokens": 1661
     },
     "official": {
       "rawBytes": 67112,
@@ -24,10 +24,10 @@
     }
   },
   "transfer": {
-    "rawDifferencePercent": -19.86,
-    "gzipDifferencePercent": 0.43,
-    "brotliDifferencePercent": -0.36,
-    "candidateBrotliDensity": 0.271089,
+    "rawDifferencePercent": -19.33,
+    "gzipDifferencePercent": 1.36,
+    "brotliDifferencePercent": 0.38,
+    "candidateBrotliDensity": 0.27131,
     "officialBrotliDensity": 0.218039
   },
   "findings": [

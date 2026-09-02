@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-29T09:57:42.267Z",
+  "generatedAt": "2026-09-02T14:50:30.942Z",
   "scope": {
     "upstream": "playcanvas/engine",
     "name": "shader-processing core",
@@ -62,11 +62,11 @@
     "terser": "5.43.1"
   },
   "compiler": {
-    "revision": "bcef1c42efa5df287af76bfe1a7eca9bba9ccc46",
+    "revision": "87da2deec0e3caf2aa2c212b8a5fb5bf4e2e86f8",
     "dirty": false,
-    "binarySha256": "08f3eedf4fb1e1f6329ee9fef31bb71d50bd03ca7905b35307d90e34129d1509"
+    "binarySha256": "1b9e04fc98805de3c12a8c371ececabb87dd3cb26a303408ac23d0c23017caa0"
   },
-  "codecBinarySha256": "33ec73bd6243525b2bd484b2461db2a1d914a219f50c1536aa120cba14245061",
+  "codecBinarySha256": "e3d6c05b6ec1c4ffd2ad26b88000927ecde720b4abcbe26e84f13298e396e23f",
   "configSha256": "3f1a798fd1b048db4d90e8788112144088c7df09daf605a8dac3bafbae107f04",
   "codecs": {
     "gzip9": {
@@ -93,10 +93,10 @@
       "world": "open",
       "label": "LilScript",
       "path": "dist/shader-processing.js",
-      "raw": 53783,
-      "gzip9": 16337,
-      "brotli11": 14580,
-      "sha256": "6e6e78110d8e18d909c157defa114a521e255c88ea027af9a3015e87f6d6d9a6"
+      "raw": 54141,
+      "gzip9": 16489,
+      "brotli11": 14689,
+      "sha256": "a139bf30176ba7b9110f9018ec3d9a20317a70972951466c71160587713e6d72"
     },
     {
       "id": "open-official",
@@ -113,10 +113,10 @@
       "world": "closed",
       "label": "LilScript",
       "path": "dist/shader-processing.closed.js",
-      "raw": 51123,
-      "gzip9": 15536,
-      "brotli11": 13810,
-      "sha256": "ea727b17ceb3f210b6da1752e1e4225a777c9fab27b16ed9d5253df2bd752b86"
+      "raw": 51472,
+      "gzip9": 15700,
+      "brotli11": 13947,
+      "sha256": "63ed0043323ff4fecc128984c1399da392bdc7a4cde12f5678a0ae2c8e2ecd0f"
     },
     {
       "id": "closed-official",
@@ -132,36 +132,36 @@
   "comparison": {
     "open": {
       "raw": {
-        "candidate": 53783,
+        "candidate": 54141,
         "baseline": 67112,
-        "differencePercent": -19.86
+        "differencePercent": -19.33
       },
       "gzip9": {
-        "candidate": 16337,
+        "candidate": 16489,
         "baseline": 16267,
-        "differencePercent": 0.43
+        "differencePercent": 1.36
       },
       "brotli11": {
-        "candidate": 14580,
+        "candidate": 14689,
         "baseline": 14633,
-        "differencePercent": -0.36
+        "differencePercent": 0.38
       }
     },
     "closed": {
       "raw": {
-        "candidate": 51123,
+        "candidate": 51472,
         "baseline": 67422,
-        "differencePercent": -24.17
+        "differencePercent": -23.66
       },
       "gzip9": {
-        "candidate": 15536,
+        "candidate": 15700,
         "baseline": 16333,
-        "differencePercent": -4.88
+        "differencePercent": -3.88
       },
       "brotli11": {
-        "candidate": 13810,
+        "candidate": 13947,
         "baseline": 14681,
-        "differencePercent": -5.93
+        "differencePercent": -5
       }
     }
   }

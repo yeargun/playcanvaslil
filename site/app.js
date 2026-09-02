@@ -22,7 +22,7 @@ async function start() {
   }
 
   byId("raw-reduction").textContent = `${Math.abs(analysis.transfer.rawDifferencePercent).toFixed(2)}%`;
-  byId("brotli-reduction").textContent = `${Math.abs(analysis.transfer.brotliDifferencePercent).toFixed(2)}%`;
+  byId("brotli-reduction").textContent = delta(analysis.transfer.brotliDifferencePercent);
   byId("candidate-token-count").textContent = analysis.artifacts.candidate.totalTokens.toLocaleString();
   byId("official-token-count").textContent = analysis.artifacts.official.totalTokens.toLocaleString();
 
