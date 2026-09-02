@@ -30,17 +30,17 @@ final open-world artifact was larger after Brotli.
 | Contract | Raw | gzip-9 | Brotli-11 | Brotli difference |
 | --- | ---: | ---: | ---: | ---: |
 | Official open-world module | 67,112 B | 16,267 B | 14,633 B | baseline |
-| **LilScript open-world module** | **54,141 B** | 16,489 B | 14,689 B | **+0.38%** |
+| **LilScript open-world module** | **53,783 B** | 16,337 B | **14,580 B** | **-0.36%** |
 | Official closed-world entry | 67,422 B | 16,333 B | 14,681 B | baseline |
-| **LilScript closed-world entry** | **51,472 B** | **15,700 B** | **13,947 B** | **-5.00%** |
+| **LilScript closed-world entry** | **51,123 B** | **15,536 B** | **13,810 B** | **-5.93%** |
 
-The fresh open-world result is intentionally reported as a narrow loss. It removes 19.33% raw but
-adds 222 bytes under gzip and 56 bytes under Brotli. Closed-world linking removes public-class
-facade costs and still wins all three size metrics.
+The fresh open-world result is intentionally reported as a narrow win. It removes 19.86% raw, loses
+70 bytes under gzip, and saves 53 bytes under Brotli. Closed-world linking removes public-class
+facade costs and wins all three size metrics.
 
 ## Compression Investigation
 
-The open artifact removes **12,971 raw bytes**, but adds **56 Brotli bytes**. The raw result is not
+The open artifact removes **13,329 raw bytes**, but only **53 Brotli bytes**. The raw result is not
 fake; it is mostly repeated identifier spelling. Brotli already represents repeated names such as
 `processingOptions`, `fragmentExtracted`, and `source` with short back-references, so shortening every
 occurrence saves far less transfer information than raw bytes suggest.
