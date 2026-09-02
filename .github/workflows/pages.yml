@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: yeargun/lilscript
-          ref: bcef1c42efa5df287af76bfe1a7eca9bba9ccc46
+          ref: 87da2deec0e3caf2aa2c212b8a5fb5bf4e2e86f8
           path: .lilscript
       - uses: dtolnay/rust-toolchain@stable
       - uses: actions/setup-node@v4
