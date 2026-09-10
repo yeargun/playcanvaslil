@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-29T09:57:42.267Z",
+  "generatedAt": "2026-09-10T13:58:52Z",
   "scope": {
     "upstream": "playcanvas/engine",
     "name": "shader-processing core",
@@ -55,18 +55,18 @@
     "src/shader-processing/webgpu-shader-processor-wgsl.facade.js": "e86fb7e6ed946a159654e51ad1c3b92003af8a4b6812c3da3eab178cadc24f91",
     "src/shader-processing/webgpu-shader-processor-wgsl.host.js": "33c255eda64f70a1f8ba6861c53066f8b716405e90d0b90d827d2cdd8cf62653",
     "src/shader-processing/closed-world.js": "0789b6e1f0d8e9d969591e9e568f80983d47a8e236a1f98a3f63c15db2b84077",
-    "scripts/build.mjs": "5fff734e8fd5756003e13cc02123decdf6790feea852fc80aba9ec48ae542d6f"
+    "scripts/build.mjs": "6575c739047f8c89589ac1f88bc0f6e01b743f958bc46b89fb0b9e5a003b2b50"
   },
   "tools": {
     "esbuild": "0.28.1",
     "terser": "5.43.1"
   },
   "compiler": {
-    "revision": "bcef1c42efa5df287af76bfe1a7eca9bba9ccc46",
+    "revision": "63c2896a71e60cbcca7870fe979f9d6ecaff3452",
     "dirty": false,
-    "binarySha256": "08f3eedf4fb1e1f6329ee9fef31bb71d50bd03ca7905b35307d90e34129d1509"
+    "binarySha256": "2319462ef7d858c8e2a5a767260aa4f80d325e0045afa0cc86cc122d1299b059"
   },
-  "codecBinarySha256": "33ec73bd6243525b2bd484b2461db2a1d914a219f50c1536aa120cba14245061",
+  "codecBinarySha256": "9257fd055728895c11b9c4b0d882895d7d11bb3dd3495f560123879ca2bc3cd6",
   "configSha256": "3f1a798fd1b048db4d90e8788112144088c7df09daf605a8dac3bafbae107f04",
   "codecs": {
     "gzip9": {
@@ -93,10 +93,10 @@
       "world": "open",
       "label": "LilScript",
       "path": "dist/shader-processing.js",
-      "raw": 53783,
-      "gzip9": 16337,
-      "brotli11": 14580,
-      "sha256": "6e6e78110d8e18d909c157defa114a521e255c88ea027af9a3015e87f6d6d9a6"
+      "raw": 54285,
+      "gzip9": 16474,
+      "brotli11": 14632,
+      "sha256": "6a9e416f8ef3b080676a510f3fbc3c1ddd10127cbb7a4a2446b688d45e535128"
     },
     {
       "id": "open-official",
@@ -113,10 +113,10 @@
       "world": "closed",
       "label": "LilScript",
       "path": "dist/shader-processing.closed.js",
-      "raw": 51123,
-      "gzip9": 15536,
-      "brotli11": 13810,
-      "sha256": "ea727b17ceb3f210b6da1752e1e4225a777c9fab27b16ed9d5253df2bd752b86"
+      "raw": 51642,
+      "gzip9": 15648,
+      "brotli11": 13895,
+      "sha256": "33cd3491e8a1dec29c420f9013ab487c823e09c839c2e25cdc6125db8f7c0b0f"
     },
     {
       "id": "closed-official",
@@ -132,37 +132,38 @@
   "comparison": {
     "open": {
       "raw": {
-        "candidate": 53783,
+        "candidate": 54285,
         "baseline": 67112,
-        "differencePercent": -19.86
+        "differencePercent": -19.11
       },
       "gzip9": {
-        "candidate": 16337,
+        "candidate": 16474,
         "baseline": 16267,
-        "differencePercent": 0.43
+        "differencePercent": 1.27
       },
       "brotli11": {
-        "candidate": 14580,
+        "candidate": 14632,
         "baseline": 14633,
-        "differencePercent": -0.36
+        "differencePercent": -0.01
       }
     },
     "closed": {
       "raw": {
-        "candidate": 51123,
+        "candidate": 51642,
         "baseline": 67422,
-        "differencePercent": -24.17
+        "differencePercent": -23.4
       },
       "gzip9": {
-        "candidate": 15536,
+        "candidate": 15648,
         "baseline": 16333,
-        "differencePercent": -4.88
+        "differencePercent": -4.19
       },
       "brotli11": {
-        "candidate": 13810,
+        "candidate": 13895,
         "baseline": 14681,
-        "differencePercent": -5.93
+        "differencePercent": -5.35
       }
     }
-  }
+  },
+  "buildAudit": "./build-audit.json"
 }
