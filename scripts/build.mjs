@@ -59,7 +59,9 @@ function releaseStripPlugin() {
   };
 }
 
+const bundleTimings = [];
 async function bundle(entry, output) {
+  const buildStarted = performance.now();
   const linked = await esbuild({
     absWorkingDir: root,
     entryPoints: [resolve(root, entry)],
@@ -84,6 +86,7 @@ async function bundle(entry, output) {
   });
   if (!compressed.code) throw new Error(`Terser did not emit ${output}`);
   writeFileSync(resolve(dist, output), `${banner}\n${compressed.code}\n`);
+  bundleTimings.push({ entry, output, wallSeconds: (performance.now() - buildStarted) / 1000 });
 }
 
 const compiler = executable([
@@ -118,3 +121,6 @@ await bundle("src/shader-processing/closed-world.js", "shader-processing.closed.
 await bundle("benchmarks/closed-world.js", "shader-processing.closed.official.js");
 
 console.log("Built shader-processing release artifacts (Terser and property mangling off)");
+
+mkdirSync(resolve(root, "reports"), { recursive: true });
+writeFileSync(resolve(root, "reports/build-timings.json"), JSON.stringify({ measuredAt: new Date().toISOString(), scope: "Each release-strip + esbuild + Terser artifact; excludes LilScript compilation and dependency installation", artifacts: bundleTimings }, null, 2) + "\n");

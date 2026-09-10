@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "name": "playcanvaslil",
+  "measuredAt": "2026-09-10T13:58:52Z",
+  "status": "verified",
+  "buildPassed": true,
+  "summary": "The fresh artifact was checked against the repository test command.",
+  "sourceCommit": "93b94c605684e0a6dd89da09fe217e6f1b5036c9",
+  "previousPublicCommit": "93b94c605684e0a6dd89da09fe217e6f1b5036c9",
+  "compiler": {
+    "commit": "63c2896a71e60cbcca7870fe979f9d6ecaff3452",
+    "sha256": "2319462ef7d858c8e2a5a767260aa4f80d325e0045afa0cc86cc122d1299b059",
+    "profile": "release",
+    "dirty": false
+  },
+  "machine": {
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
+    "logicalCpus": 16,
+    "affinityCpus": 16,
+    "memoryBytes": 33648431104,
+    "os": "Ubuntu 24.04.4 LTS",
+    "kernel": "6.17.0-1022-azure",
+    "architecture": "x86_64",
+    "node": "v22.23.2",
+    "rayonThreads": 16,
+    "provider": "Azure",
+    "instanceClass": "Standard_D16als_v7",
+    "parallelPortBuildsOnMachine": 1,
+    "loadAtStart": [
+      5.7822265625,
+      4.55126953125,
+      2.18896484375
+    ],
+    "loadAtEnd": [
+      8.7099609375,
+      5.42138671875,
+      2.568359375
+    ],
+    "concurrencyNote": "The audit scheduled one port per worker, but this is a shared pool. Outside compiler jobs were observed during the run; timings are contextual wall times, not controlled speedup benchmarks."
+  },
+  "upstream": {
+    "name": "playcanvaslil"
+  },
+  "comparisonScope": "Pinned source boundary in the repository build script. Sizes use canonical zlib 1.3.1 gzip-9 and Google Brotli 1.1.0 quality 11.",
+  "sizes": {
+    "previous": null,
+    "current": {
+      "path": "dist/shader-processing.js",
+      "raw": 54285,
+      "gzip9": 16474,
+      "brotli11": 14632,
+      "sha256": "6a9e416f8ef3b080676a510f3fbc3c1ddd10127cbb7a4a2446b688d45e535128"
+    },
+    "upstream": {
+      "path": "dist/shader-processing.official.js",
+      "raw": 67112,
+      "gzip9": 16267,
+      "brotli11": 14633,
+      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
+    }
+  },
+  "officialArtifacts": [],
+  "candidateArtifacts": [
+    {
+      "path": "dist/shader-processing.official.js",
+      "raw": 67112,
+      "gzip9": 16267,
+      "brotli11": 14633,
+      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
+    },
+    {
+      "path": "dist/shader-processing.closed.js",
+      "raw": 51642,
+      "gzip9": 15648,
+      "brotli11": 13895,
+      "sha256": "33cd3491e8a1dec29c420f9013ab487c823e09c839c2e25cdc6125db8f7c0b0f"
+    },
+    {
+      "path": "dist/shader-processing.closed.official.js",
+      "raw": 67422,
+      "gzip9": 16333,
+      "brotli11": 14681,
+      "sha256": "3002b5e49f6a2671cc2b43a72f38600fa55ec43cbf51797a5d4ddee29dac067a"
+    },
+    {
+      "path": "dist/shader-processing.js",
+      "raw": 54285,
+      "gzip9": 16474,
+      "brotli11": 14632,
+      "sha256": "6a9e416f8ef3b080676a510f3fbc3c1ddd10127cbb7a4a2446b688d45e535128"
+    }
+  ],
+  "timing": {
+    "primaryCompilerSeconds": null,
+    "primaryScope": "One real compiler process, including code generation and codec-guided search; excludes subsequent package wrapping.",
+    "packageSeconds": 36.223144692000005,
+    "packageScope": "node scripts/build.mjs --compile --force; 3 successful compiler invocations plus package generation.",
+    "upstreamSeconds": 0.19120807099999365,
+    "upstreamScope": "Release-strip + esbuild + Terser of the pinned shader-processing reference.",
+    "protocol": "Same shared worker for both lanes; one fresh LilScript package build; median of three sequential upstream ESM builds (PlayCanvas records one native reference build). Outside compiler jobs were observed in the pool, so contention is not excluded. Dependencies, tests and compression measurement are outside these build times.",
+    "upstreamSamples": []
+  },
+  "behavior": {
+    "command": "npm run test:artifact",
+    "summary": "Repository test command passed (exit 0). # tests 4 \u00b7 # pass 4 \u00b7 # fail 0",
+    "before": {
+      "exitCode": 1,
+      "failures": [],
+      "logSha256": "2b9b4669190296ebf8a1168cbad6bc9ca2b9c6fa69a87e2a32c8424d44196c94"
+    },
+    "after": {
+      "exitCode": 0,
+      "failures": [],
+      "tail": "\n    \u2714 returns false for TEST12\n    \u2714 returns true for TEST13\n    \u2714 returns false for TEST14\n    \u2714 returns true for INC1\n    \u2714 returns false for INC2\n    \u2714 returns true for nested\n    \u2714 returns true for CMP1\n    \u2714 returns false for CMP2\n    \u2714 returns true for CMP3\n    \u2714 returns true for CMP4\n    \u2714 returns false for CMP5\n    \u2714 returns false for any leftover hash symbols\n    \u2714 returns true for working integer injection\n    \u2714 returns true for working string injection\n    \u2714 returns true for loop injection\n    \u2714 returns true for ANDS1\n    \u2714 returns false for ANDS2\n    \u2714 returns true for ORS1\n    \u2714 returns true for ORS2\n    \u2714 returns true for ORS3\n    \u2714 returns true for PREC1 (without parentheses, A || B && UNDEFINED)\n    \u2714 returns false for PREC2 (with parentheses, (A || B) && UNDEFINED)\n    \u2714 returns true for PREC3 (nested parentheses)\n    \u2714 returns true for PREC4 (complex expression with parentheses)\n    \u2714 returns true for PREC5 (parentheses with comparisons)\n    \u2714 returns true for PREC6 (mixed defined and comparisons)\n    \u2714 returns true for PREC7 (defined() parentheses not treated as precedence)\n    \u2714 returns true for PREC8 (multiple levels of nesting)\n    \u2714 returns true for PREC9 (spaces inside precedence parens)\n    \u2714 returns true for NUM1 (#if 1 is truthy)\n    \u2714 returns false for NUM2 (#if 0 is falsy)\n    \u2714 returns true for NUM3 (#if 42 non-zero is truthy)\n    \u2714 returns false for NUM4 (#if 0.0 is falsy)\n    \u2714 returns true for NUM5 (#if 1 && defined(A))\n    \u2714 returns true for NUM6 (#if 0 || defined(A))\n    \u2714 returns false for EDGE1 (#if 3 == 3 is unsupported, must not parse \"3\" as truthy)\n    \u2714 returns false for EDGE2 (#if 0 != 1 is unsupported, must not parse \"0\" as falsy for wrong reason)\n    \u2714 returns false for EDGE3 (#if 5 > 3 is unsupported, must not parse \"5\" as truthy)\n\n  WebgpuShaderProcessorWGSL\n    \u2714 inserts generated declarations after WGSL directives\n    \u2714 generates dual-source fragment outputs\n    sample_mask builtin\n      \u2714 adds the sample_mask output when the shader assigns it\n      \u2714 does not add the sample_mask output for a comparison\n      \u2714 combines fragDepth and sample_mask outputs\n      \u2714 adds the sample_mask fragment input when read through the input struct\n      \u2714 adds the sample_mask fragment input when read through the private global\n      \u2714 does not add the sample_mask fragment input when unused\n\n  WebgpuShaderProcessorWGSL - compute reflection\n    \u2714 reflects a read_write storage buffer (regex fix)\n    \u2714 reflects a read-only storage buffer\n    \u2714 reflects a texture and its sampler (two slots)\n    \u2714 detects unfilterable-float (uff) textures\n    \u2714 collapses loose uniforms into a single uniform buffer and renames access\n    \u2714 combines storage buffers, a texture, and uniforms in one reflected group\n    \u2714 uses group 0 when no caller bind group format is supplied\n    \u2714 is a no-op when there is nothing to reflect (strictly additive)\n    \u2714 ignores workgroup, private and local variables\n    \u2714 reflects a write-only storage texture\n    \u2714 round-trips a read_write storage texture\n    \u2714 reflects a sampled texture + sampler + storage texture (edge-detect layout, group 0)\n    \u2714 reflects the particles-simulation pattern (loose uniforms + rw/ro storage, group 0)\n    \u2714 leaves explicitly-bound resources untouched while reflecting simplified ones\n    \u2714 does not fabricate a sampler when a texture is the last declared resource\n    \u2714 reflects a multisampled color texture without a sampler\n    \u2714 reflects a multisampled depth texture\n    \u2714 maps integer component types on a multisampled color texture\n\n\n  78 passing (23ms)\n\n\n> playcanvaslil@0.1.0 test:differential\n> node src/shader-processing/shader-processor-glsl.differential.mjs && node src/shader-processing/shader-definition-utils.differential.mjs\n\nshader-processor-glsl differential: 14/14 fixtures passed\nshader-definition-utils differential: 13/13 fixtures passed\nTAP version 13\n# Subtest: shader-processing public ABI\n    # Subtest: preserves exports and static class descriptors\n    ok 1 - preserves exports and static class descriptors\n      ---\n      duration_ms: 0.927688\n      type: 'test'\n      ...\n    # Subtest: preserves representative helpers\n    ok 2 - preserves representative helpers\n      ---\n      duration_ms: 0.632877\n      type: 'test'\n      ...\n    1..2\nok 1 - shader-processing public ABI\n  ---\n  duration_ms: 2.04637\n  type: 'suite'\n  ...\n# Subtest: closed-world entry\n    # Subtest: preserves exported functions and preprocessing output\n    ok 1 - preserves exported functions and preprocessing output\n      ---\n      duration_ms: 1.23741\n      type: 'test'\n      ...\n    # Subtest: executes every closed entry with equivalent results\n    ok 2 - executes every closed entry with equivalent results\n      ---\n      duration_ms: 2.831745\n      type: 'test'\n      ...\n    1..2\nok 2 - closed-world entry\n  ---\n  duration_ms: 4.164759\n  type: 'suite'\n  ...\n1..2\n# tests 4\n# suites 2\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 45.810416\n",
+      "logSha256": "a3ee16f34ac2f11c879ac3b8023939d9e7a50f2b05ab396dab718154264e5be6"
+    }
+  },
+  "findings": [],
+  "primaryArtifact": "dist/shader-processing.js",
+  "beforePage": {
+    "url": "https://yeargun.github.io/playcanvaslil/",
+    "status": 200,
+    "sha256": "cbb3f64f60b9410a3485bb8ab8cc3f0a37dfdc5514e2e6d4d6a0e3da4d96f337",
+    "lastModified": "Wed, 02 Sep 2026 16:03:21 GMT"
+  },
+  "codecSha256": "9257fd055728895c11b9c4b0d882895d7d11bb3dd3495f560123879ca2bc3cd6",
+  "publicationArtifacts": [
+    {
+      "path": "dist/shader-processing.official.js",
+      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
+    },
+    {
+      "path": "dist/shader-processing.closed.js",
+      "sha256": "33cd3491e8a1dec29c420f9013ab487c823e09c839c2e25cdc6125db8f7c0b0f"
+    },
+    {
+      "path": "dist/shader-processing.closed.official.js",
+      "sha256": "3002b5e49f6a2671cc2b43a72f38600fa55ec43cbf51797a5d4ddee29dac067a"
+    },
+    {
+      "path": "dist/shader-processing.js",
+      "sha256": "6a9e416f8ef3b080676a510f3fbc3c1ddd10127cbb7a4a2446b688d45e535128"
+    }
+  ],
+  "publicationPolicy": "Promote freshly tested distribution",
+  "publicationBase": "93b94c605684e0a6dd89da09fe217e6f1b5036c9",
+  "publicationSourceFingerprint": "7934de01939968ed1c418920ba940452cbde775fea6921907d814444b4ca31fe"
+}
