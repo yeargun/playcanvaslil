@@ -164,12 +164,38 @@
   "publicationSourceFingerprint": "7934de01939968ed1c418920ba940452cbde775fea6921907d814444b4ca31fe",
   "comparisonArtifacts": [
     {
+      "path": "site/esm-comparison/original.js",
+      "sha256": "ff1af06ecf4135e380196bc64beb87b06674f97afb34074fc35b2da08860fb2e"
+    },
+    {
       "path": "site/esm-comparison/lilscript.js",
       "sha256": "6a9e416f8ef3b080676a510f3fbc3c1ddd10127cbb7a4a2446b688d45e535128"
     },
     {
-      "path": "site/esm-comparison/original.js",
-      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
+      "path": "site/source-build.json",
+      "sha256": "e068efbeae2cc14a75dcde89d4b5f131f7a07fcf8728055e64f9f4c2b43dd956"
+    },
+    {
+      "path": "site/comparison.json",
+      "sha256": "b576853d11c59266fef9ef3022d78a15546ff54d5a378dd489d29cc827fdf4c9"
     }
-  ]
+  ],
+  "sourceBuildReceipt": "comparison/source-build/result.json",
+  "currentMeasurement": {
+    "compiler": {
+      "commit": "4dc4e3337d9ffd758d65e3852682d6e13d9331c1",
+      "sha256": "0616048498eb9eb2e4bd75b39e8e6a083733ada647e16108edfee30ad183beeb"
+    },
+    "source": {
+      "commit": "93b94c605684e0a6dd89da09fe217e6f1b5036c9"
+    },
+    "upstream": {
+      "repository": "https://github.com/playcanvas/engine.git",
+      "commit": "dbd2f580915273d50cfb12936af25d45ae636a04",
+      "package": "playcanvas",
+      "version": "2.22.0-beta.24",
+      "directory": "."
+    },
+    "compatibility": "Runtime checks: 4/4 pass."
+  }
 }

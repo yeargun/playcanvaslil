@@ -1,0 +1,86 @@
+{
+  "source": {
+    "repository": "https://github.com/playcanvas/engine.git",
+    "commit": "dbd2f580915273d50cfb12936af25d45ae636a04",
+    "package": "playcanvas",
+    "version": "2.22.0-beta.24",
+    "directory": "."
+  },
+  "entry": "build/playcanvas/src/index.js",
+  "scope": null,
+  "external": [],
+  "samples": [
+    {
+      "bundleSeconds": 0.035249134999999994,
+      "wallSeconds": 0.212047868
+    },
+    {
+      "bundleSeconds": 0.01726939599999997,
+      "wallSeconds": 0.14434087899999998
+    },
+    {
+      "bundleSeconds": 0.016003165999999965,
+      "wallSeconds": 0.13359852900000005
+    }
+  ],
+  "medianSeconds": 0.14434087899999998,
+  "toolchain": {
+    "esbuild": "0.28.1",
+    "terser": "5.51.2"
+  },
+  "artifacts": [
+    {
+      "path": "original.esm.js",
+      "raw": 67052,
+      "gzip9": 16234,
+      "brotli11": 14614,
+      "sha256": "ff1af06ecf4135e380196bc64beb87b06674f97afb34074fc35b2da08860fb2e"
+    },
+    {
+      "path": "original.unminified.js",
+      "raw": 76360,
+      "gzip9": 17707,
+      "brotli11": 15711,
+      "sha256": "3ec891656cf2cfa6f4d626341b44b49be7dda057640b89205ebf17b831722b78"
+    },
+    {
+      "path": "original.terser-nomangle.js",
+      "raw": 67350,
+      "gzip9": 16286,
+      "brotli11": 14651,
+      "sha256": "e98918f06153f70f8dbee0239f6725c79e0ecf044a22939387c8b75a4ba2d1a1"
+    },
+    {
+      "path": "original.esbuild.js",
+      "raw": 46767,
+      "gzip9": 14727,
+      "brotli11": 13015,
+      "sha256": "4c090e8a54ae3aed4443dbdd819b53fe7b44f935c81058c4b88b4d8232197c86"
+    }
+  ],
+  "inputs": [
+    "src/core/tracing.js",
+    "src/core/debug.js",
+    "src/core/preprocessor.js",
+    "src/platform/graphics/constants.js",
+    "src/core/math/math.js",
+    "src/platform/graphics/uniform-buffer-format.js",
+    "src/core/constants.js",
+    "src/platform/graphics/debug-graphics.js",
+    "src/platform/graphics/bind-group-format.js",
+    "src/platform/graphics/webgpu/constants.js",
+    "src/platform/graphics/webgpu/webgpu-shader-processor-wgsl.js",
+    "src/platform/graphics/shader-processor-glsl.js",
+    "src/platform/graphics/shader-chunks/frag/gles3.js",
+    "src/platform/graphics/shader-chunks/vert/gles3.js",
+    "src/platform/graphics/shader-chunks/frag/webgpu.js",
+    "src/platform/graphics/shader-chunks/vert/webgpu.js",
+    "src/platform/graphics/shader-chunks/frag/webgpu-wgsl.js",
+    "src/platform/graphics/shader-chunks/vert/webgpu-wgsl.js",
+    "src/platform/graphics/shader-chunks/frag/shared.js",
+    "src/platform/graphics/shader-chunks/frag/shared-wgsl.js",
+    "src/platform/graphics/shader-chunks/frag/half-types.js",
+    "src/platform/graphics/shader-definition-utils.js",
+    "shader-core-entry.mjs"
+  ]
+}

@@ -1,0 +1,644 @@
+{
+  "schemaVersion": 1,
+  "name": "playcanvaslil",
+  "startedAt": "2026-09-10T20:38:22Z",
+  "machine": {
+    "provider": "Azure",
+    "instanceClass": "Standard_D16als_v7",
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
+    "logicalCpus": 16,
+    "memoryBytes": 33648435200,
+    "os": "Ubuntu 24.04.4 LTS",
+    "kernel": "6.17.0-1022-azure",
+    "node": "v24.11.1",
+    "rayonThreads": 8,
+    "loadAtStart": [
+      1.5478515625,
+      3.40576171875,
+      3.1640625
+    ],
+    "loadAtEnd": [
+      4.12353515625,
+      4.0478515625,
+      3.45654296875
+    ]
+  },
+  "compiler": {
+    "commit": "4dc4e3337d9ffd758d65e3852682d6e13d9331c1",
+    "sha256": "0616048498eb9eb2e4bd75b39e8e6a083733ada647e16108edfee30ad183beeb"
+  },
+  "source": {
+    "repository": "https://github.com/playcanvas/engine.git",
+    "commit": "dbd2f580915273d50cfb12936af25d45ae636a04",
+    "package": "playcanvas",
+    "version": "2.22.0-beta.24",
+    "directory": "."
+  },
+  "portSource": {
+    "commit": "93b94c605684e0a6dd89da09fe217e6f1b5036c9",
+    "snapshot": "/tmp/lilscript-page-refresh-20260910/current/playcanvaslil"
+  },
+  "steps": {
+    "original-install": {
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 10.68015246899995,
+      "cpuSeconds": 4.732104,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "original-install.log",
+      "logSha256": "1f5832ae1ac85d182769264114a8d53b28734daff8ad47eb93e2096a406082f4",
+      "tail": "npm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead\n\nadded 621 packages in 11s\n"
+    },
+    "lilscript-install": {
+      "command": [
+        "npm",
+        "ci",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "cwd": "port",
+      "wallSeconds": 1.4157765650006695,
+      "cpuSeconds": 0.6119360000000003,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-install.log",
+      "logSha256": "e19ca920343f1bc5b9d68a4b6004fcdca2a9e1363d90c63f8b1f82f11e776b0b",
+      "tail": "npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me\n\nadded 112 packages in 1s\n"
+    },
+    "original-build-1": {
+      "command": [
+        "npm",
+        "run",
+        "build:rel:esm"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 6.175475351999921,
+      "cpuSeconds": 2.461323,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "original-build-1.log",
+      "logSha256": "0ffa584f1ceb526c9cee6ac1e1c49c1e2e7002678e9e83fb82a4b8b39a0ab3d8",
+      "tail": "\n> playcanvas@2.22.0-beta.24 build:rel:esm\n> node build.mjs --type=rel --format=esm\n\n\u001b[36m\u001b[1msrc/index.js\u001b[22m \u2192 \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m...\u001b[39m\n\u001b[32mcreated \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m in \u001b[1m5.5s\u001b[22m\u001b[39m\n"
+    },
+    "lilscript-build-1": {
+      "command": [
+        "bash",
+        "-c",
+        "node scripts/build.mjs --compile --force"
+      ],
+      "cwd": "port",
+      "wallSeconds": 37.58542623700032,
+      "cpuSeconds": 152.075075,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-build-1.log",
+      "logSha256": "592f1275772e34bd12d6140b72a85ea4cf4ea7eae9dda99371e5f1f67623b7d5",
+      "tail": "Built shader-processing release artifacts (Terser and property mangling off)\n",
+      "invocations": [
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/entry.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js"
+          ],
+          "startedAt": 1789072720.8368301,
+          "wallSeconds": 27.965076446533203,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js",
+          "sha256": "5ad21b0ba4b17619f308d1dd4146ea3684f4946ed04ca0dcb38ddc2237af855c"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js"
+          ],
+          "startedAt": 1789072748.8260322,
+          "wallSeconds": 4.862056016921997,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js",
+          "sha256": "0adc3d73b36ef044f858aefc08e847bd1f4645a70d52cfedb89d1c2c5c3dd191"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js"
+          ],
+          "startedAt": 1789072753.7114024,
+          "wallSeconds": 3.872814416885376,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js",
+          "sha256": "85449f2d3fd9485b9162ead11416030f330e7e53e29256178c7cdf706243a023"
+        }
+      ]
+    },
+    "lilscript-build-2": {
+      "command": [
+        "bash",
+        "-c",
+        "node scripts/build.mjs --compile --force"
+      ],
+      "cwd": "port",
+      "wallSeconds": 37.58754950399998,
+      "cpuSeconds": 151.26164599999998,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-build-2.log",
+      "logSha256": "592f1275772e34bd12d6140b72a85ea4cf4ea7eae9dda99371e5f1f67623b7d5",
+      "tail": "Built shader-processing release artifacts (Terser and property mangling off)\n",
+      "invocations": [
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/entry.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js"
+          ],
+          "startedAt": 1789072758.4260387,
+          "wallSeconds": 28.032747983932495,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js",
+          "sha256": "5ad21b0ba4b17619f308d1dd4146ea3684f4946ed04ca0dcb38ddc2237af855c"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js"
+          ],
+          "startedAt": 1789072786.4828284,
+          "wallSeconds": 4.796428918838501,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js",
+          "sha256": "0adc3d73b36ef044f858aefc08e847bd1f4645a70d52cfedb89d1c2c5c3dd191"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js"
+          ],
+          "startedAt": 1789072791.3035579,
+          "wallSeconds": 3.8542230129241943,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js",
+          "sha256": "85449f2d3fd9485b9162ead11416030f330e7e53e29256178c7cdf706243a023"
+        }
+      ]
+    },
+    "original-build-2": {
+      "command": [
+        "npm",
+        "run",
+        "build:rel:esm"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 1.7170770359998642,
+      "cpuSeconds": 2.4210359999999875,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "original-build-2.log",
+      "logSha256": "0a0ac56f953a4dee890f1eb968f34130610f3f955096570499ba9f2b7ce42f95",
+      "tail": "\n> playcanvas@2.22.0-beta.24 build:rel:esm\n> node build.mjs --type=rel --format=esm\n\n\u001b[36m\u001b[1msrc/index.js\u001b[22m \u2192 \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m...\u001b[39m\n\u001b[32mcreated \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m in \u001b[1m1.4s\u001b[22m\u001b[39m\n"
+    },
+    "original-build-3": {
+      "command": [
+        "npm",
+        "run",
+        "build:rel:esm"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 1.7671315670004333,
+      "cpuSeconds": 2.4309539999999794,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "original-build-3.log",
+      "logSha256": "0a0ac56f953a4dee890f1eb968f34130610f3f955096570499ba9f2b7ce42f95",
+      "tail": "\n> playcanvas@2.22.0-beta.24 build:rel:esm\n> node build.mjs --type=rel --format=esm\n\n\u001b[36m\u001b[1msrc/index.js\u001b[22m \u2192 \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m...\u001b[39m\n\u001b[32mcreated \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m in \u001b[1m1.4s\u001b[22m\u001b[39m\n"
+    },
+    "lilscript-build-3": {
+      "command": [
+        "bash",
+        "-c",
+        "node scripts/build.mjs --compile --force"
+      ],
+      "cwd": "port",
+      "wallSeconds": 37.58815271799995,
+      "cpuSeconds": 151.36462599999996,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-build-3.log",
+      "logSha256": "592f1275772e34bd12d6140b72a85ea4cf4ea7eae9dda99371e5f1f67623b7d5",
+      "tail": "Built shader-processing release artifacts (Terser and property mangling off)\n",
+      "invocations": [
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/entry.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js"
+          ],
+          "startedAt": 1789072799.5676308,
+          "wallSeconds": 28.063196897506714,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js",
+          "sha256": "5ad21b0ba4b17619f308d1dd4146ea3684f4946ed04ca0dcb38ddc2237af855c"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js"
+          ],
+          "startedAt": 1789072827.655003,
+          "wallSeconds": 4.771122932434082,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js",
+          "sha256": "0adc3d73b36ef044f858aefc08e847bd1f4645a70d52cfedb89d1c2c5c3dd191"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js"
+          ],
+          "startedAt": 1789072832.4495583,
+          "wallSeconds": 3.8642818927764893,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js",
+          "sha256": "85449f2d3fd9485b9162ead11416030f330e7e53e29256178c7cdf706243a023"
+        }
+      ]
+    },
+    "original-esm": {
+      "command": [
+        "node",
+        "/home/lilfarm/source-perf-20260910/tools/source-esm.mjs",
+        "/home/lilfarm/source-perf-20260910",
+        "playcanvaslil"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 0.1138219559998106,
+      "cpuSeconds": 0.0958070000000113,
+      "exitCode": 1,
+      "timedOut": false,
+      "log": "original-esm.log",
+      "logSha256": "7c4c261a4e96439a300df2b02db30271c10d9afdc4506a84d0bd71595e89c576",
+      "tail": "\u2718 [ERROR] Could not resolve \"/home/lilfarm/source-perf-20260910/ports/playcanvaslil/bench/reference-entry.mjs\"\n\n/home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:1748\n  let error = new Error(text);\n              ^\n\nError: Build failed with 1 error:\nerror: Could not resolve \"/home/lilfarm/source-perf-20260910/ports/playcanvaslil/bench/reference-entry.mjs\"\n    at failureErrorWithLog (/home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:1748:15)\n    at /home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:1207:25\n    at /home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:1159:52\n    at buildResponseToResult (/home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:1205:7)\n    at /home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:1232:16\n    at responseCallbacks.<computed> (/home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:884:9)\n    at handleIncomingPacket (/home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:939:12)\n    at Socket.readFromStdout (/home/lilfarm/source-perf-20260910/toolchain/node_modules/esbuild/lib/main.js:862:7)\n    at Socket.emit (node:events:508:28)\n    at addChunk (node:internal/streams/readable:559:12) {\n  errors: [Getter/Setter],\n  warnings: [Getter/Setter]\n}\n\nNode.js v24.11.1\n"
+    },
+    "lilscript-tests": {
+      "command": [
+        "bash",
+        "-c",
+        "npm run test:artifact"
+      ],
+      "cwd": "port",
+      "wallSeconds": 0.7148228360001667,
+      "cpuSeconds": 0.8099499999999935,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-tests.log",
+      "logSha256": "6d35ab5e82abaa5ef1d266ba24abb59fd81d8de75a84c1f422496b2dc50cbd1b",
+      "tail": " PREC4 (complex expression with parentheses)\n    \u2714 returns true for PREC5 (parentheses with comparisons)\n    \u2714 returns true for PREC6 (mixed defined and comparisons)\n    \u2714 returns true for PREC7 (defined() parentheses not treated as precedence)\n    \u2714 returns true for PREC8 (multiple levels of nesting)\n    \u2714 returns true for PREC9 (spaces inside precedence parens)\n    \u2714 returns true for NUM1 (#if 1 is truthy)\n    \u2714 returns false for NUM2 (#if 0 is falsy)\n    \u2714 returns true for NUM3 (#if 42 non-zero is truthy)\n    \u2714 returns false for NUM4 (#if 0.0 is falsy)\n    \u2714 returns true for NUM5 (#if 1 && defined(A))\n    \u2714 returns true for NUM6 (#if 0 || defined(A))\n    \u2714 returns false for EDGE1 (#if 3 == 3 is unsupported, must not parse \"3\" as truthy)\n    \u2714 returns false for EDGE2 (#if 0 != 1 is unsupported, must not parse \"0\" as falsy for wrong reason)\n    \u2714 returns false for EDGE3 (#if 5 > 3 is unsupported, must not parse \"5\" as truthy)\n\n  WebgpuShaderProcessorWGSL\n    \u2714 inserts generated declarations after WGSL directives\n    \u2714 generates dual-source fragment outputs\n    sample_mask builtin\n      \u2714 adds the sample_mask output when the shader assigns it\n      \u2714 does not add the sample_mask output for a comparison\n      \u2714 combines fragDepth and sample_mask outputs\n      \u2714 adds the sample_mask fragment input when read through the input struct\n      \u2714 adds the sample_mask fragment input when read through the private global\n      \u2714 does not add the sample_mask fragment input when unused\n\n  WebgpuShaderProcessorWGSL - compute reflection\n    \u2714 reflects a read_write storage buffer (regex fix)\n    \u2714 reflects a read-only storage buffer\n    \u2714 reflects a texture and its sampler (two slots)\n    \u2714 detects unfilterable-float (uff) textures\n    \u2714 collapses loose uniforms into a single uniform buffer and renames access\n    \u2714 combines storage buffers, a texture, and uniforms in one reflected group\n    \u2714 uses group 0 when no caller bind group format is supplied\n    \u2714 is a no-op when there is nothing to reflect (strictly additive)\n    \u2714 ignores workgroup, private and local variables\n    \u2714 reflects a write-only storage texture\n    \u2714 round-trips a read_write storage texture\n    \u2714 reflects a sampled texture + sampler + storage texture (edge-detect layout, group 0)\n    \u2714 reflects the particles-simulation pattern (loose uniforms + rw/ro storage, group 0)\n    \u2714 leaves explicitly-bound resources untouched while reflecting simplified ones\n    \u2714 does not fabricate a sampler when a texture is the last declared resource\n    \u2714 reflects a multisampled color texture without a sampler\n    \u2714 reflects a multisampled depth texture\n    \u2714 maps integer component types on a multisampled color texture\n\n\n  78 passing (19ms)\n\n\n> playcanvaslil@0.1.0 test:differential\n> node src/shader-processing/shader-processor-glsl.differential.mjs && node src/shader-processing/shader-definition-utils.differential.mjs\n\nshader-processor-glsl differential: 14/14 fixtures passed\nshader-definition-utils differential: 13/13 fixtures passed\n\u25b6 shader-processing public ABI\n  \u2714 preserves exports and static class descriptors (1.13059ms)\n  \u2714 preserves representative helpers (0.569341ms)\n\u2714 shader-processing public ABI (2.144453ms)\n\u25b6 closed-world entry\n  \u2714 preserves exported functions and preprocessing output (1.17105ms)\n  \u2714 executes every closed entry with equivalent results (2.740213ms)\n\u2714 closed-world entry (4.005536ms)\n\u2139 tests 4\n\u2139 suites 2\n\u2139 pass 4\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 55.382417\n"
+    }
+  },
+  "nativeBuilds": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "build:rel:esm"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 6.175475351999921,
+      "cpuSeconds": 2.461323,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "original-build-1.log",
+      "logSha256": "0ffa584f1ceb526c9cee6ac1e1c49c1e2e7002678e9e83fb82a4b8b39a0ab3d8",
+      "tail": "\n> playcanvas@2.22.0-beta.24 build:rel:esm\n> node build.mjs --type=rel --format=esm\n\n\u001b[36m\u001b[1msrc/index.js\u001b[22m \u2192 \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m...\u001b[39m\n\u001b[32mcreated \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m in \u001b[1m5.5s\u001b[22m\u001b[39m\n"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build:rel:esm"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 1.7170770359998642,
+      "cpuSeconds": 2.4210359999999875,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "original-build-2.log",
+      "logSha256": "0a0ac56f953a4dee890f1eb968f34130610f3f955096570499ba9f2b7ce42f95",
+      "tail": "\n> playcanvas@2.22.0-beta.24 build:rel:esm\n> node build.mjs --type=rel --format=esm\n\n\u001b[36m\u001b[1msrc/index.js\u001b[22m \u2192 \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m...\u001b[39m\n\u001b[32mcreated \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m in \u001b[1m1.4s\u001b[22m\u001b[39m\n"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build:rel:esm"
+      ],
+      "cwd": "upstream",
+      "wallSeconds": 1.7671315670004333,
+      "cpuSeconds": 2.4309539999999794,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "original-build-3.log",
+      "logSha256": "0a0ac56f953a4dee890f1eb968f34130610f3f955096570499ba9f2b7ce42f95",
+      "tail": "\n> playcanvas@2.22.0-beta.24 build:rel:esm\n> node build.mjs --type=rel --format=esm\n\n\u001b[36m\u001b[1msrc/index.js\u001b[22m \u2192 \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m...\u001b[39m\n\u001b[32mcreated \u001b[1mbuild/playcanvas.mjs, build/playcanvas/\u001b[22m in \u001b[1m1.4s\u001b[22m\u001b[39m\n"
+    }
+  ],
+  "lilscriptBuilds": [
+    {
+      "command": [
+        "bash",
+        "-c",
+        "node scripts/build.mjs --compile --force"
+      ],
+      "cwd": "port",
+      "wallSeconds": 37.58542623700032,
+      "cpuSeconds": 152.075075,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-build-1.log",
+      "logSha256": "592f1275772e34bd12d6140b72a85ea4cf4ea7eae9dda99371e5f1f67623b7d5",
+      "tail": "Built shader-processing release artifacts (Terser and property mangling off)\n",
+      "invocations": [
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/entry.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js"
+          ],
+          "startedAt": 1789072720.8368301,
+          "wallSeconds": 27.965076446533203,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js",
+          "sha256": "5ad21b0ba4b17619f308d1dd4146ea3684f4946ed04ca0dcb38ddc2237af855c"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js"
+          ],
+          "startedAt": 1789072748.8260322,
+          "wallSeconds": 4.862056016921997,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js",
+          "sha256": "0adc3d73b36ef044f858aefc08e847bd1f4645a70d52cfedb89d1c2c5c3dd191"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js"
+          ],
+          "startedAt": 1789072753.7114024,
+          "wallSeconds": 3.872814416885376,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js",
+          "sha256": "85449f2d3fd9485b9162ead11416030f330e7e53e29256178c7cdf706243a023"
+        }
+      ]
+    },
+    {
+      "command": [
+        "bash",
+        "-c",
+        "node scripts/build.mjs --compile --force"
+      ],
+      "cwd": "port",
+      "wallSeconds": 37.58754950399998,
+      "cpuSeconds": 151.26164599999998,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-build-2.log",
+      "logSha256": "592f1275772e34bd12d6140b72a85ea4cf4ea7eae9dda99371e5f1f67623b7d5",
+      "tail": "Built shader-processing release artifacts (Terser and property mangling off)\n",
+      "invocations": [
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/entry.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js"
+          ],
+          "startedAt": 1789072758.4260387,
+          "wallSeconds": 28.032747983932495,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js",
+          "sha256": "5ad21b0ba4b17619f308d1dd4146ea3684f4946ed04ca0dcb38ddc2237af855c"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js"
+          ],
+          "startedAt": 1789072786.4828284,
+          "wallSeconds": 4.796428918838501,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js",
+          "sha256": "0adc3d73b36ef044f858aefc08e847bd1f4645a70d52cfedb89d1c2c5c3dd191"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js"
+          ],
+          "startedAt": 1789072791.3035579,
+          "wallSeconds": 3.8542230129241943,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js",
+          "sha256": "85449f2d3fd9485b9162ead11416030f330e7e53e29256178c7cdf706243a023"
+        }
+      ]
+    },
+    {
+      "command": [
+        "bash",
+        "-c",
+        "node scripts/build.mjs --compile --force"
+      ],
+      "cwd": "port",
+      "wallSeconds": 37.58815271799995,
+      "cpuSeconds": 151.36462599999996,
+      "exitCode": 0,
+      "timedOut": false,
+      "log": "lilscript-build-3.log",
+      "logSha256": "592f1275772e34bd12d6140b72a85ea4cf4ea7eae9dda99371e5f1f67623b7d5",
+      "tail": "Built shader-processing release artifacts (Terser and property mangling off)\n",
+      "invocations": [
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/entry.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js"
+          ],
+          "startedAt": 1789072799.5676308,
+          "wallSeconds": 28.063196897506714,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processing.compiled.js",
+          "sha256": "5ad21b0ba4b17619f308d1dd4146ea3684f4946ed04ca0dcb38ddc2237af855c"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js"
+          ],
+          "startedAt": 1789072827.655003,
+          "wallSeconds": 4.771122932434082,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.compiled.js",
+          "sha256": "0adc3d73b36ef044f858aefc08e847bd1f4645a70d52cfedb89d1c2c5c3dd191"
+        },
+        {
+          "args": [
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.lil",
+            "--target",
+            "js-module",
+            "--config",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/lilscript.toml",
+            "-o",
+            "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js"
+          ],
+          "startedAt": 1789072832.4495583,
+          "wallSeconds": 3.8642818927764893,
+          "exitCode": 0,
+          "output": "/home/lilfarm/source-perf-20260910/ports/playcanvaslil/src/shader-processing/shader-definition-utils.compiled.js",
+          "sha256": "85449f2d3fd9485b9162ead11416030f330e7e53e29256178c7cdf706243a023"
+        }
+      ]
+    }
+  ],
+  "protocol": {
+    "repetitions": 3,
+    "cleanOutputs": true,
+    "dependencyInstallationTimedSeparately": true,
+    "sourceArchives": "Pinned Git checkouts; original repository package build commands, followed by production ESM assembly.",
+    "workerUse": "Both implementations use the same machine and Node version. This shared build pool also runs unrelated jobs; timings are contextual wall times, with CPU time recorded separately."
+  },
+  "lilscriptArtifacts": [
+    {
+      "path": "dist/shader-processing.official.js",
+      "raw": 67112,
+      "gzip9": 16267,
+      "brotli11": 14633,
+      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
+    },
+    {
+      "path": "dist/shader-processing.closed.js",
+      "raw": 51642,
+      "gzip9": 15648,
+      "brotli11": 13895,
+      "sha256": "33cd3491e8a1dec29c420f9013ab487c823e09c839c2e25cdc6125db8f7c0b0f"
+    },
+    {
+      "path": "dist/shader-processing.closed.official.js",
+      "raw": 67422,
+      "gzip9": 16333,
+      "brotli11": 14681,
+      "sha256": "3002b5e49f6a2671cc2b43a72f38600fa55ec43cbf51797a5d4ddee29dac067a"
+    },
+    {
+      "path": "dist/shader-processing.js",
+      "raw": 54285,
+      "gzip9": 16474,
+      "brotli11": 14632,
+      "sha256": "6a9e416f8ef3b080676a510f3fbc3c1ddd10127cbb7a4a2446b688d45e535128"
+    }
+  ],
+  "nativeBuildsSummary": {
+    "samples": 3,
+    "successful": 3,
+    "medianSeconds": 1.7671315670004333,
+    "minimumSeconds": 1.7170770359998642,
+    "maximumSeconds": 6.175475351999921
+  },
+  "lilscriptBuildsSummary": {
+    "samples": 3,
+    "successful": 3,
+    "medianSeconds": 37.58754950399998,
+    "minimumSeconds": 37.58542623700032,
+    "maximumSeconds": 37.58815271799995
+  },
+  "status": "complete",
+  "finishedAt": "2026-09-10T20:40:38Z"
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-10T13:58:52Z",
+  "generatedAt": "2026-09-10T20:40:38Z",
   "scope": {
     "upstream": "playcanvas/engine",
     "name": "shader-processing core",
@@ -59,12 +59,12 @@
   },
   "tools": {
     "esbuild": "0.28.1",
-    "terser": "5.43.1"
+    "terser": "5.51.2 (original source ESM); 5.43.1 (LilScript package)"
   },
   "compiler": {
-    "revision": "63c2896a71e60cbcca7870fe979f9d6ecaff3452",
-    "dirty": false,
-    "binarySha256": "2319462ef7d858c8e2a5a767260aa4f80d325e0045afa0cc86cc122d1299b059"
+    "revision": "4dc4e3337d9ffd758d65e3852682d6e13d9331c1",
+    "binarySha256": "0616048498eb9eb2e4bd75b39e8e6a083733ada647e16108edfee30ad183beeb",
+    "dirty": false
   },
   "codecBinarySha256": "9257fd055728895c11b9c4b0d882895d7d11bb3dd3495f560123879ca2bc3cd6",
   "configSha256": "3f1a798fd1b048db4d90e8788112144088c7df09daf605a8dac3bafbae107f04",
@@ -103,10 +103,10 @@
       "world": "open",
       "label": "Official PlayCanvas",
       "path": "dist/shader-processing.official.js",
-      "raw": 67112,
-      "gzip9": 16267,
-      "brotli11": 14633,
-      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
+      "raw": 67052,
+      "gzip9": 16234,
+      "brotli11": 14614,
+      "sha256": "ff1af06ecf4135e380196bc64beb87b06674f97afb34074fc35b2da08860fb2e"
     },
     {
       "id": "closed-lilscript",
@@ -133,18 +133,18 @@
     "open": {
       "raw": {
         "candidate": 54285,
-        "baseline": 67112,
-        "differencePercent": -19.11
+        "baseline": 67052,
+        "differencePercent": -19.04
       },
       "gzip9": {
         "candidate": 16474,
-        "baseline": 16267,
-        "differencePercent": 1.27
+        "baseline": 16234,
+        "differencePercent": 1.48
       },
       "brotli11": {
         "candidate": 14632,
-        "baseline": 14633,
-        "differencePercent": -0.01
+        "baseline": 14614,
+        "differencePercent": 0.12
       }
     },
     "closed": {
@@ -164,6 +164,5 @@
         "differencePercent": -5.35
       }
     }
-  },
-  "buildAudit": "./build-audit.json"
+  }
 }

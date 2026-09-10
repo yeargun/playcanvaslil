@@ -21,6 +21,13 @@ const seconds=value=>value==null?'unavailable':`${value.toFixed(value<1?3:2)} s`
 export function renderBuildFacts(data) {
   const timing=data.build;
   const machine=data.machine;
+  if (data.sourceBuild) {
+    const {original,lilscript}=data.sourceBuild;
+    const duration=lane=>lane.complete?`${seconds(lane.medianSeconds)} median (${seconds(lane.minimumSeconds)}–${seconds(lane.maximumSeconds)}; ${lane.samples.length} builds)`:`failed after ${seconds(lane.samples.at(-1)?.wallSeconds)}`;
+    const upstream=data.upstream;
+    const scope=data.sourceBuild.scopeNote;
+    return `<span id="build-comparison"><br><strong>Build time from source.</strong> LilScript package: ${duration(lilscript)}. Original repository: ${duration(original)}.<br><strong>Machine.</strong> Azure ${esc(machine.instanceClass)}, ${esc(machine.cpu)}, ${machine.logicalCpus} vCPUs, ${(machine.memoryBytes/2**30).toFixed(1)} GiB RAM; ${esc(machine.os)}, Node ${esc(machine.node)}.<br>Measured ${esc(data.measuredAt.slice(0,10))} · LilScript <a href="https://github.com/yeargun/lilscript/commit/${esc(data.compiler.commit)}">${esc(data.compiler.commit.slice(0,7))}</a> · original ${esc(upstream.package)} ${esc(upstream.version)} (<a href="${esc(upstream.repository.replace(/\.git$/,''))}/commit/${esc(upstream.commit)}">${esc(upstream.commit.slice(0,7))}</a>).<br>Outputs cleared between builds; installed dependencies reused. Dependency installation is excluded. Native build commands include their own type generation and checks. ${esc(scope)} Shared worker; these wall times are contextual, not a build speedup claim. Original comparison ESM assembly: ${seconds(timing.originalEsmSeconds)} median, recorded separately. <a href="./source-build.json">Commands, samples and build records ↗</a></span>`;
+  }
   const primary=timing.compilerSeconds;
   const lil=primary==null?`LilScript ${data.buildComplete?'package':'build attempt'} ${seconds(timing.packageSeconds)}`:`LilScript compilation ${seconds(primary)}`;
   const totals=primary==null?'':` Package total: ${seconds(timing.packageSeconds)}.`;

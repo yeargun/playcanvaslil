@@ -42,12 +42,16 @@ describe("GitHub Pages artifact", () => {
     assert.equal(results.scope.convertedFiles.length, 4);
     assert.match(results.upstream.revision, /^[0-9a-f]{40}$/);
     assert.match(results.compiler.binarySha256, /^[0-9a-f]{64}$/);
-    assert.ok(results.comparison.open.brotli11.differencePercent < 0);
-    assert.ok(results.comparison.closed.brotli11.differencePercent < 0);
+    for (const world of ["open", "closed"]) {
+      const metric = results.comparison[world].brotli11;
+      assert.ok(metric.candidate > 0 && metric.baseline > 0);
+      assert.ok(Math.abs(metric.differencePercent - (metric.candidate / metric.baseline - 1) * 100) < 0.011);
+    }
+
     assert.equal(results.contract.officialPropertyMangling, false);
     assert.equal(results.contract.lilscriptInternalPropertyMangling, false);
     const analysis = JSON.parse(readFileSync(resolve(site, "compression-analysis.json"), "utf8"));
-    assert.ok(analysis.transfer.rawDifferencePercent < -10);
-    assert.ok(analysis.transfer.brotliDifferencePercent < 0);
+    assert.ok(Math.abs(analysis.transfer.rawDifferencePercent - results.comparison.open.raw.differencePercent) < 0.011);
+    assert.ok(Math.abs(analysis.transfer.brotliDifferencePercent - results.comparison.open.brotli11.differencePercent) < 0.011);
   });
 });

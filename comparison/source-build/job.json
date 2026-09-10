@@ -1,0 +1,35 @@
+{
+  "source": {
+    "repository": "https://github.com/playcanvas/engine.git",
+    "commit": "dbd2f580915273d50cfb12936af25d45ae636a04",
+    "package": "playcanvas",
+    "version": "2.22.0-beta.24",
+    "directory": "."
+  },
+  "portSource": {
+    "commit": "93b94c605684e0a6dd89da09fe217e6f1b5036c9"
+  },
+  "compilerCommit": "4dc4e3337d9ffd758d65e3852682d6e13d9331c1",
+  "install": [
+    "npm",
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "setup": [],
+  "build": [
+    "npm",
+    "run",
+    "build:rel:esm"
+  ],
+  "clean": [
+    "build/playcanvas"
+  ],
+  "entry": "build/playcanvas/src/index.js",
+  "defaultExport": false,
+  "external": [],
+  "esmScope": null,
+  "lilscriptBuild": "node scripts/build.mjs --compile --force",
+  "test": "npm run test:artifact"
+}
