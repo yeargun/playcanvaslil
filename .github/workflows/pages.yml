@@ -28,7 +28,10 @@ jobs:
       - run: npm ci
       # Validate and publish the measured distribution. Rebuilding here would replace
       # the artifacts without rerunning the documented machine/timing experiment.
-      - run: npm run test:artifact
+      # Source differential tests ran during the measured compiler build.
+      # These checks exercise the exact committed bundles without generated source helpers.
+      - run: npm run test:upstream
+      - run: node --test test/shader-processing.test.mjs
       - run: npm run check:site
       - uses: actions/configure-pages@v6
         with:
