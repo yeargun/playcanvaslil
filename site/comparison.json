@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-09-10T13:58:52Z",
+  "name": "playcanvaslil",
+  "compiler": {
+    "commit": "63c2896a71e60cbcca7870fe979f9d6ecaff3452",
+    "sha256": "2319462ef7d858c8e2a5a767260aa4f80d325e0045afa0cc86cc122d1299b059",
+    "profile": "release",
+    "dirty": false
+  },
+  "upstream": {
+    "package": "playcanvas",
+    "version": "2.22.0-beta.24"
+  },
+  "scope": "Pinned source boundary in the repository build script.",
+  "compatibility": "Repository checks pass.",
+  "tests": {
+    "pass": 4,
+    "total": 4
+  },
+  "buildComplete": true,
+  "machine": {
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
+    "logicalCpus": 16,
+    "memoryBytes": 33648431104,
+    "os": "Ubuntu 24.04.4 LTS",
+    "node": "v22.23.2",
+    "rayonThreads": 16,
+    "provider": "Azure",
+    "instanceClass": "Standard_D16als_v7"
+  },
+  "build": {
+    "compilerSeconds": null,
+    "packageSeconds": 36.223144692000005,
+    "originalSeconds": 0.19120807099999365,
+    "packageScope": "node scripts/build.mjs --compile --force; 3 successful compiler invocations plus package generation.",
+    "originalScope": "Release-strip + esbuild + Terser of the pinned shader-processing reference.",
+    "protocol": "Same shared worker for both lanes; one fresh LilScript package build; median of three sequential upstream ESM builds (PlayCanvas records one native reference build). Outside compiler jobs were observed in the pool, so contention is not excluded. Dependencies, tests and compression measurement are outside these build times."
+  },
+  "esm": {
+    "lilscript": {
+      "raw": 54285,
+      "gzip9": 16474,
+      "brotli11": 14632,
+      "sha256": "6a9e416f8ef3b080676a510f3fbc3c1ddd10127cbb7a4a2446b688d45e535128",
+      "file": "./esm-comparison/lilscript.js"
+    },
+    "original": {
+      "raw": 67112,
+      "gzip9": 16267,
+      "brotli11": 14633,
+      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796",
+      "file": "./esm-comparison/original.js"
+    }
+  }
+}

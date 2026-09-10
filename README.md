@@ -1,7 +1,5 @@
 # PlayCanvasLil
 
-<!-- current-build-audit -->
-**Build audit, 2026-09-10:** [verified; compiler, machine, build times, version gaps and behavior checks](https://yeargun.github.io/playcanvaslil/#build-audit). The [JSON receipt](site/build-audit.json) records the current comparison; older benchmark prose retains its original scope.
 
 
 A LilScript rewrite of one substantial PlayCanvas Engine subsystem: the shader-processing core.
