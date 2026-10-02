@@ -12,7 +12,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "npm run build && npm run test:artifact",
+    "test": "npm run test:artifact",
     "test:artifact": "npm run test:upstream && npm run test:differential && node --test test/shader-processing.test.mjs",
     "test:upstream": "node scripts/test-upstream.mjs dist/shader-processing.js dist/shader-processing.official.js",
     "test:differential": "node src/shader-processing/shader-processor-glsl.differential.mjs && node src/shader-processing/shader-definition-utils.differential.mjs",
@@ -21,7 +21,8 @@
     "benchmark": "node scripts/benchmark.mjs",
     "build:site": "node scripts/build-site.mjs",
     "check:site": "npm run build:site && node --test test/site.test.mjs",
-    "check": "npm test && npm run measure && npm run analyze && npm run benchmark && npm run check:site"
+    "check": "npm run test:build && npm run measure && npm run analyze && npm run benchmark && npm run check:site",
+    "test:build": "npm run build && npm test"
   },
   "devDependencies": {
     "@rollup/plugin-strip": "3.0.4",

@@ -97,3 +97,9 @@ set for local investigation.
 ## License
 
 MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). PlayCanvas is copyright PlayCanvas Ltd.
+
+### Running the checks
+
+`npm run test:build` builds the package and runs its tests. After an explicit
+`npm run build`, use `npm test` to test those artifacts without rebuilding them.
+This also keeps the development and production files available to the same suite.
