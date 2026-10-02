@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { createStripTransform } from "../../upstream/engine/utils/plugins/esbuild-strip.mjs";
 import { ShaderDefinitionUtils as DevelopmentUpstream } from "../../upstream/engine/src/platform/graphics/shader-definition-utils.js";
-import * as developmentCore from "./shader-definition-utils.development.compiled.js";
+import { ShaderDefinitionUtils as DevelopmentPort } from "../../dist/shader-definition-utils.development.js";
 import { ShaderDefinitionUtils as Port } from "../../dist/shader-processing.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -34,35 +34,6 @@ const { ShaderDefinitionUtils: ReleaseUpstream } = await import(
   `data:text/javascript;base64,${Buffer.from(releaseSource).toString("base64")}`
 );
 
-class DevelopmentPort {
-  static createDefinition(device, options) {
-    return developmentCore.createDefinition(DevelopmentPort, device, options);
-  }
-
-  static getWGSLEnables(device, shaderType, useDualSourceBlending = false) {
-    return developmentCore.getWGSLEnables(device, shaderType, useDualSourceBlending);
-  }
-
-  static getDefinesCode(device, defines) {
-    return developmentCore.getDefinesCode(device, defines);
-  }
-
-  static getShaderNameCode(name) {
-    return developmentCore.getShaderNameCode(name);
-  }
-
-  static versionCode(device) {
-    return developmentCore.versionCode(device);
-  }
-
-  static precisionCode(device, forcePrecision) {
-    return developmentCore.precisionCode(device, forcePrecision);
-  }
-
-  static collectAttributes(vsCode) {
-    return developmentCore.collectAttributes(vsCode);
-  }
-}
 
 const checks = [];
 const check = (name, callback) => {

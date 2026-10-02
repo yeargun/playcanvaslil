@@ -35,7 +35,9 @@
     "node": ">=20"
   },
   "sideEffects": [
+    "./dist/shader-definition-utils.development.js",
     "./dist/shader-processing.closed.js",
+    "./dist/shader-processing.external.js",
     "./dist/shader-processing.js"
   ]
 }

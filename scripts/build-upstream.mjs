@@ -1,5 +1,4 @@
-import { accessSync, constants, copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { spawnSync } from "node:child_process";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
@@ -8,8 +7,6 @@ import { parse } from "acorn";
 import { minify } from "terser";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const lilscriptRoot = process.env.LILSCRIPT_ROOT ?? resolve(root, "..", "lilscript");
-const source = resolve(root, "src", "shader-processing");
 const dist = resolve(root, "dist");
 const banner = "/*! PlayCanvas shader processing | PlayCanvas Ltd. | MIT */";
 const stripFunctions = [
@@ -22,23 +19,6 @@ const stripFunctions = [
   "debugDefinitionOptions", "debugDuplicateAttribute", "debugFragmentCode", "debugOutputType",
   "debugVertexCode",
 ];
-
-function executable(candidates, label) {
-  for (const candidate of candidates.filter(Boolean)) {
-    try {
-      accessSync(candidate, constants.X_OK);
-      return candidate;
-    } catch {
-      // Try the next configured location.
-    }
-  }
-  throw new Error(`${label} not found; set LILSCRIPT_COMPILER or LILSCRIPT_ROOT`);
-}
-
-function run(command, args) {
-  const result = spawnSync(command, args, { cwd: root, stdio: "inherit" });
-  if (result.status !== 0) process.exit(result.status ?? 1);
-}
 
 function releaseStripPlugin() {
   const plugin = strip({ functions: stripFunctions, debugger: false, sourceMap: false });
