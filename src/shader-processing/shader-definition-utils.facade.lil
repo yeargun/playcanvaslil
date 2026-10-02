@@ -1,0 +1,5 @@
+import extern {createFacade} from "./shader-definition-utils.factory.js";
+extern JsValue createFacade;
+import {createDefinition as core_createDefinition, getWGSLEnables as core_getWGSLEnables, getDefinesCode as core_getDefinesCode, getShaderNameCode as core_getShaderNameCode, versionCode as core_versionCode, precisionCode as core_precisionCode, collectAttributes as core_collectAttributes} from "./shader-definition-utils.lil";
+JsValue api = JS.call(createFacade, JS.undefined(), JS.object("createDefinition", core_createDefinition, "getWGSLEnables", core_getWGSLEnables, "getDefinesCode", core_getDefinesCode, "getShaderNameCode", core_getShaderNameCode, "versionCode", core_versionCode, "precisionCode", core_precisionCode, "collectAttributes", core_collectAttributes));
+export JsValue ShaderDefinitionUtils = api["ShaderDefinitionUtils"];

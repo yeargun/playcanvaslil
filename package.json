@@ -33,5 +33,9 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "sideEffects": [
+    "./dist/shader-processing.closed.js",
+    "./dist/shader-processing.js"
+  ]
 }

@@ -1,0 +1,6 @@
+import "./package-hosts.lil";
+import {Preprocessor} from "./preprocessor.facade.lil";
+import {ShaderProcessorGLSL, UniformLine} from "./shader-processor-glsl.facade.lil";
+import {ShaderDefinitionUtils} from "./shader-definition-utils.facade.lil";
+import {WebgpuShaderProcessorWGSL} from "./webgpu-shader-processor-wgsl.facade.lil";
+export {Preprocessor, ShaderProcessorGLSL, UniformLine, ShaderDefinitionUtils, WebgpuShaderProcessorWGSL};

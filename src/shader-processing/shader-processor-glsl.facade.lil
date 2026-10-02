@@ -1,0 +1,6 @@
+import extern {createFacade} from "./shader-processor-glsl.factory.js";
+extern JsValue createFacade;
+import {parseUniformLine as core_parseUniformLine, parseUniformLines as core_parseUniformLines, run as core_run, extract as core_extract, processUniforms as core_processUniforms, processVaryings as core_processVaryings, processOuts as core_processOuts, getTypeCount as core_getTypeCount, processAttributes as core_processAttributes, splitToWords as core_splitToWords, cutOut as core_cutOut, getUniformShaderDeclaration as core_getUniformShaderDeclaration, getTexturesShaderDeclaration as core_getTexturesShaderDeclaration} from "./shader-processor-glsl.lil";
+JsValue api = JS.call(createFacade, JS.undefined(), JS.object("parseUniformLine", core_parseUniformLine, "parseUniformLines", core_parseUniformLines, "run", core_run, "extract", core_extract, "processUniforms", core_processUniforms, "processVaryings", core_processVaryings, "processOuts", core_processOuts, "getTypeCount", core_getTypeCount, "processAttributes", core_processAttributes, "splitToWords", core_splitToWords, "cutOut", core_cutOut, "getUniformShaderDeclaration", core_getUniformShaderDeclaration, "getTexturesShaderDeclaration", core_getTexturesShaderDeclaration));
+export JsValue ShaderProcessorGLSL = api["ShaderProcessorGLSL"];
+export JsValue UniformLine = api["UniformLine"];

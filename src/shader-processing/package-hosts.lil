@@ -1,0 +1,12 @@
+// Load the shared host graph before the package initializes its LilScript state.
+import extern "../../upstream/engine/src/core/debug.js";
+import extern "./webgpu-shader-processor-wgsl.host.js";
+import extern "./shader-processor-glsl.host.js";
+import extern "../../upstream/engine/src/platform/graphics/constants.js";
+import extern "./shader-definition-utils.debug.js";
+import extern "./shader-definition-utils.host.js";
+import extern "./preprocessor.factory.js";
+import extern "./shader-processor-glsl.factory.js";
+import extern "./shader-definition-utils.factory.js";
+import extern "./webgpu-shader-processor-wgsl.factory.js";
+import extern "./closed-world.factory.js";
