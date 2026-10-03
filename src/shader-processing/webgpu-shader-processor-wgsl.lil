@@ -95,11 +95,11 @@ extern class ShaderDefinition {
 }
 
 extern void appendMatch(JsValue target, JsValue regexMatch);
-extern void assertPc(bool condition, string message);
-extern void assertPcContext(bool condition, string message, JsValue context);
-extern void debugCall(func()->void callback);
-extern void errorPc(string message, JsValue context);
-extern void warnPc(string message, JsValue context);
+debug extern void assertPc(bool condition, string message);
+debug extern void assertPcContext(bool condition, string message, JsValue context);
+debug extern void debugCall(func()->void callback);
+debug extern void errorPc(string message, JsValue context);
+debug extern void warnPc(string message, JsValue context);
 extern string[] gpuTextureFormats;
 extern Record<int> semanticToLocation;
 extern Map<string, int> uniformTypeToNameMapWGSL;
@@ -1188,3 +1188,13 @@ export {
   copyInputsImpl as copyInputs,
   cutOutImpl as cutOut
 };
+
+export JsValue processResourcesHost(GraphicsDevice device, ResourceLine[] resources, ProcessingOptions? processingOptions, Shader shader, int visibility, int bindGroupIndex) {
+  ResourcesData value = processResourcesImpl(device, resources, processingOptions, shader, visibility, bindGroupIndex);
+  return JS.object("code", value.code, "meshBindGroupFormat", value.meshBindGroupFormat);
+}
+
+export JsValue processUniformsHost(GraphicsDevice device, UniformLine[] uniforms, ProcessingOptions processingOptions, Shader shader) {
+  UniformData value = processUniformsImpl(device, uniforms, processingOptions, shader);
+  return JS.object("code", value.code, "meshUniformBufferFormat", value.meshUniformBufferFormat);
+}

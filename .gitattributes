@@ -1,0 +1,3 @@
+
+# Compiler artifacts retain their exact recorded bytes.
+dist/** -whitespace linguist-generated

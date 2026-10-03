@@ -1,20 +1,42 @@
+# Compiler-owned delivery; no JavaScript post-minifier or export rewriting.
+[policy]
+version = 3
 [javascript]
+# Debug declarations identify optional port instrumentation; arguments keep their effects.
+strip_debug = true
 priority = "size-first"
-optimization_level = 15
-cost_model = "brotli"
-candidate_search = "always"
-candidate_proposal_limit = 1536
-terminal_codec_probe_limit = 1536
-candidate_byte_budget = 16777216
-local_name_reserve = 48
-function_spelling = "arrow"
+# Assumes unpatched platform builtins; disable when consumers replace them.
 assume_pristine_builtins = true
+# Plain-data reads must not run getters; disable for effectful accessor integrations.
 assume_pure_property_reads = true
 
+# Preserved effort setting. 13 favors size; 14/15 allow more expensive marginal searches.
+[effort]
+level = 15
+
+# Optimize the delivered files for this codec, independently of raw/gzip objectives.
+[objective]
+codecs = "brotli"
 [mangle]
 identifiers = true
 properties = false
-exports = false
 
-[bundle]
+[delivery]
 mode = "single"
+directory = "."
+host_modules = "embed"
+select = ["public"]
+entry_names = "shader-processing.js"
+[delivery.entries]
+public = "src/shader-processing/package.lil"
+closed = "src/shader-processing/package-closed.lil"
+[[delivery.also]]
+name = "closed"
+entries = ["closed"]
+entry_names = "shader-processing.closed.js"
+
+[policy.resources]
+logical_work = 2000000000
+
+[execution]
+jobs = 1

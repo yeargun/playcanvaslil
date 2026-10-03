@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "package": "playcanvaslil",
+  "version": "0.1.0",
+  "checkedAt": "2026-10-03T15:05:13.115700+00:00",
+  "compilerSha256": "8ff44fabb92c949e68240ce6541038fd52e2f3c04d1a9ac470031e4238541c3a",
+  "buildReport": "./comparison/package-build-report.json",
+  "packageBuildSeconds": 4.51,
+  "validation": {
+    "ok": true,
+    "checks": [
+      {
+        "suite": "test",
+        "command": [
+          "bash",
+          "-c",
+          "npm run test:artifact"
+        ],
+        "returncode": 0,
+        "log": "./comparison/package-validation/test.log",
+        "logSha256": "110b80fdf739379f676515adf519ff5cd96b45f913e5bf2bdf07951fb8adb31c"
+      },
+      {
+        "suite": "pack",
+        "command": [
+          "npm",
+          "pack",
+          "--dry-run",
+          "--json"
+        ],
+        "returncode": 0,
+        "log": "./comparison/package-validation/pack.log",
+        "logSha256": "933a36390741514e9031583a2674388679bfd8354527a31c89cf25567f6191da"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "path": "src/shader-processing/closed-world.factory.js",
+      "sha256": "7206750d14955aece52b8420646e98880150e7e9742bf2522892165398b09de3"
+    },
+    {
+      "path": "src/shader-processing/closed-world.js",
+      "sha256": "0789b6e1f0d8e9d969591e9e568f80983d47a8e236a1f98a3f63c15db2b84077"
+    },
+    {
+      "path": "src/shader-processing/entry.lil",
+      "sha256": "ee32f1b85e165521bc83210a3e643c2b3fbc5df65b3f088568955b30652cdc28"
+    },
+    {
+      "path": "src/shader-processing/facade-utils.js",
+      "sha256": "3b923ffe002d909b57be09a17c01b2eafa768fa80c480db618488846a5daf7ca"
+    },
+    {
+      "path": "src/shader-processing/index.facade.js",
+      "sha256": "c1dd633d9dfa0f6e24c4fce7ece630a5fccc256f4f486f92bfef3b3a8ba37194"
+    },
+    {
+      "path": "src/shader-processing/package-closed.lil",
+      "sha256": "b94c9587f85f204223b40f906e15231c851a18dabc3bbc0faf42973c59ff031b"
+    },
+    {
+      "path": "src/shader-processing/package-hosts.lil",
+      "sha256": "f4afee04b363e0df7609b52d0b3e2e25153fe66eb99bbab2705884c2bde2a41d"
+    },
+    {
+      "path": "src/shader-processing/package.lil",
+      "sha256": "caf0e1b92cf80745338b2d367bb198ef532ba20f1c8385380a46c9ead2664c5e"
+    },
+    {
+      "path": "src/shader-processing/preprocessor.facade.js",
+      "sha256": "ab6ff60b9671e113175e08258510cdf4746347fce002abd5f04e147bf8d559c3"
+    },
+    {
+      "path": "src/shader-processing/preprocessor.facade.lil",
+      "sha256": "78595724181e188bc957f598fa0da9df3bcfc921886ab184abfe431f387f87af"
+    },
+    {
+      "path": "src/shader-processing/preprocessor.factory.js",
+      "sha256": "b23fc46a2ed9f47735c38e911b7376c8b0d031509703c2925d8ccd092a5f4773"
+    },
+    {
+      "path": "src/shader-processing/preprocessor.lil",
+      "sha256": "ef4adf1ce79cb64f2a9a8203bfdf2dc1b8835ffacda1b77555c116c0669bb814"
+    },
+    {
+      "path": "src/shader-processing/shader-definition-utils.debug.js",
+      "sha256": "a47daf8256bdb0046a7b111eec52099e3278bd4e64788d4772cfa87967021060"
+    },
+    {
+      "path": "src/shader-processing/shader-definition-utils.differential.mjs",
+      "sha256": "9071cefbc39273069323ad2c0f2a02dd3b0e9307e6278b4171e78384f761ad42"
+    },
+    {
+      "path": "src/shader-processing/shader-definition-utils.facade.js",
+      "sha256": "ede29f6c7425d37d834dc3036f58ad59fe4bbcaf6de0473aae6374fa4a58efaf"
+    },
+    {
+      "path": "src/shader-processing/shader-definition-utils.facade.lil",
+      "sha256": "34266678c10e81adbaaf5500a72e8c3e8a7f86e484ffce59d6b2876c3c6c7bfb"
+    },
+    {
+      "path": "src/shader-processing/shader-definition-utils.factory.js",
+      "sha256": "f6cbed5c96218d6ec255952579f2887d2010b153adab673331cce575debdb663"
+    },
+    {
+      "path": "src/shader-processing/shader-definition-utils.host.js",
+      "sha256": "0da2b4963a4f690efddf636fa926e68a476080be552fbba047862bd6bfb74b87"
+    },
+    {
+      "path": "src/shader-processing/shader-definition-utils.lil",
+      "sha256": "6ccb2f707cf68f457afa304272128cecb413d0bbeb8246da87679f3db55f1da7"
+    },
+    {
+      "path": "src/shader-processing/shader-processor-glsl.differential.mjs",
+      "sha256": "6f37e9f05b3db5250f1a76c77d1a515328ae3854ef809ea0758d068dd16bf9ab"
+    },
+    {
+      "path": "src/shader-processing/shader-processor-glsl.facade.js",
+      "sha256": "cef3180d4d3f3710d15148194d60b4c56178ec4f827e8fbc4cfe75cee4337355"
+    },
+    {
+      "path": "src/shader-processing/shader-processor-glsl.facade.lil",
+      "sha256": "9f62a02ec0a1c165bb3981cca9a7c6002dd47c42431aa6878ffaaa63c830244b"
+    },
+    {
+      "path": "src/shader-processing/shader-processor-glsl.factory.js",
+      "sha256": "18042841e36647fd9db6f3c927507c2853fcd49fee62f155a964803f5430e839"
+    },
+    {
+      "path": "src/shader-processing/shader-processor-glsl.host.js",
+      "sha256": "98177b20e7b75bf4b25feabb9be658e5de524eca95df0c82f41cf23a34a5be8b"
+    },
+    {
+      "path": "src/shader-processing/shader-processor-glsl.lil",
+      "sha256": "5427fdadfa1882e4b2cd2b65ac97bfd840d484f4c8a648478e1c80c886a08af3"
+    },
+    {
+      "path": "src/shader-processing/webgpu-shader-processor-wgsl.facade.js",
+      "sha256": "e86fb7e6ed946a159654e51ad1c3b92003af8a4b6812c3da3eab178cadc24f91"
+    },
+    {
+      "path": "src/shader-processing/webgpu-shader-processor-wgsl.facade.lil",
+      "sha256": "0363ab1f32220eb95e36b21c4a230c2719abb650d0fc466c9bcb4b6fffbb3d7f"
+    },
+    {
+      "path": "src/shader-processing/webgpu-shader-processor-wgsl.factory.js",
+      "sha256": "da62f18a5c9015e5ca722b06a183d41f64a93be2650c10223898d45f9d567fde"
+    },
+    {
+      "path": "src/shader-processing/webgpu-shader-processor-wgsl.host.js",
+      "sha256": "33c255eda64f70a1f8ba6861c53066f8b716405e90d0b90d827d2cdd8cf62653"
+    },
+    {
+      "path": "src/shader-processing/webgpu-shader-processor-wgsl.lil",
+      "sha256": "07c3ec58502b366d5cd8116655326aa8a0011cde68986e602b2407393934c750"
+    },
+    {
+      "path": "config/development.toml",
+      "sha256": "21271a22a7afcdc4e4afd48a7def11bd2e62c12be07ad5d3a9cb7861dcbbc370"
+    },
+    {
+      "path": "config/external-hosts.toml",
+      "sha256": "572051a09871b1e6b2028ccbe83fabbadd19fc6ebbdbee5c86ddf4a804a3e3aa"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "dist/.lilscript/development.json",
+      "bytes": 43626,
+      "sha256": "7e1382a3fde5bc96fd388bfdbc1e8a07b552dfd7dec9462c1d1e43f6fd37d23a"
+    },
+    {
+      "path": "dist/.lilscript/external-hosts.json",
+      "bytes": 6604,
+      "sha256": "be050399a58ab24a6a7882e689b7bf734286957abcdd7d9fe3aeb5561512da51"
+    },
+    {
+      "path": "dist/.lilscript/public.json",
+      "bytes": 76624,
+      "sha256": "4bb4579de2d4416eafef9e01abb919293fe4382fa177b125f718d0eedc1a099b"
+    },
+    {
+      "path": "dist/lilscript.manifest.json",
+      "bytes": 10019,
+      "sha256": "e7065296230c61c91779b86633138ed5c488c76d6ec07b3742182aa054bdf9f5"
+    },
+    {
+      "path": "dist/shader-definition-utils.development.js",
+      "bytes": 59359,
+      "sha256": "a52693ff1600322253f4cd68443649fef3d70d62cf7ffe9ba216202f28931eeb"
+    },
+    {
+      "path": "dist/shader-processing.closed.js",
+      "bytes": 110017,
+      "sha256": "17fb99b8c8470c83386cad09e50d0e58870d4aacda0cf7a2b39146d66f613676"
+    },
+    {
+      "path": "dist/shader-processing.closed.official.js",
+      "bytes": 67422,
+      "sha256": "3002b5e49f6a2671cc2b43a72f38600fa55ec43cbf51797a5d4ddee29dac067a"
+    },
+    {
+      "path": "dist/shader-processing.external.js",
+      "bytes": 30634,
+      "sha256": "6e9cb55b1a76621b24708b428d2907ad1b85b96fb0800ec7775305127a2654a9"
+    },
+    {
+      "path": "dist/shader-processing.js",
+      "bytes": 112004,
+      "sha256": "36e8c9eafa5222f7cbc88c95282303f0a589434cec4c6bcdd4313ccc8a9f9f1b"
+    },
+    {
+      "path": "dist/shader-processing.official.js",
+      "bytes": 67112,
+      "sha256": "53ac18aca83067eac77e66d5acaf3343facbf9095ca707891b767e388d0f1796"
+    }
+  ],
+  "scope": "Checked repository package; independent of npm publication. Main-entry objective comparisons have separate artifacts and timings."
+}

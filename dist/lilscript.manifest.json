@@ -1,0 +1,463 @@
+{
+  "version": 5,
+  "outputs": [
+    {
+      "mode": "single",
+      "format": "esm",
+      "entries": [
+        {
+          "name": "public",
+          "file": "shader-processing.js",
+          "dynamic": false,
+          "closure": [
+            "shader-processing.js"
+          ],
+          "row": 22767,
+          "raw_row": 112004
+        }
+      ],
+      "files": [
+        {
+          "file": "shader-processing.js",
+          "role": "entry",
+          "source_map_for": null,
+          "label": [
+            "public"
+          ],
+          "modules": [
+            "preprocessor.lil",
+            "webgpu-shader-processor-wgsl.lil",
+            "shader-processor-glsl.lil",
+            "shader-definition-utils.facade.lil",
+            "shader-definition-utils.lil",
+            "preprocessor.facade.lil",
+            "shader-processor-glsl.facade.lil",
+            "webgpu-shader-processor-wgsl.facade.lil",
+            "module-12",
+            "module-13",
+            "module-14",
+            "module-15",
+            "module-16",
+            "module-17",
+            "module-18",
+            "module-19",
+            "module-20",
+            "module-21",
+            "module-22",
+            "module-23",
+            "module-24",
+            "module-25",
+            "module-26",
+            "module-27",
+            "module-28",
+            "module-29",
+            "module-30",
+            "module-31",
+            "module-32",
+            "module-33",
+            "module-34",
+            "module-35",
+            "module-36",
+            "module-37",
+            "module-38",
+            "module-39"
+          ],
+          "anchored": true,
+          "imports": [],
+          "dynamic_imports": [],
+          "bytes": 112004,
+          "codec_bytes": 22767,
+          "sha256": "36e8c9eafa5222f7cbc88c95282303f0a589434cec4c6bcdd4313ccc8a9f9f1b"
+        }
+      ],
+      "side_effects": [
+        "shader-processing.js"
+      ],
+      "codec_total": 22767,
+      "rows_total": 22767,
+      "setters": 0,
+      "output": "public/primary",
+      "codec": "brotli",
+      "codec_settings": {
+        "brotli": {
+          "quality": 11,
+          "window": 22,
+          "mode": "generic"
+        },
+        "gzip": {
+          "level": 9,
+          "window": 15
+        }
+      },
+      "policy_fingerprint": [
+        235,
+        26,
+        196,
+        125,
+        179,
+        58,
+        163,
+        165,
+        155,
+        75,
+        35,
+        187,
+        135,
+        40,
+        67,
+        96,
+        77,
+        196,
+        12,
+        167,
+        136,
+        252,
+        252,
+        11,
+        213,
+        231,
+        47,
+        114,
+        110,
+        236,
+        59,
+        201
+      ]
+    },
+    {
+      "mode": "single",
+      "format": "esm",
+      "entries": [
+        {
+          "name": "closed",
+          "file": "shader-processing.closed.js",
+          "dynamic": false,
+          "closure": [
+            "shader-processing.closed.js"
+          ],
+          "row": 22336,
+          "raw_row": 110017
+        }
+      ],
+      "files": [
+        {
+          "file": "shader-processing.closed.js",
+          "role": "entry",
+          "source_map_for": null,
+          "label": [
+            "closed"
+          ],
+          "modules": [
+            "package-closed.lil",
+            "preprocessor.lil",
+            "webgpu-shader-processor-wgsl.lil",
+            "shader-processor-glsl.lil",
+            "shader-definition-utils.facade.lil",
+            "shader-definition-utils.lil",
+            "module-12",
+            "module-13",
+            "module-14",
+            "module-15",
+            "module-16",
+            "module-17",
+            "module-18",
+            "module-19",
+            "module-20",
+            "module-21",
+            "module-22",
+            "module-23",
+            "module-24",
+            "module-25",
+            "module-26",
+            "module-27",
+            "module-28",
+            "module-29",
+            "module-30",
+            "module-31",
+            "module-32",
+            "module-33",
+            "module-34",
+            "module-35",
+            "module-36",
+            "module-37",
+            "module-38",
+            "module-39"
+          ],
+          "anchored": true,
+          "imports": [],
+          "dynamic_imports": [],
+          "bytes": 110017,
+          "codec_bytes": 22336,
+          "sha256": "17fb99b8c8470c83386cad09e50d0e58870d4aacda0cf7a2b39146d66f613676"
+        }
+      ],
+      "side_effects": [
+        "shader-processing.closed.js"
+      ],
+      "codec_total": 22336,
+      "rows_total": 22336,
+      "setters": 0,
+      "output": "public/closed",
+      "codec": "brotli",
+      "codec_settings": {
+        "brotli": {
+          "quality": 11,
+          "window": 22,
+          "mode": "generic"
+        },
+        "gzip": {
+          "level": 9,
+          "window": 15
+        }
+      },
+      "policy_fingerprint": [
+        87,
+        166,
+        162,
+        2,
+        31,
+        66,
+        146,
+        24,
+        200,
+        223,
+        97,
+        202,
+        114,
+        35,
+        22,
+        36,
+        225,
+        184,
+        80,
+        214,
+        127,
+        61,
+        88,
+        161,
+        169,
+        179,
+        219,
+        69,
+        11,
+        147,
+        96,
+        124
+      ]
+    },
+    {
+      "mode": "single",
+      "format": "esm",
+      "entries": [
+        {
+          "name": "api",
+          "file": "shader-definition-utils.development.js",
+          "dynamic": false,
+          "closure": [
+            "shader-definition-utils.development.js"
+          ],
+          "row": 59359,
+          "raw_row": 59359
+        }
+      ],
+      "files": [
+        {
+          "file": "shader-definition-utils.development.js",
+          "role": "entry",
+          "source_map_for": null,
+          "label": [
+            "api"
+          ],
+          "modules": [
+            "shader-definition-utils.facade.lil",
+            "shader-definition-utils.lil",
+            "module-2",
+            "module-3",
+            "module-4",
+            "module-5",
+            "module-6",
+            "module-7",
+            "module-8",
+            "module-9",
+            "module-10",
+            "module-11",
+            "module-12",
+            "module-13",
+            "module-14",
+            "module-15",
+            "module-16",
+            "module-17"
+          ],
+          "anchored": true,
+          "imports": [],
+          "dynamic_imports": [],
+          "bytes": 59359,
+          "codec_bytes": 59359,
+          "sha256": "a52693ff1600322253f4cd68443649fef3d70d62cf7ffe9ba216202f28931eeb"
+        }
+      ],
+      "side_effects": [
+        "shader-definition-utils.development.js"
+      ],
+      "codec_total": 59359,
+      "rows_total": 59359,
+      "setters": 0,
+      "output": "development/primary",
+      "codec": "raw",
+      "codec_settings": {
+        "brotli": {
+          "quality": 11,
+          "window": 22,
+          "mode": "generic"
+        },
+        "gzip": {
+          "level": 9,
+          "window": 15
+        }
+      },
+      "policy_fingerprint": [
+        225,
+        95,
+        212,
+        196,
+        237,
+        80,
+        72,
+        15,
+        126,
+        4,
+        223,
+        160,
+        10,
+        126,
+        56,
+        167,
+        152,
+        104,
+        244,
+        216,
+        129,
+        220,
+        132,
+        89,
+        209,
+        181,
+        20,
+        81,
+        3,
+        39,
+        203,
+        236
+      ]
+    },
+    {
+      "mode": "single",
+      "format": "esm",
+      "entries": [
+        {
+          "name": "api",
+          "file": "shader-processing.external.js",
+          "dynamic": false,
+          "closure": [
+            "shader-processing.external.js"
+          ],
+          "row": 30634,
+          "raw_row": 30634
+        }
+      ],
+      "files": [
+        {
+          "file": "shader-processing.external.js",
+          "role": "entry",
+          "source_map_for": null,
+          "label": [
+            "api"
+          ],
+          "modules": [
+            "preprocessor.facade.lil",
+            "preprocessor.lil",
+            "webgpu-shader-processor-wgsl.lil",
+            "shader-processor-glsl.facade.lil",
+            "shader-processor-glsl.lil",
+            "shader-definition-utils.facade.lil",
+            "shader-definition-utils.lil",
+            "webgpu-shader-processor-wgsl.facade.lil",
+            "module-11",
+            "module-12",
+            "module-13",
+            "module-14",
+            "module-15",
+            "module-16",
+            "module-17",
+            "module-18",
+            "module-19",
+            "module-20",
+            "module-21"
+          ],
+          "anchored": true,
+          "imports": [],
+          "dynamic_imports": [],
+          "bytes": 30634,
+          "codec_bytes": 30634,
+          "sha256": "6e9cb55b1a76621b24708b428d2907ad1b85b96fb0800ec7775305127a2654a9"
+        }
+      ],
+      "side_effects": [
+        "shader-processing.external.js"
+      ],
+      "codec_total": 30634,
+      "rows_total": 30634,
+      "setters": 0,
+      "output": "external-hosts/primary",
+      "codec": "raw",
+      "codec_settings": {
+        "brotli": {
+          "quality": 11,
+          "window": 22,
+          "mode": "generic"
+        },
+        "gzip": {
+          "level": 9,
+          "window": 15
+        }
+      },
+      "policy_fingerprint": [
+        80,
+        191,
+        31,
+        149,
+        133,
+        50,
+        150,
+        113,
+        180,
+        53,
+        178,
+        59,
+        215,
+        14,
+        217,
+        201,
+        237,
+        140,
+        14,
+        36,
+        173,
+        145,
+        111,
+        192,
+        62,
+        99,
+        48,
+        11,
+        30,
+        62,
+        213,
+        142
+      ]
+    }
+  ],
+  "aliases": {},
+  "providers": [],
+  "source_sha256": "5bdd61fa7d531e93ad0880249c68b41b1104671dff030cade815f248a5b59139"
+}

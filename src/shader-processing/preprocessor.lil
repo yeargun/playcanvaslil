@@ -2,13 +2,13 @@ import extern { Debug } from "../../upstream/engine/src/core/debug.js";
 import extern { assertPc, debugCall } from "./webgpu-shader-processor-wgsl.host.js";
 
 extern JsValue Debug;
-extern void assertPc(bool condition, string message);
-extern void debugCall(func()->void callback);
+debug extern void assertPc(bool condition, string message);
+debug extern void debugCall(func()->void callback);
 extern JsValue Array;
 extern JsValue Number;
 extern JsValue console;
 extern float parseFloat(JsValue value);
-extern int parseInt(string value, int radix);
+extern number parseInt(string value, int radix);
 extern string String(int value);
 
 struct Evaluation {
@@ -150,7 +150,7 @@ export string stripUnusedColorAttachments(string source, JsValue options) {
     if (!JS.isNullish(matches)) {
       auto countMatch = (JsValue rawMatch) => {
         string matched = JS.string(rawMatch);
-        int index = parseInt(matched.charAt(matched.length - 1), 10);
+        int index = parseInt(matched.charAt(matched.length - 1), 10).toInt();
         int count = counts.get(index) ?? 0;
         counts.set(index, count + 1);
       };
@@ -169,7 +169,7 @@ export string stripUnusedColorAttachments(string source, JsValue options) {
         JsValue lineMatch = JS.invoke(JS.assume(line), "match", FRAGCOLOR);
         if (!JS.isNullish(lineMatch)) {
           string matched = JS.string(lineMatch[0]);
-          int index = parseInt(matched.charAt(matched.length - 1), 10);
+          int index = parseInt(matched.charAt(matched.length - 1), 10).toInt();
           JsValue count = JS.invoke(JS.assume(counts), "get", index);
           if (index > 0 && JS.strictEqual(count, 1)) {
             continue;
@@ -404,8 +404,7 @@ export string? _preprocess(
       ENDIF.lastIndex = keywordIndex;
       JsValue endifMatch = ENDIF.exec(source);
 
-      JsValue maybeBlockInfo = JS.invoke(JS.assume(stack), "pop");
-      if (JS.isNullish(maybeBlockInfo)) {
+      if (stack.length == 0) {
         consoleError(
           "Shader preprocessing encountered \"#" + capture(endifMatch, 1) +
             "\" without a preceding #if #ifdef #ifndef while preprocessing " +
@@ -416,7 +415,7 @@ export string? _preprocess(
         error = true;
         continue;
       }
-      BlockInfo blockInfo = JS.assume(maybeBlockInfo);
+      BlockInfo blockInfo = stack.pop();
 
       string blockCode = "";
       if (blockInfo.keep) {
@@ -762,4 +761,28 @@ export Evaluation evaluate(string expression, Map<string, string> defines) {
   }
 
   return Evaluation{false, !correct};
+}
+
+// JavaScript facade boundary: records leave through their public fields, and
+// host-owned arrays retain their ordinary mutable JavaScript identity.
+export JsValue evaluateHost(string expression, Map<string, string> defines) {
+  Evaluation value = evaluate(expression, defines);
+  return JS.object("result", value.result, "error", value.error);
+}
+export JsValue evaluateAtomicExpressionHost(string expression, Map<string, string> defines) {
+  Evaluation value = evaluateAtomicExpression(expression, defines);
+  return JS.object("result", value.result, "error", value.error);
+}
+export bool keepHost(JsValue stack) {
+  for (int i = 0; i < JS.number(stack["length"]).toInt(); i++) {
+    if (!stack[i]["keep"].truthy()) return false;
+  }
+  return true;
+}
+export JsValue processParenthesesHost(
+  string expression,
+  Map<string, string> defines
+) {
+  ParenthesesResult value = processParentheses(expression, defines);
+  return JS.object("expression", value.expression, "error", value.error);
 }

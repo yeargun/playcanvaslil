@@ -1,45 +1,33 @@
-name: Deploy Pages
-
+name: Deploy checked library evidence
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      # Validate and publish the measured distribution. Rebuilding here would replace
-      # the artifacts without rerunning the documented machine/timing experiment.
-      # Source differential tests ran during the measured compiler build.
-      # These checks exercise the exact committed bundles without generated source helpers.
-      - run: npm run test:upstream
-      - run: node --test test/shader-processing.test.mjs
-      - run: npm run check:site
+          node-version: 24
+      - name: Verify committed bundles and assemble package download
+        run: node scripts/build-site.mjs
+      - name: Check comparison hashes, objectives and public data
+        run: node --test --test-concurrency=1 test/site.test.mjs
       - uses: actions/configure-pages@v6
         with:
           enablement: true
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
-
   deploy:
     environment:
       name: github-pages

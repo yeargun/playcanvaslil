@@ -1,0 +1,3130 @@
+{
+  "version": 5,
+  "source_sha256": "11d9be81e4ff1fffdd848e28dd191dde84a4a16b6f6719cd220d89101f1410aa",
+  "inputs": {
+    "root": 0,
+    "entries": [
+      {
+        "name": "closed",
+        "module": 0
+      },
+      {
+        "name": "public",
+        "module": 8
+      }
+    ],
+    "modules": [
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/package-closed.lil",
+        "bytes": 672,
+        "sha256": "b94c9587f85f204223b40f906e15231c851a18dabc3bbc0faf42973c59ff031b",
+        "dependencies": [
+          1,
+          2,
+          5,
+          6
+        ],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/package-hosts.lil",
+        "bytes": 672,
+        "sha256": "f4afee04b363e0df7609b52d0b3e2e25153fe66eb99bbab2705884c2bde2a41d",
+        "dependencies": [],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/entry.lil",
+        "bytes": 1732,
+        "sha256": "ee32f1b85e165521bc83210a3e643c2b3fbc5df65b3f088568955b30652cdc28",
+        "dependencies": [
+          3,
+          4
+        ],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/preprocessor.lil",
+        "bytes": 24268,
+        "sha256": "ef4adf1ce79cb64f2a9a8203bfdf2dc1b8835ffacda1b77555c116c0669bb814",
+        "dependencies": [],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/webgpu-shader-processor-wgsl.lil",
+        "bytes": 49425,
+        "sha256": "07c3ec58502b366d5cd8116655326aa8a0011cde68986e602b2407393934c750",
+        "dependencies": [],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.lil",
+        "bytes": 17087,
+        "sha256": "5427fdadfa1882e4b2cd2b65ac97bfd840d484f4c8a648478e1c80c886a08af3",
+        "dependencies": [],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/shader-definition-utils.facade.lil",
+        "bytes": 844,
+        "sha256": "34266678c10e81adbaaf5500a72e8c3e8a7f86e484ffce59d6b2876c3c6c7bfb",
+        "dependencies": [
+          7
+        ],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/shader-definition-utils.lil",
+        "bytes": 13514,
+        "sha256": "6ccb2f707cf68f457afa304272128cecb413d0bbeb8246da87679f3db55f1da7",
+        "dependencies": [],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/package.lil",
+        "bytes": 439,
+        "sha256": "caf0e1b92cf80745338b2d367bb198ef532ba20f1c8385380a46c9ead2664c5e",
+        "dependencies": [
+          1,
+          9,
+          10,
+          6,
+          11
+        ],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/preprocessor.facade.lil",
+        "bytes": 1738,
+        "sha256": "78595724181e188bc957f598fa0da9df3bcfc921886ab184abfe431f387f87af",
+        "dependencies": [
+          2,
+          3
+        ],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/shader-processor-glsl.facade.lil",
+        "bytes": 1353,
+        "sha256": "9f62a02ec0a1c165bb3981cca9a7c6002dd47c42431aa6878ffaaa63c830244b",
+        "dependencies": [
+          5
+        ],
+        "dynamic_dependencies": []
+      },
+      {
+        "path": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/webgpu-shader-processor-wgsl.facade.lil",
+        "bytes": 1700,
+        "sha256": "0363ab1f32220eb95e36b21c4a230c2719abb650d0fc466c9bcb4b6fffbb3d7f",
+        "dependencies": [
+          2,
+          4
+        ],
+        "dynamic_dependencies": []
+      }
+    ],
+    "host_modules": [
+      {
+        "specifier": "./closed-world.factory.js",
+        "stem": "closed-world_factory",
+        "delivered_bytes": 357,
+        "sha256": "860b5313cd44849b058f98b78874d8807be8f8ab66a3a100c19b1b65c3e85c68",
+        "exports": [
+          [
+            "createClosed",
+            "createClosed"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/core/tracing.js",
+        "stem": "tracing",
+        "delivered_bytes": 258,
+        "sha256": "53aafc6a52553418f4d3b7ab91195f720f5bc02221d6908f3f78bc7aab86bc10",
+        "exports": [
+          [
+            "Tracing",
+            "Tracing"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/core/debug.js",
+        "stem": "debug",
+        "delivered_bytes": 1774,
+        "sha256": "1ba7184444b9a94afe2700777fe2ab93e59f192ba5449606ec85052f52dcd6ec",
+        "exports": [
+          [
+            "Debug",
+            "Debug"
+          ],
+          [
+            "DebugHelper",
+            "DebugHelper"
+          ]
+        ],
+        "imports": [
+          [
+            1,
+            [
+              [
+                "Tracing",
+                "Tracing"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/constants.js",
+        "stem": "constants",
+        "delivered_bytes": 20872,
+        "sha256": "445e4e9dffbdf7a18073ceca25a0fe4b6333775c8c36ce4764029110b8296d7c",
+        "exports": [
+          [
+            "ADDRESS_REPEAT",
+            "ADDRESS_REPEAT"
+          ],
+          [
+            "ADDRESS_CLAMP_TO_EDGE",
+            "ADDRESS_CLAMP_TO_EDGE"
+          ],
+          [
+            "ADDRESS_MIRRORED_REPEAT",
+            "ADDRESS_MIRRORED_REPEAT"
+          ],
+          [
+            "BLENDMODE_ZERO",
+            "BLENDMODE_ZERO"
+          ],
+          [
+            "BLENDMODE_ONE",
+            "BLENDMODE_ONE"
+          ],
+          [
+            "BLENDMODE_SRC_COLOR",
+            "BLENDMODE_SRC_COLOR"
+          ],
+          [
+            "BLENDMODE_ONE_MINUS_SRC_COLOR",
+            "BLENDMODE_ONE_MINUS_SRC_COLOR"
+          ],
+          [
+            "BLENDMODE_DST_COLOR",
+            "BLENDMODE_DST_COLOR"
+          ],
+          [
+            "BLENDMODE_ONE_MINUS_DST_COLOR",
+            "BLENDMODE_ONE_MINUS_DST_COLOR"
+          ],
+          [
+            "BLENDMODE_SRC_ALPHA",
+            "BLENDMODE_SRC_ALPHA"
+          ],
+          [
+            "BLENDMODE_SRC_ALPHA_SATURATE",
+            "BLENDMODE_SRC_ALPHA_SATURATE"
+          ],
+          [
+            "BLENDMODE_ONE_MINUS_SRC_ALPHA",
+            "BLENDMODE_ONE_MINUS_SRC_ALPHA"
+          ],
+          [
+            "BLENDMODE_DST_ALPHA",
+            "BLENDMODE_DST_ALPHA"
+          ],
+          [
+            "BLENDMODE_ONE_MINUS_DST_ALPHA",
+            "BLENDMODE_ONE_MINUS_DST_ALPHA"
+          ],
+          [
+            "BLENDMODE_CONSTANT",
+            "BLENDMODE_CONSTANT"
+          ],
+          [
+            "BLENDMODE_ONE_MINUS_CONSTANT",
+            "BLENDMODE_ONE_MINUS_CONSTANT"
+          ],
+          [
+            "BLENDMODE_SRC1_COLOR",
+            "BLENDMODE_SRC1_COLOR"
+          ],
+          [
+            "BLENDMODE_ONE_MINUS_SRC1_COLOR",
+            "BLENDMODE_ONE_MINUS_SRC1_COLOR"
+          ],
+          [
+            "BLENDMODE_SRC1_ALPHA",
+            "BLENDMODE_SRC1_ALPHA"
+          ],
+          [
+            "BLENDMODE_ONE_MINUS_SRC1_ALPHA",
+            "BLENDMODE_ONE_MINUS_SRC1_ALPHA"
+          ],
+          [
+            "BLENDEQUATION_ADD",
+            "BLENDEQUATION_ADD"
+          ],
+          [
+            "BLENDEQUATION_SUBTRACT",
+            "BLENDEQUATION_SUBTRACT"
+          ],
+          [
+            "BLENDEQUATION_REVERSE_SUBTRACT",
+            "BLENDEQUATION_REVERSE_SUBTRACT"
+          ],
+          [
+            "BLENDEQUATION_MIN",
+            "BLENDEQUATION_MIN"
+          ],
+          [
+            "BLENDEQUATION_MAX",
+            "BLENDEQUATION_MAX"
+          ],
+          [
+            "BUFFERUSAGE_READ",
+            "BUFFERUSAGE_READ"
+          ],
+          [
+            "BUFFERUSAGE_WRITE",
+            "BUFFERUSAGE_WRITE"
+          ],
+          [
+            "BUFFERUSAGE_COPY_SRC",
+            "BUFFERUSAGE_COPY_SRC"
+          ],
+          [
+            "BUFFERUSAGE_COPY_DST",
+            "BUFFERUSAGE_COPY_DST"
+          ],
+          [
+            "BUFFERUSAGE_INDEX",
+            "BUFFERUSAGE_INDEX"
+          ],
+          [
+            "BUFFERUSAGE_VERTEX",
+            "BUFFERUSAGE_VERTEX"
+          ],
+          [
+            "BUFFERUSAGE_UNIFORM",
+            "BUFFERUSAGE_UNIFORM"
+          ],
+          [
+            "BUFFERUSAGE_STORAGE",
+            "BUFFERUSAGE_STORAGE"
+          ],
+          [
+            "BUFFERUSAGE_INDIRECT",
+            "BUFFERUSAGE_INDIRECT"
+          ],
+          [
+            "BUFFER_STATIC",
+            "BUFFER_STATIC"
+          ],
+          [
+            "BUFFER_DYNAMIC",
+            "BUFFER_DYNAMIC"
+          ],
+          [
+            "BUFFER_STREAM",
+            "BUFFER_STREAM"
+          ],
+          [
+            "BUFFER_GPUDYNAMIC",
+            "BUFFER_GPUDYNAMIC"
+          ],
+          [
+            "TRANSFORM_FEEDBACK_INTERLEAVED",
+            "TRANSFORM_FEEDBACK_INTERLEAVED"
+          ],
+          [
+            "TRANSFORM_FEEDBACK_SEPARATE",
+            "TRANSFORM_FEEDBACK_SEPARATE"
+          ],
+          [
+            "CLEARFLAG_COLOR",
+            "CLEARFLAG_COLOR"
+          ],
+          [
+            "CLEARFLAG_DEPTH",
+            "CLEARFLAG_DEPTH"
+          ],
+          [
+            "CLEARFLAG_STENCIL",
+            "CLEARFLAG_STENCIL"
+          ],
+          [
+            "CUBEFACE_POSX",
+            "CUBEFACE_POSX"
+          ],
+          [
+            "CUBEFACE_NEGX",
+            "CUBEFACE_NEGX"
+          ],
+          [
+            "CUBEFACE_POSY",
+            "CUBEFACE_POSY"
+          ],
+          [
+            "CUBEFACE_NEGY",
+            "CUBEFACE_NEGY"
+          ],
+          [
+            "CUBEFACE_POSZ",
+            "CUBEFACE_POSZ"
+          ],
+          [
+            "CUBEFACE_NEGZ",
+            "CUBEFACE_NEGZ"
+          ],
+          [
+            "RENDERTARGET_ORIGIN_TOP",
+            "RENDERTARGET_ORIGIN_TOP"
+          ],
+          [
+            "RENDERTARGET_ORIGIN_BOTTOM",
+            "RENDERTARGET_ORIGIN_BOTTOM"
+          ],
+          [
+            "RENDERTARGET_ORIGIN_NATIVE",
+            "RENDERTARGET_ORIGIN_NATIVE"
+          ],
+          [
+            "DEPTHRESOLVE_SAMPLE0",
+            "DEPTHRESOLVE_SAMPLE0"
+          ],
+          [
+            "DEPTHRESOLVE_MIN",
+            "DEPTHRESOLVE_MIN"
+          ],
+          [
+            "DEPTHRESOLVE_MAX",
+            "DEPTHRESOLVE_MAX"
+          ],
+          [
+            "CULLFACE_NONE",
+            "CULLFACE_NONE"
+          ],
+          [
+            "CULLFACE_BACK",
+            "CULLFACE_BACK"
+          ],
+          [
+            "CULLFACE_FRONT",
+            "CULLFACE_FRONT"
+          ],
+          [
+            "CULLFACE_FRONTANDBACK",
+            "CULLFACE_FRONTANDBACK"
+          ],
+          [
+            "FRONTFACE_CCW",
+            "FRONTFACE_CCW"
+          ],
+          [
+            "FRONTFACE_CW",
+            "FRONTFACE_CW"
+          ],
+          [
+            "FILTER_NEAREST",
+            "FILTER_NEAREST"
+          ],
+          [
+            "FILTER_LINEAR",
+            "FILTER_LINEAR"
+          ],
+          [
+            "FILTER_NEAREST_MIPMAP_NEAREST",
+            "FILTER_NEAREST_MIPMAP_NEAREST"
+          ],
+          [
+            "FILTER_NEAREST_MIPMAP_LINEAR",
+            "FILTER_NEAREST_MIPMAP_LINEAR"
+          ],
+          [
+            "FILTER_LINEAR_MIPMAP_NEAREST",
+            "FILTER_LINEAR_MIPMAP_NEAREST"
+          ],
+          [
+            "FILTER_LINEAR_MIPMAP_LINEAR",
+            "FILTER_LINEAR_MIPMAP_LINEAR"
+          ],
+          [
+            "FUNC_NEVER",
+            "FUNC_NEVER"
+          ],
+          [
+            "FUNC_LESS",
+            "FUNC_LESS"
+          ],
+          [
+            "FUNC_EQUAL",
+            "FUNC_EQUAL"
+          ],
+          [
+            "FUNC_LESSEQUAL",
+            "FUNC_LESSEQUAL"
+          ],
+          [
+            "FUNC_GREATER",
+            "FUNC_GREATER"
+          ],
+          [
+            "FUNC_NOTEQUAL",
+            "FUNC_NOTEQUAL"
+          ],
+          [
+            "FUNC_GREATEREQUAL",
+            "FUNC_GREATEREQUAL"
+          ],
+          [
+            "FUNC_ALWAYS",
+            "FUNC_ALWAYS"
+          ],
+          [
+            "INDEXFORMAT_UINT8",
+            "INDEXFORMAT_UINT8"
+          ],
+          [
+            "INDEXFORMAT_UINT16",
+            "INDEXFORMAT_UINT16"
+          ],
+          [
+            "INDEXFORMAT_UINT32",
+            "INDEXFORMAT_UINT32"
+          ],
+          [
+            "indexFormatByteSize",
+            "indexFormatByteSize"
+          ],
+          [
+            "PIXELFORMAT_A8",
+            "PIXELFORMAT_A8"
+          ],
+          [
+            "PIXELFORMAT_L8",
+            "PIXELFORMAT_L8"
+          ],
+          [
+            "PIXELFORMAT_LA8",
+            "PIXELFORMAT_LA8"
+          ],
+          [
+            "PIXELFORMAT_RGB565",
+            "PIXELFORMAT_RGB565"
+          ],
+          [
+            "PIXELFORMAT_RGBA5551",
+            "PIXELFORMAT_RGBA5551"
+          ],
+          [
+            "PIXELFORMAT_RGBA4",
+            "PIXELFORMAT_RGBA4"
+          ],
+          [
+            "PIXELFORMAT_RGB8",
+            "PIXELFORMAT_RGB8"
+          ],
+          [
+            "PIXELFORMAT_RGBA8",
+            "PIXELFORMAT_RGBA8"
+          ],
+          [
+            "PIXELFORMAT_DXT1",
+            "PIXELFORMAT_DXT1"
+          ],
+          [
+            "PIXELFORMAT_DXT3",
+            "PIXELFORMAT_DXT3"
+          ],
+          [
+            "PIXELFORMAT_DXT5",
+            "PIXELFORMAT_DXT5"
+          ],
+          [
+            "PIXELFORMAT_RGB16F",
+            "PIXELFORMAT_RGB16F"
+          ],
+          [
+            "PIXELFORMAT_RGBA16F",
+            "PIXELFORMAT_RGBA16F"
+          ],
+          [
+            "PIXELFORMAT_RGB32F",
+            "PIXELFORMAT_RGB32F"
+          ],
+          [
+            "PIXELFORMAT_RGBA32F",
+            "PIXELFORMAT_RGBA32F"
+          ],
+          [
+            "PIXELFORMAT_R32F",
+            "PIXELFORMAT_R32F"
+          ],
+          [
+            "PIXELFORMAT_DEPTH",
+            "PIXELFORMAT_DEPTH"
+          ],
+          [
+            "PIXELFORMAT_DEPTHSTENCIL",
+            "PIXELFORMAT_DEPTHSTENCIL"
+          ],
+          [
+            "PIXELFORMAT_111110F",
+            "PIXELFORMAT_111110F"
+          ],
+          [
+            "PIXELFORMAT_SRGB8",
+            "PIXELFORMAT_SRGB8"
+          ],
+          [
+            "PIXELFORMAT_SRGBA8",
+            "PIXELFORMAT_SRGBA8"
+          ],
+          [
+            "PIXELFORMAT_ETC1",
+            "PIXELFORMAT_ETC1"
+          ],
+          [
+            "PIXELFORMAT_ETC2_RGB",
+            "PIXELFORMAT_ETC2_RGB"
+          ],
+          [
+            "PIXELFORMAT_ETC2_RGBA",
+            "PIXELFORMAT_ETC2_RGBA"
+          ],
+          [
+            "PIXELFORMAT_PVRTC_2BPP_RGB_1",
+            "PIXELFORMAT_PVRTC_2BPP_RGB_1"
+          ],
+          [
+            "PIXELFORMAT_PVRTC_2BPP_RGBA_1",
+            "PIXELFORMAT_PVRTC_2BPP_RGBA_1"
+          ],
+          [
+            "PIXELFORMAT_PVRTC_4BPP_RGB_1",
+            "PIXELFORMAT_PVRTC_4BPP_RGB_1"
+          ],
+          [
+            "PIXELFORMAT_PVRTC_4BPP_RGBA_1",
+            "PIXELFORMAT_PVRTC_4BPP_RGBA_1"
+          ],
+          [
+            "PIXELFORMAT_ASTC_4x4",
+            "PIXELFORMAT_ASTC_4x4"
+          ],
+          [
+            "PIXELFORMAT_ATC_RGB",
+            "PIXELFORMAT_ATC_RGB"
+          ],
+          [
+            "PIXELFORMAT_ATC_RGBA",
+            "PIXELFORMAT_ATC_RGBA"
+          ],
+          [
+            "PIXELFORMAT_BGRA8",
+            "PIXELFORMAT_BGRA8"
+          ],
+          [
+            "PIXELFORMAT_R8I",
+            "PIXELFORMAT_R8I"
+          ],
+          [
+            "PIXELFORMAT_R8U",
+            "PIXELFORMAT_R8U"
+          ],
+          [
+            "PIXELFORMAT_R16I",
+            "PIXELFORMAT_R16I"
+          ],
+          [
+            "PIXELFORMAT_R16U",
+            "PIXELFORMAT_R16U"
+          ],
+          [
+            "PIXELFORMAT_R32I",
+            "PIXELFORMAT_R32I"
+          ],
+          [
+            "PIXELFORMAT_R32U",
+            "PIXELFORMAT_R32U"
+          ],
+          [
+            "PIXELFORMAT_RG8I",
+            "PIXELFORMAT_RG8I"
+          ],
+          [
+            "PIXELFORMAT_RG8U",
+            "PIXELFORMAT_RG8U"
+          ],
+          [
+            "PIXELFORMAT_RG16I",
+            "PIXELFORMAT_RG16I"
+          ],
+          [
+            "PIXELFORMAT_RG16U",
+            "PIXELFORMAT_RG16U"
+          ],
+          [
+            "PIXELFORMAT_RG32I",
+            "PIXELFORMAT_RG32I"
+          ],
+          [
+            "PIXELFORMAT_RG32U",
+            "PIXELFORMAT_RG32U"
+          ],
+          [
+            "PIXELFORMAT_RGBA8I",
+            "PIXELFORMAT_RGBA8I"
+          ],
+          [
+            "PIXELFORMAT_RGBA8U",
+            "PIXELFORMAT_RGBA8U"
+          ],
+          [
+            "PIXELFORMAT_RGBA16I",
+            "PIXELFORMAT_RGBA16I"
+          ],
+          [
+            "PIXELFORMAT_RGBA16U",
+            "PIXELFORMAT_RGBA16U"
+          ],
+          [
+            "PIXELFORMAT_RGBA32I",
+            "PIXELFORMAT_RGBA32I"
+          ],
+          [
+            "PIXELFORMAT_RGBA32U",
+            "PIXELFORMAT_RGBA32U"
+          ],
+          [
+            "PIXELFORMAT_R16F",
+            "PIXELFORMAT_R16F"
+          ],
+          [
+            "PIXELFORMAT_RG16F",
+            "PIXELFORMAT_RG16F"
+          ],
+          [
+            "PIXELFORMAT_R8",
+            "PIXELFORMAT_R8"
+          ],
+          [
+            "PIXELFORMAT_RG8",
+            "PIXELFORMAT_RG8"
+          ],
+          [
+            "PIXELFORMAT_DXT1_SRGB",
+            "PIXELFORMAT_DXT1_SRGB"
+          ],
+          [
+            "PIXELFORMAT_DXT3_SRGBA",
+            "PIXELFORMAT_DXT3_SRGBA"
+          ],
+          [
+            "PIXELFORMAT_DXT5_SRGBA",
+            "PIXELFORMAT_DXT5_SRGBA"
+          ],
+          [
+            "PIXELFORMAT_ETC2_SRGB",
+            "PIXELFORMAT_ETC2_SRGB"
+          ],
+          [
+            "PIXELFORMAT_ETC2_SRGBA",
+            "PIXELFORMAT_ETC2_SRGBA"
+          ],
+          [
+            "PIXELFORMAT_ASTC_4x4_SRGB",
+            "PIXELFORMAT_ASTC_4x4_SRGB"
+          ],
+          [
+            "PIXELFORMAT_SBGRA8",
+            "PIXELFORMAT_SBGRA8"
+          ],
+          [
+            "PIXELFORMAT_BC6F",
+            "PIXELFORMAT_BC6F"
+          ],
+          [
+            "PIXELFORMAT_BC6UF",
+            "PIXELFORMAT_BC6UF"
+          ],
+          [
+            "PIXELFORMAT_BC7",
+            "PIXELFORMAT_BC7"
+          ],
+          [
+            "PIXELFORMAT_BC7_SRGBA",
+            "PIXELFORMAT_BC7_SRGBA"
+          ],
+          [
+            "PIXELFORMAT_DEPTH16",
+            "PIXELFORMAT_DEPTH16"
+          ],
+          [
+            "PIXELFORMAT_RG32F",
+            "PIXELFORMAT_RG32F"
+          ],
+          [
+            "PIXELFORMAT_RGB9E5",
+            "PIXELFORMAT_RGB9E5"
+          ],
+          [
+            "PIXELFORMAT_RG8S",
+            "PIXELFORMAT_RG8S"
+          ],
+          [
+            "PIXELFORMAT_RGBA8S",
+            "PIXELFORMAT_RGBA8S"
+          ],
+          [
+            "PIXELFORMAT_RGB10A2",
+            "PIXELFORMAT_RGB10A2"
+          ],
+          [
+            "PIXELFORMAT_RGB10A2U",
+            "PIXELFORMAT_RGB10A2U"
+          ],
+          [
+            "pixelFormatInfo",
+            "pixelFormatInfo"
+          ],
+          [
+            "isCompressedPixelFormat",
+            "isCompressedPixelFormat"
+          ],
+          [
+            "isSrgbPixelFormat",
+            "isSrgbPixelFormat"
+          ],
+          [
+            "isIntegerPixelFormat",
+            "isIntegerPixelFormat"
+          ],
+          [
+            "isMultisampleCapablePixelFormat",
+            "isMultisampleCapablePixelFormat"
+          ],
+          [
+            "isMultisampleResolveCapablePixelFormat",
+            "isMultisampleResolveCapablePixelFormat"
+          ],
+          [
+            "getGlslShaderType",
+            "getGlslShaderType"
+          ],
+          [
+            "getWgslShaderType",
+            "getWgslShaderType"
+          ],
+          [
+            "pixelFormatLinearToGamma",
+            "pixelFormatLinearToGamma"
+          ],
+          [
+            "pixelFormatGammaToLinear",
+            "pixelFormatGammaToLinear"
+          ],
+          [
+            "requiresManualGamma",
+            "requiresManualGamma"
+          ],
+          [
+            "getPixelFormatArrayType",
+            "getPixelFormatArrayType"
+          ],
+          [
+            "PRIMITIVE_POINTS",
+            "PRIMITIVE_POINTS"
+          ],
+          [
+            "PRIMITIVE_LINES",
+            "PRIMITIVE_LINES"
+          ],
+          [
+            "PRIMITIVE_LINELOOP",
+            "PRIMITIVE_LINELOOP"
+          ],
+          [
+            "PRIMITIVE_LINESTRIP",
+            "PRIMITIVE_LINESTRIP"
+          ],
+          [
+            "PRIMITIVE_TRIANGLES",
+            "PRIMITIVE_TRIANGLES"
+          ],
+          [
+            "PRIMITIVE_TRISTRIP",
+            "PRIMITIVE_TRISTRIP"
+          ],
+          [
+            "PRIMITIVE_TRIFAN",
+            "PRIMITIVE_TRIFAN"
+          ],
+          [
+            "SEMANTIC_POSITION",
+            "SEMANTIC_POSITION"
+          ],
+          [
+            "SEMANTIC_NORMAL",
+            "SEMANTIC_NORMAL"
+          ],
+          [
+            "SEMANTIC_TANGENT",
+            "SEMANTIC_TANGENT"
+          ],
+          [
+            "SEMANTIC_BLENDWEIGHT",
+            "SEMANTIC_BLENDWEIGHT"
+          ],
+          [
+            "SEMANTIC_BLENDINDICES",
+            "SEMANTIC_BLENDINDICES"
+          ],
+          [
+            "SEMANTIC_COLOR",
+            "SEMANTIC_COLOR"
+          ],
+          [
+            "SEMANTIC_TEXCOORD",
+            "SEMANTIC_TEXCOORD"
+          ],
+          [
+            "SEMANTIC_TEXCOORD0",
+            "SEMANTIC_TEXCOORD0"
+          ],
+          [
+            "SEMANTIC_TEXCOORD1",
+            "SEMANTIC_TEXCOORD1"
+          ],
+          [
+            "SEMANTIC_TEXCOORD2",
+            "SEMANTIC_TEXCOORD2"
+          ],
+          [
+            "SEMANTIC_TEXCOORD3",
+            "SEMANTIC_TEXCOORD3"
+          ],
+          [
+            "SEMANTIC_TEXCOORD4",
+            "SEMANTIC_TEXCOORD4"
+          ],
+          [
+            "SEMANTIC_TEXCOORD5",
+            "SEMANTIC_TEXCOORD5"
+          ],
+          [
+            "SEMANTIC_TEXCOORD6",
+            "SEMANTIC_TEXCOORD6"
+          ],
+          [
+            "SEMANTIC_TEXCOORD7",
+            "SEMANTIC_TEXCOORD7"
+          ],
+          [
+            "SEMANTIC_ATTR0",
+            "SEMANTIC_ATTR0"
+          ],
+          [
+            "SEMANTIC_ATTR1",
+            "SEMANTIC_ATTR1"
+          ],
+          [
+            "SEMANTIC_ATTR2",
+            "SEMANTIC_ATTR2"
+          ],
+          [
+            "SEMANTIC_ATTR3",
+            "SEMANTIC_ATTR3"
+          ],
+          [
+            "SEMANTIC_ATTR4",
+            "SEMANTIC_ATTR4"
+          ],
+          [
+            "SEMANTIC_ATTR5",
+            "SEMANTIC_ATTR5"
+          ],
+          [
+            "SEMANTIC_ATTR6",
+            "SEMANTIC_ATTR6"
+          ],
+          [
+            "SEMANTIC_ATTR7",
+            "SEMANTIC_ATTR7"
+          ],
+          [
+            "SEMANTIC_ATTR8",
+            "SEMANTIC_ATTR8"
+          ],
+          [
+            "SEMANTIC_ATTR9",
+            "SEMANTIC_ATTR9"
+          ],
+          [
+            "SEMANTIC_ATTR10",
+            "SEMANTIC_ATTR10"
+          ],
+          [
+            "SEMANTIC_ATTR11",
+            "SEMANTIC_ATTR11"
+          ],
+          [
+            "SEMANTIC_ATTR12",
+            "SEMANTIC_ATTR12"
+          ],
+          [
+            "SEMANTIC_ATTR13",
+            "SEMANTIC_ATTR13"
+          ],
+          [
+            "SEMANTIC_ATTR14",
+            "SEMANTIC_ATTR14"
+          ],
+          [
+            "SEMANTIC_ATTR15",
+            "SEMANTIC_ATTR15"
+          ],
+          [
+            "SHADERTAG_MATERIAL",
+            "SHADERTAG_MATERIAL"
+          ],
+          [
+            "STENCILOP_KEEP",
+            "STENCILOP_KEEP"
+          ],
+          [
+            "STENCILOP_ZERO",
+            "STENCILOP_ZERO"
+          ],
+          [
+            "STENCILOP_REPLACE",
+            "STENCILOP_REPLACE"
+          ],
+          [
+            "STENCILOP_INCREMENT",
+            "STENCILOP_INCREMENT"
+          ],
+          [
+            "STENCILOP_INCREMENTWRAP",
+            "STENCILOP_INCREMENTWRAP"
+          ],
+          [
+            "STENCILOP_DECREMENT",
+            "STENCILOP_DECREMENT"
+          ],
+          [
+            "STENCILOP_DECREMENTWRAP",
+            "STENCILOP_DECREMENTWRAP"
+          ],
+          [
+            "STENCILOP_INVERT",
+            "STENCILOP_INVERT"
+          ],
+          [
+            "TEXTURELOCK_NONE",
+            "TEXTURELOCK_NONE"
+          ],
+          [
+            "TEXTURELOCK_READ",
+            "TEXTURELOCK_READ"
+          ],
+          [
+            "TEXTURELOCK_WRITE",
+            "TEXTURELOCK_WRITE"
+          ],
+          [
+            "TEXTURETYPE_DEFAULT",
+            "TEXTURETYPE_DEFAULT"
+          ],
+          [
+            "TEXTURETYPE_RGBM",
+            "TEXTURETYPE_RGBM"
+          ],
+          [
+            "TEXTURETYPE_RGBE",
+            "TEXTURETYPE_RGBE"
+          ],
+          [
+            "TEXTURETYPE_RGBP",
+            "TEXTURETYPE_RGBP"
+          ],
+          [
+            "TEXTURETYPE_SWIZZLEGGGR",
+            "TEXTURETYPE_SWIZZLEGGGR"
+          ],
+          [
+            "TEXHINT_NONE",
+            "TEXHINT_NONE"
+          ],
+          [
+            "TEXHINT_SHADOWMAP",
+            "TEXHINT_SHADOWMAP"
+          ],
+          [
+            "TEXHINT_ASSET",
+            "TEXHINT_ASSET"
+          ],
+          [
+            "TEXHINT_LIGHTMAP",
+            "TEXHINT_LIGHTMAP"
+          ],
+          [
+            "TEXTUREDIMENSION_1D",
+            "TEXTUREDIMENSION_1D"
+          ],
+          [
+            "TEXTUREDIMENSION_2D",
+            "TEXTUREDIMENSION_2D"
+          ],
+          [
+            "TEXTUREDIMENSION_2D_ARRAY",
+            "TEXTUREDIMENSION_2D_ARRAY"
+          ],
+          [
+            "TEXTUREDIMENSION_CUBE",
+            "TEXTUREDIMENSION_CUBE"
+          ],
+          [
+            "TEXTUREDIMENSION_CUBE_ARRAY",
+            "TEXTUREDIMENSION_CUBE_ARRAY"
+          ],
+          [
+            "TEXTUREDIMENSION_3D",
+            "TEXTUREDIMENSION_3D"
+          ],
+          [
+            "SAMPLETYPE_FLOAT",
+            "SAMPLETYPE_FLOAT"
+          ],
+          [
+            "SAMPLETYPE_UNFILTERABLE_FLOAT",
+            "SAMPLETYPE_UNFILTERABLE_FLOAT"
+          ],
+          [
+            "SAMPLETYPE_DEPTH",
+            "SAMPLETYPE_DEPTH"
+          ],
+          [
+            "SAMPLETYPE_INT",
+            "SAMPLETYPE_INT"
+          ],
+          [
+            "SAMPLETYPE_UINT",
+            "SAMPLETYPE_UINT"
+          ],
+          [
+            "TEXTUREPROJECTION_NONE",
+            "TEXTUREPROJECTION_NONE"
+          ],
+          [
+            "TEXTUREPROJECTION_CUBE",
+            "TEXTUREPROJECTION_CUBE"
+          ],
+          [
+            "TEXTUREPROJECTION_EQUIRECT",
+            "TEXTUREPROJECTION_EQUIRECT"
+          ],
+          [
+            "TEXTUREPROJECTION_OCTAHEDRAL",
+            "TEXTUREPROJECTION_OCTAHEDRAL"
+          ],
+          [
+            "SHADERLANGUAGE_GLSL",
+            "SHADERLANGUAGE_GLSL"
+          ],
+          [
+            "SHADERLANGUAGE_WGSL",
+            "SHADERLANGUAGE_WGSL"
+          ],
+          [
+            "TYPE_INT8",
+            "TYPE_INT8"
+          ],
+          [
+            "TYPE_UINT8",
+            "TYPE_UINT8"
+          ],
+          [
+            "TYPE_INT16",
+            "TYPE_INT16"
+          ],
+          [
+            "TYPE_UINT16",
+            "TYPE_UINT16"
+          ],
+          [
+            "TYPE_INT32",
+            "TYPE_INT32"
+          ],
+          [
+            "TYPE_UINT32",
+            "TYPE_UINT32"
+          ],
+          [
+            "TYPE_FLOAT32",
+            "TYPE_FLOAT32"
+          ],
+          [
+            "TYPE_FLOAT16",
+            "TYPE_FLOAT16"
+          ],
+          [
+            "UNIFORMTYPE_BOOL",
+            "UNIFORMTYPE_BOOL"
+          ],
+          [
+            "UNIFORMTYPE_INT",
+            "UNIFORMTYPE_INT"
+          ],
+          [
+            "UNIFORMTYPE_FLOAT",
+            "UNIFORMTYPE_FLOAT"
+          ],
+          [
+            "UNIFORMTYPE_VEC2",
+            "UNIFORMTYPE_VEC2"
+          ],
+          [
+            "UNIFORMTYPE_VEC3",
+            "UNIFORMTYPE_VEC3"
+          ],
+          [
+            "UNIFORMTYPE_VEC4",
+            "UNIFORMTYPE_VEC4"
+          ],
+          [
+            "UNIFORMTYPE_IVEC2",
+            "UNIFORMTYPE_IVEC2"
+          ],
+          [
+            "UNIFORMTYPE_IVEC3",
+            "UNIFORMTYPE_IVEC3"
+          ],
+          [
+            "UNIFORMTYPE_IVEC4",
+            "UNIFORMTYPE_IVEC4"
+          ],
+          [
+            "UNIFORMTYPE_BVEC2",
+            "UNIFORMTYPE_BVEC2"
+          ],
+          [
+            "UNIFORMTYPE_BVEC3",
+            "UNIFORMTYPE_BVEC3"
+          ],
+          [
+            "UNIFORMTYPE_BVEC4",
+            "UNIFORMTYPE_BVEC4"
+          ],
+          [
+            "UNIFORMTYPE_MAT2",
+            "UNIFORMTYPE_MAT2"
+          ],
+          [
+            "UNIFORMTYPE_MAT3",
+            "UNIFORMTYPE_MAT3"
+          ],
+          [
+            "UNIFORMTYPE_MAT4",
+            "UNIFORMTYPE_MAT4"
+          ],
+          [
+            "UNIFORMTYPE_TEXTURE2D",
+            "UNIFORMTYPE_TEXTURE2D"
+          ],
+          [
+            "UNIFORMTYPE_TEXTURECUBE",
+            "UNIFORMTYPE_TEXTURECUBE"
+          ],
+          [
+            "UNIFORMTYPE_FLOATARRAY",
+            "UNIFORMTYPE_FLOATARRAY"
+          ],
+          [
+            "UNIFORMTYPE_TEXTURE2D_SHADOW",
+            "UNIFORMTYPE_TEXTURE2D_SHADOW"
+          ],
+          [
+            "UNIFORMTYPE_TEXTURECUBE_SHADOW",
+            "UNIFORMTYPE_TEXTURECUBE_SHADOW"
+          ],
+          [
+            "UNIFORMTYPE_TEXTURE3D",
+            "UNIFORMTYPE_TEXTURE3D"
+          ],
+          [
+            "UNIFORMTYPE_VEC2ARRAY",
+            "UNIFORMTYPE_VEC2ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_VEC3ARRAY",
+            "UNIFORMTYPE_VEC3ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_VEC4ARRAY",
+            "UNIFORMTYPE_VEC4ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_MAT4ARRAY",
+            "UNIFORMTYPE_MAT4ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_TEXTURE2D_ARRAY",
+            "UNIFORMTYPE_TEXTURE2D_ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_UINT",
+            "UNIFORMTYPE_UINT"
+          ],
+          [
+            "UNIFORMTYPE_UVEC2",
+            "UNIFORMTYPE_UVEC2"
+          ],
+          [
+            "UNIFORMTYPE_UVEC3",
+            "UNIFORMTYPE_UVEC3"
+          ],
+          [
+            "UNIFORMTYPE_UVEC4",
+            "UNIFORMTYPE_UVEC4"
+          ],
+          [
+            "UNIFORMTYPE_INTARRAY",
+            "UNIFORMTYPE_INTARRAY"
+          ],
+          [
+            "UNIFORMTYPE_UINTARRAY",
+            "UNIFORMTYPE_UINTARRAY"
+          ],
+          [
+            "UNIFORMTYPE_BOOLARRAY",
+            "UNIFORMTYPE_BOOLARRAY"
+          ],
+          [
+            "UNIFORMTYPE_IVEC2ARRAY",
+            "UNIFORMTYPE_IVEC2ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_UVEC2ARRAY",
+            "UNIFORMTYPE_UVEC2ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_BVEC2ARRAY",
+            "UNIFORMTYPE_BVEC2ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_IVEC3ARRAY",
+            "UNIFORMTYPE_IVEC3ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_UVEC3ARRAY",
+            "UNIFORMTYPE_UVEC3ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_BVEC3ARRAY",
+            "UNIFORMTYPE_BVEC3ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_IVEC4ARRAY",
+            "UNIFORMTYPE_IVEC4ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_UVEC4ARRAY",
+            "UNIFORMTYPE_UVEC4ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_BVEC4ARRAY",
+            "UNIFORMTYPE_BVEC4ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_ITEXTURE2D",
+            "UNIFORMTYPE_ITEXTURE2D"
+          ],
+          [
+            "UNIFORMTYPE_UTEXTURE2D",
+            "UNIFORMTYPE_UTEXTURE2D"
+          ],
+          [
+            "UNIFORMTYPE_ITEXTURECUBE",
+            "UNIFORMTYPE_ITEXTURECUBE"
+          ],
+          [
+            "UNIFORMTYPE_UTEXTURECUBE",
+            "UNIFORMTYPE_UTEXTURECUBE"
+          ],
+          [
+            "UNIFORMTYPE_ITEXTURE3D",
+            "UNIFORMTYPE_ITEXTURE3D"
+          ],
+          [
+            "UNIFORMTYPE_UTEXTURE3D",
+            "UNIFORMTYPE_UTEXTURE3D"
+          ],
+          [
+            "UNIFORMTYPE_ITEXTURE2D_ARRAY",
+            "UNIFORMTYPE_ITEXTURE2D_ARRAY"
+          ],
+          [
+            "UNIFORMTYPE_UTEXTURE2D_ARRAY",
+            "UNIFORMTYPE_UTEXTURE2D_ARRAY"
+          ],
+          [
+            "uniformTypeToName",
+            "uniformTypeToName"
+          ],
+          [
+            "uniformTypeToNameWGSL",
+            "uniformTypeToNameWGSL"
+          ],
+          [
+            "uniformTypeToNameMapWGSL",
+            "uniformTypeToNameMapWGSL"
+          ],
+          [
+            "uniformTypeToStorage",
+            "uniformTypeToStorage"
+          ],
+          [
+            "DEVICETYPE_WEBGL2",
+            "DEVICETYPE_WEBGL2"
+          ],
+          [
+            "DEVICETYPE_WEBGPU",
+            "DEVICETYPE_WEBGPU"
+          ],
+          [
+            "DEVICETYPE_WEBGPU_BARE",
+            "DEVICETYPE_WEBGPU_BARE"
+          ],
+          [
+            "DEVICETYPE_NULL",
+            "DEVICETYPE_NULL"
+          ],
+          [
+            "SHADERSTAGE_VERTEX",
+            "SHADERSTAGE_VERTEX"
+          ],
+          [
+            "SHADERSTAGE_FRAGMENT",
+            "SHADERSTAGE_FRAGMENT"
+          ],
+          [
+            "SHADERSTAGE_COMPUTE",
+            "SHADERSTAGE_COMPUTE"
+          ],
+          [
+            "DISPLAYFORMAT_LDR",
+            "DISPLAYFORMAT_LDR"
+          ],
+          [
+            "DISPLAYFORMAT_LDR_SRGB",
+            "DISPLAYFORMAT_LDR_SRGB"
+          ],
+          [
+            "DISPLAYFORMAT_HDR",
+            "DISPLAYFORMAT_HDR"
+          ],
+          [
+            "TEXPROPERTY_MIN_FILTER",
+            "TEXPROPERTY_MIN_FILTER"
+          ],
+          [
+            "TEXPROPERTY_MAG_FILTER",
+            "TEXPROPERTY_MAG_FILTER"
+          ],
+          [
+            "TEXPROPERTY_ADDRESS_U",
+            "TEXPROPERTY_ADDRESS_U"
+          ],
+          [
+            "TEXPROPERTY_ADDRESS_V",
+            "TEXPROPERTY_ADDRESS_V"
+          ],
+          [
+            "TEXPROPERTY_ADDRESS_W",
+            "TEXPROPERTY_ADDRESS_W"
+          ],
+          [
+            "TEXPROPERTY_COMPARE_ON_READ",
+            "TEXPROPERTY_COMPARE_ON_READ"
+          ],
+          [
+            "TEXPROPERTY_COMPARE_FUNC",
+            "TEXPROPERTY_COMPARE_FUNC"
+          ],
+          [
+            "TEXPROPERTY_ANISOTROPY",
+            "TEXPROPERTY_ANISOTROPY"
+          ],
+          [
+            "TEXPROPERTY_ALL",
+            "TEXPROPERTY_ALL"
+          ],
+          [
+            "BINDGROUP_VIEW",
+            "BINDGROUP_VIEW"
+          ],
+          [
+            "BINDGROUP_MESH",
+            "BINDGROUP_MESH"
+          ],
+          [
+            "BINDGROUP_MESH_UB",
+            "BINDGROUP_MESH_UB"
+          ],
+          [
+            "bindGroupNames",
+            "bindGroupNames"
+          ],
+          [
+            "UNIFORM_BUFFER_DEFAULT_SLOT_NAME",
+            "UNIFORM_BUFFER_DEFAULT_SLOT_NAME"
+          ],
+          [
+            "UNUSED_UNIFORM_NAME",
+            "UNUSED_UNIFORM_NAME"
+          ],
+          [
+            "typedArrayTypes",
+            "typedArrayTypes"
+          ],
+          [
+            "typedArrayTypesByteSize",
+            "typedArrayTypesByteSize"
+          ],
+          [
+            "vertexTypesNames",
+            "vertexTypesNames"
+          ],
+          [
+            "typedArrayToType",
+            "typedArrayToType"
+          ],
+          [
+            "typedArrayIndexFormats",
+            "typedArrayIndexFormats"
+          ],
+          [
+            "typedArrayIndexFormatsByteSize",
+            "typedArrayIndexFormatsByteSize"
+          ],
+          [
+            "primitiveGlslToWgslTypeMap",
+            "primitiveGlslToWgslTypeMap"
+          ],
+          [
+            "semanticToLocation",
+            "semanticToLocation"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/core/constants.js",
+        "stem": "constants",
+        "delivered_bytes": 1082,
+        "sha256": "5a03e471a44e0726f397f6b6a087f0bc00d8971ed0c4f9a358b3a1735efeadab",
+        "exports": [
+          [
+            "TRACEID_RENDER_FRAME",
+            "TRACEID_RENDER_FRAME"
+          ],
+          [
+            "TRACEID_RENDER_FRAME_TIME",
+            "TRACEID_RENDER_FRAME_TIME"
+          ],
+          [
+            "TRACEID_RENDER_PASS",
+            "TRACEID_RENDER_PASS"
+          ],
+          [
+            "TRACEID_RENDER_PASS_DETAIL",
+            "TRACEID_RENDER_PASS_DETAIL"
+          ],
+          [
+            "TRACEID_RENDER_ACTION",
+            "TRACEID_RENDER_ACTION"
+          ],
+          [
+            "TRACEID_RENDER_TARGET_ALLOC",
+            "TRACEID_RENDER_TARGET_ALLOC"
+          ],
+          [
+            "TRACEID_TEXTURE_ALLOC",
+            "TRACEID_TEXTURE_ALLOC"
+          ],
+          [
+            "TRACEID_SHADER_ALLOC",
+            "TRACEID_SHADER_ALLOC"
+          ],
+          [
+            "TRACEID_SHADER_COMPILE",
+            "TRACEID_SHADER_COMPILE"
+          ],
+          [
+            "TRACEID_VRAM_TEXTURE",
+            "TRACEID_VRAM_TEXTURE"
+          ],
+          [
+            "TRACEID_VRAM_VB",
+            "TRACEID_VRAM_VB"
+          ],
+          [
+            "TRACEID_VRAM_IB",
+            "TRACEID_VRAM_IB"
+          ],
+          [
+            "TRACEID_VRAM_SB",
+            "TRACEID_VRAM_SB"
+          ],
+          [
+            "TRACEID_BINDGROUP_ALLOC",
+            "TRACEID_BINDGROUP_ALLOC"
+          ],
+          [
+            "TRACEID_BINDGROUPFORMAT_ALLOC",
+            "TRACEID_BINDGROUPFORMAT_ALLOC"
+          ],
+          [
+            "TRACEID_RENDERPIPELINE_ALLOC",
+            "TRACEID_RENDERPIPELINE_ALLOC"
+          ],
+          [
+            "TRACEID_COMPUTEPIPELINE_ALLOC",
+            "TRACEID_COMPUTEPIPELINE_ALLOC"
+          ],
+          [
+            "TRACEID_PIPELINELAYOUT_ALLOC",
+            "TRACEID_PIPELINELAYOUT_ALLOC"
+          ],
+          [
+            "TRACEID_ELEMENT",
+            "TRACEID_ELEMENT"
+          ],
+          [
+            "TRACEID_TEXTURES",
+            "TRACEID_TEXTURES"
+          ],
+          [
+            "TRACEID_BUFFERS",
+            "TRACEID_BUFFERS"
+          ],
+          [
+            "TRACEID_ASSETS",
+            "TRACEID_ASSETS"
+          ],
+          [
+            "TRACEID_RENDER_QUEUE",
+            "TRACEID_RENDER_QUEUE"
+          ],
+          [
+            "TRACEID_OCTREE_RESOURCES",
+            "TRACEID_OCTREE_RESOURCES"
+          ],
+          [
+            "TRACEID_GPU_TIMINGS",
+            "TRACEID_GPU_TIMINGS"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/debug-graphics.js",
+        "stem": "debug-graphics",
+        "delivered_bytes": 358,
+        "sha256": "804cb77b15886fefaab612cfe3e5e0760b2f69a3912e4331c8a5eb82efd6f059",
+        "exports": [
+          [
+            "DebugGraphics",
+            "DebugGraphics"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/bind-group-format.js",
+        "stem": "bind-group-format",
+        "delivered_bytes": 3351,
+        "sha256": "7fe9a8152ede08aa9b850b24e35abe4e300c036ac3c2526479c8e6ac45056bb1",
+        "exports": [
+          [
+            "BindUniformBufferFormat",
+            "BindUniformBufferFormat"
+          ],
+          [
+            "BindTextureFormat",
+            "BindTextureFormat"
+          ],
+          [
+            "BindGroupFormat",
+            "BindGroupFormat"
+          ],
+          [
+            "BindStorageTextureFormat",
+            "BindStorageTextureFormat"
+          ],
+          [
+            "BindStorageBufferFormat",
+            "BindStorageBufferFormat"
+          ]
+        ],
+        "imports": [
+          [
+            4,
+            [
+              [
+                "TRACEID_BINDGROUPFORMAT_ALLOC",
+                "TRACEID_BINDGROUPFORMAT_ALLOC"
+              ]
+            ]
+          ],
+          [
+            2,
+            [
+              [
+                "Debug",
+                "Debug"
+              ],
+              [
+                "DebugHelper",
+                "DebugHelper"
+              ]
+            ]
+          ],
+          [
+            3,
+            [
+              [
+                "TEXTUREDIMENSION_2D",
+                "TEXTUREDIMENSION_2D"
+              ],
+              [
+                "SAMPLETYPE_FLOAT",
+                "SAMPLETYPE_FLOAT"
+              ],
+              [
+                "SAMPLETYPE_UNFILTERABLE_FLOAT",
+                "SAMPLETYPE_UNFILTERABLE_FLOAT"
+              ],
+              [
+                "PIXELFORMAT_RGBA8",
+                "PIXELFORMAT_RGBA8"
+              ],
+              [
+                "SHADERSTAGE_COMPUTE",
+                "SHADERSTAGE_COMPUTE"
+              ],
+              [
+                "SHADERSTAGE_VERTEX",
+                "SHADERSTAGE_VERTEX"
+              ]
+            ]
+          ],
+          [
+            5,
+            [
+              [
+                "DebugGraphics",
+                "DebugGraphics"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "../../upstream/engine/src/core/math/math.js",
+        "stem": "math",
+        "delivered_bytes": 1500,
+        "sha256": "cc35e02fcedd6139bbf77da28c95a3ae99d53e08f88f1e2305439d642289a2e9",
+        "exports": [
+          [
+            "math",
+            "math"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/uniform-buffer-format.js",
+        "stem": "uniform-buffer-format",
+        "delivered_bytes": 3647,
+        "sha256": "70e7abb96f3b82877a8890d35ba7cb0dad46c2e57b876a63f9b780e266e0d099",
+        "exports": [
+          [
+            "UniformFormat",
+            "UniformFormat"
+          ],
+          [
+            "UniformBufferFormat",
+            "UniformBufferFormat"
+          ]
+        ],
+        "imports": [
+          [
+            2,
+            [
+              [
+                "Debug",
+                "Debug"
+              ]
+            ]
+          ],
+          [
+            7,
+            [
+              [
+                "math",
+                "math"
+              ]
+            ]
+          ],
+          [
+            3,
+            [
+              [
+                "uniformTypeToName",
+                "uniformTypeToName"
+              ],
+              [
+                "UNIFORMTYPE_BOOL",
+                "UNIFORMTYPE_BOOL"
+              ],
+              [
+                "UNIFORMTYPE_INT",
+                "UNIFORMTYPE_INT"
+              ],
+              [
+                "UNIFORMTYPE_FLOAT",
+                "UNIFORMTYPE_FLOAT"
+              ],
+              [
+                "UNIFORMTYPE_UINT",
+                "UNIFORMTYPE_UINT"
+              ],
+              [
+                "UNIFORMTYPE_VEC2",
+                "UNIFORMTYPE_VEC2"
+              ],
+              [
+                "UNIFORMTYPE_VEC3",
+                "UNIFORMTYPE_VEC3"
+              ],
+              [
+                "UNIFORMTYPE_VEC4",
+                "UNIFORMTYPE_VEC4"
+              ],
+              [
+                "UNIFORMTYPE_IVEC2",
+                "UNIFORMTYPE_IVEC2"
+              ],
+              [
+                "UNIFORMTYPE_UVEC2",
+                "UNIFORMTYPE_UVEC2"
+              ],
+              [
+                "UNIFORMTYPE_IVEC3",
+                "UNIFORMTYPE_IVEC3"
+              ],
+              [
+                "UNIFORMTYPE_IVEC4",
+                "UNIFORMTYPE_IVEC4"
+              ],
+              [
+                "UNIFORMTYPE_BVEC2",
+                "UNIFORMTYPE_BVEC2"
+              ],
+              [
+                "UNIFORMTYPE_BVEC3",
+                "UNIFORMTYPE_BVEC3"
+              ],
+              [
+                "UNIFORMTYPE_UVEC3",
+                "UNIFORMTYPE_UVEC3"
+              ],
+              [
+                "UNIFORMTYPE_BVEC4",
+                "UNIFORMTYPE_BVEC4"
+              ],
+              [
+                "UNIFORMTYPE_MAT4",
+                "UNIFORMTYPE_MAT4"
+              ],
+              [
+                "UNIFORMTYPE_MAT2",
+                "UNIFORMTYPE_MAT2"
+              ],
+              [
+                "UNIFORMTYPE_MAT3",
+                "UNIFORMTYPE_MAT3"
+              ],
+              [
+                "UNIFORMTYPE_FLOATARRAY",
+                "UNIFORMTYPE_FLOATARRAY"
+              ],
+              [
+                "UNIFORMTYPE_UVEC4",
+                "UNIFORMTYPE_UVEC4"
+              ],
+              [
+                "UNIFORMTYPE_VEC2ARRAY",
+                "UNIFORMTYPE_VEC2ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_VEC3ARRAY",
+                "UNIFORMTYPE_VEC3ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_VEC4ARRAY",
+                "UNIFORMTYPE_VEC4ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_MAT4ARRAY",
+                "UNIFORMTYPE_MAT4ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_INTARRAY",
+                "UNIFORMTYPE_INTARRAY"
+              ],
+              [
+                "UNIFORMTYPE_UINTARRAY",
+                "UNIFORMTYPE_UINTARRAY"
+              ],
+              [
+                "UNIFORMTYPE_BOOLARRAY",
+                "UNIFORMTYPE_BOOLARRAY"
+              ],
+              [
+                "UNIFORMTYPE_IVEC2ARRAY",
+                "UNIFORMTYPE_IVEC2ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_UVEC2ARRAY",
+                "UNIFORMTYPE_UVEC2ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_BVEC2ARRAY",
+                "UNIFORMTYPE_BVEC2ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_IVEC3ARRAY",
+                "UNIFORMTYPE_IVEC3ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_UVEC3ARRAY",
+                "UNIFORMTYPE_UVEC3ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_BVEC3ARRAY",
+                "UNIFORMTYPE_BVEC3ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_IVEC4ARRAY",
+                "UNIFORMTYPE_IVEC4ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_UVEC4ARRAY",
+                "UNIFORMTYPE_UVEC4ARRAY"
+              ],
+              [
+                "UNIFORMTYPE_BVEC4ARRAY",
+                "UNIFORMTYPE_BVEC4ARRAY"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/webgpu/constants.js",
+        "stem": "constants",
+        "delivered_bytes": 3656,
+        "sha256": "193801a6e0bbd575a54f519fdcdb091cdde62012af39ef010d6a83ca0a518a3e",
+        "exports": [
+          [
+            "gpuTextureFormats",
+            "gpuTextureFormats"
+          ]
+        ],
+        "imports": [
+          [
+            3,
+            [
+              [
+                "PIXELFORMAT_A8",
+                "PIXELFORMAT_A8"
+              ],
+              [
+                "PIXELFORMAT_L8",
+                "PIXELFORMAT_L8"
+              ],
+              [
+                "PIXELFORMAT_LA8",
+                "PIXELFORMAT_LA8"
+              ],
+              [
+                "PIXELFORMAT_RGB565",
+                "PIXELFORMAT_RGB565"
+              ],
+              [
+                "PIXELFORMAT_RGBA5551",
+                "PIXELFORMAT_RGBA5551"
+              ],
+              [
+                "PIXELFORMAT_RGBA4",
+                "PIXELFORMAT_RGBA4"
+              ],
+              [
+                "PIXELFORMAT_RGB8",
+                "PIXELFORMAT_RGB8"
+              ],
+              [
+                "PIXELFORMAT_RGBA8",
+                "PIXELFORMAT_RGBA8"
+              ],
+              [
+                "PIXELFORMAT_DXT1",
+                "PIXELFORMAT_DXT1"
+              ],
+              [
+                "PIXELFORMAT_DXT3",
+                "PIXELFORMAT_DXT3"
+              ],
+              [
+                "PIXELFORMAT_DXT5",
+                "PIXELFORMAT_DXT5"
+              ],
+              [
+                "PIXELFORMAT_RGB16F",
+                "PIXELFORMAT_RGB16F"
+              ],
+              [
+                "PIXELFORMAT_RGBA16F",
+                "PIXELFORMAT_RGBA16F"
+              ],
+              [
+                "PIXELFORMAT_RGB32F",
+                "PIXELFORMAT_RGB32F"
+              ],
+              [
+                "PIXELFORMAT_RGBA32F",
+                "PIXELFORMAT_RGBA32F"
+              ],
+              [
+                "PIXELFORMAT_R32F",
+                "PIXELFORMAT_R32F"
+              ],
+              [
+                "PIXELFORMAT_DEPTH",
+                "PIXELFORMAT_DEPTH"
+              ],
+              [
+                "PIXELFORMAT_DEPTHSTENCIL",
+                "PIXELFORMAT_DEPTHSTENCIL"
+              ],
+              [
+                "PIXELFORMAT_111110F",
+                "PIXELFORMAT_111110F"
+              ],
+              [
+                "PIXELFORMAT_SRGB8",
+                "PIXELFORMAT_SRGB8"
+              ],
+              [
+                "PIXELFORMAT_SRGBA8",
+                "PIXELFORMAT_SRGBA8"
+              ],
+              [
+                "PIXELFORMAT_ETC1",
+                "PIXELFORMAT_ETC1"
+              ],
+              [
+                "PIXELFORMAT_ETC2_RGB",
+                "PIXELFORMAT_ETC2_RGB"
+              ],
+              [
+                "PIXELFORMAT_ETC2_RGBA",
+                "PIXELFORMAT_ETC2_RGBA"
+              ],
+              [
+                "PIXELFORMAT_PVRTC_2BPP_RGB_1",
+                "PIXELFORMAT_PVRTC_2BPP_RGB_1"
+              ],
+              [
+                "PIXELFORMAT_PVRTC_2BPP_RGBA_1",
+                "PIXELFORMAT_PVRTC_2BPP_RGBA_1"
+              ],
+              [
+                "PIXELFORMAT_PVRTC_4BPP_RGB_1",
+                "PIXELFORMAT_PVRTC_4BPP_RGB_1"
+              ],
+              [
+                "PIXELFORMAT_PVRTC_4BPP_RGBA_1",
+                "PIXELFORMAT_PVRTC_4BPP_RGBA_1"
+              ],
+              [
+                "PIXELFORMAT_ASTC_4x4",
+                "PIXELFORMAT_ASTC_4x4"
+              ],
+              [
+                "PIXELFORMAT_ATC_RGB",
+                "PIXELFORMAT_ATC_RGB"
+              ],
+              [
+                "PIXELFORMAT_ATC_RGBA",
+                "PIXELFORMAT_ATC_RGBA"
+              ],
+              [
+                "PIXELFORMAT_BGRA8",
+                "PIXELFORMAT_BGRA8"
+              ],
+              [
+                "PIXELFORMAT_R8I",
+                "PIXELFORMAT_R8I"
+              ],
+              [
+                "PIXELFORMAT_R8U",
+                "PIXELFORMAT_R8U"
+              ],
+              [
+                "PIXELFORMAT_R16I",
+                "PIXELFORMAT_R16I"
+              ],
+              [
+                "PIXELFORMAT_R16U",
+                "PIXELFORMAT_R16U"
+              ],
+              [
+                "PIXELFORMAT_R32I",
+                "PIXELFORMAT_R32I"
+              ],
+              [
+                "PIXELFORMAT_R32U",
+                "PIXELFORMAT_R32U"
+              ],
+              [
+                "PIXELFORMAT_RG16I",
+                "PIXELFORMAT_RG16I"
+              ],
+              [
+                "PIXELFORMAT_RG16U",
+                "PIXELFORMAT_RG16U"
+              ],
+              [
+                "PIXELFORMAT_RG32I",
+                "PIXELFORMAT_RG32I"
+              ],
+              [
+                "PIXELFORMAT_RG32U",
+                "PIXELFORMAT_RG32U"
+              ],
+              [
+                "PIXELFORMAT_RG8I",
+                "PIXELFORMAT_RG8I"
+              ],
+              [
+                "PIXELFORMAT_RG8U",
+                "PIXELFORMAT_RG8U"
+              ],
+              [
+                "PIXELFORMAT_RGBA16I",
+                "PIXELFORMAT_RGBA16I"
+              ],
+              [
+                "PIXELFORMAT_RGBA16U",
+                "PIXELFORMAT_RGBA16U"
+              ],
+              [
+                "PIXELFORMAT_RGBA32I",
+                "PIXELFORMAT_RGBA32I"
+              ],
+              [
+                "PIXELFORMAT_RGBA32U",
+                "PIXELFORMAT_RGBA32U"
+              ],
+              [
+                "PIXELFORMAT_RGBA8I",
+                "PIXELFORMAT_RGBA8I"
+              ],
+              [
+                "PIXELFORMAT_RGBA8U",
+                "PIXELFORMAT_RGBA8U"
+              ],
+              [
+                "PIXELFORMAT_R16F",
+                "PIXELFORMAT_R16F"
+              ],
+              [
+                "PIXELFORMAT_RG16F",
+                "PIXELFORMAT_RG16F"
+              ],
+              [
+                "PIXELFORMAT_R8",
+                "PIXELFORMAT_R8"
+              ],
+              [
+                "PIXELFORMAT_RG8",
+                "PIXELFORMAT_RG8"
+              ],
+              [
+                "PIXELFORMAT_DXT1_SRGB",
+                "PIXELFORMAT_DXT1_SRGB"
+              ],
+              [
+                "PIXELFORMAT_DXT3_SRGBA",
+                "PIXELFORMAT_DXT3_SRGBA"
+              ],
+              [
+                "PIXELFORMAT_DXT5_SRGBA",
+                "PIXELFORMAT_DXT5_SRGBA"
+              ],
+              [
+                "PIXELFORMAT_ETC2_SRGB",
+                "PIXELFORMAT_ETC2_SRGB"
+              ],
+              [
+                "PIXELFORMAT_ETC2_SRGBA",
+                "PIXELFORMAT_ETC2_SRGBA"
+              ],
+              [
+                "PIXELFORMAT_SBGRA8",
+                "PIXELFORMAT_SBGRA8"
+              ],
+              [
+                "PIXELFORMAT_BC6F",
+                "PIXELFORMAT_BC6F"
+              ],
+              [
+                "PIXELFORMAT_BC6UF",
+                "PIXELFORMAT_BC6UF"
+              ],
+              [
+                "PIXELFORMAT_BC7",
+                "PIXELFORMAT_BC7"
+              ],
+              [
+                "PIXELFORMAT_BC7_SRGBA",
+                "PIXELFORMAT_BC7_SRGBA"
+              ],
+              [
+                "PIXELFORMAT_ASTC_4x4_SRGB",
+                "PIXELFORMAT_ASTC_4x4_SRGB"
+              ],
+              [
+                "PIXELFORMAT_DEPTH16",
+                "PIXELFORMAT_DEPTH16"
+              ],
+              [
+                "PIXELFORMAT_RG32F",
+                "PIXELFORMAT_RG32F"
+              ],
+              [
+                "PIXELFORMAT_RGB9E5",
+                "PIXELFORMAT_RGB9E5"
+              ],
+              [
+                "PIXELFORMAT_RG8S",
+                "PIXELFORMAT_RG8S"
+              ],
+              [
+                "PIXELFORMAT_RGBA8S",
+                "PIXELFORMAT_RGBA8S"
+              ],
+              [
+                "PIXELFORMAT_RGB10A2",
+                "PIXELFORMAT_RGB10A2"
+              ],
+              [
+                "PIXELFORMAT_RGB10A2U",
+                "PIXELFORMAT_RGB10A2U"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "./webgpu-shader-processor-wgsl.host.js",
+        "stem": "webgpu-shader-processor-wgsl_host",
+        "delivered_bytes": 976,
+        "sha256": "8b6d736fc9aa853b22832ebd56c07a5c85b0236a0fc060f68386f41d5b742398",
+        "exports": [
+          [
+            "semanticToLocation",
+            "semanticToLocation"
+          ],
+          [
+            "uniformTypeToNameMapWGSL",
+            "uniformTypeToNameMapWGSL"
+          ],
+          [
+            "gpuTextureFormats",
+            "gpuTextureFormats"
+          ],
+          [
+            "assertPc",
+            "assertPc"
+          ],
+          [
+            "assertPcContext",
+            "assertPcContext"
+          ],
+          [
+            "errorPc",
+            "errorPc"
+          ],
+          [
+            "warnPc",
+            "warnPc"
+          ],
+          [
+            "debugCall",
+            "debugCall"
+          ],
+          [
+            "uniformTypeName",
+            "uniformTypeName"
+          ],
+          [
+            "newUniform",
+            "newUniform"
+          ],
+          [
+            "newUniformBuffer",
+            "newUniformBuffer"
+          ],
+          [
+            "newUniformBinding",
+            "newUniformBinding"
+          ],
+          [
+            "newTextureBinding",
+            "newTextureBinding"
+          ],
+          [
+            "newStorageBufferBinding",
+            "newStorageBufferBinding"
+          ],
+          [
+            "newStorageTextureBinding",
+            "newStorageTextureBinding"
+          ],
+          [
+            "newBindGroup",
+            "newBindGroup"
+          ],
+          [
+            "appendMatch",
+            "appendMatch"
+          ]
+        ],
+        "imports": [
+          [
+            2,
+            [
+              [
+                "Debug",
+                "Debug"
+              ]
+            ]
+          ],
+          [
+            3,
+            [
+              [
+                "semanticToLocation",
+                "semanticToLocation"
+              ],
+              [
+                "uniformTypeToNameMapWGSL",
+                "uniformTypeToNameMapWGSL"
+              ],
+              [
+                "uniformTypeToNameWGSL",
+                "uniformTypeToNameWGSL"
+              ]
+            ]
+          ],
+          [
+            6,
+            [
+              [
+                "BindGroupFormat",
+                "BindGroupFormat"
+              ],
+              [
+                "BindStorageBufferFormat",
+                "BindStorageBufferFormat"
+              ],
+              [
+                "BindStorageTextureFormat",
+                "BindStorageTextureFormat"
+              ],
+              [
+                "BindTextureFormat",
+                "BindTextureFormat"
+              ],
+              [
+                "BindUniformBufferFormat",
+                "BindUniformBufferFormat"
+              ]
+            ]
+          ],
+          [
+            8,
+            [
+              [
+                "UniformBufferFormat",
+                "UniformBufferFormat"
+              ],
+              [
+                "UniformFormat",
+                "UniformFormat"
+              ]
+            ]
+          ],
+          [
+            9,
+            [
+              [
+                "gpuTextureFormats",
+                "gpuTextureFormats"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "./shader-processor-glsl.host.js",
+        "stem": "shader-processor-glsl_host",
+        "delivered_bytes": 408,
+        "sha256": "f51bb44c6f81e41cba8f6a056e4b3378ab31a3e80b3217983f4b0f8d29cc3a91",
+        "exports": [
+          [
+            "bindGroupNames",
+            "bindGroupNames"
+          ],
+          [
+            "semanticToLocation",
+            "semanticToLocation"
+          ],
+          [
+            "uniformTypeToName",
+            "uniformTypeToName"
+          ],
+          [
+            "newUniformFormat",
+            "newUniformFormat"
+          ],
+          [
+            "newUniformBufferFormat",
+            "newUniformBufferFormat"
+          ],
+          [
+            "newBindTextureFormat",
+            "newBindTextureFormat"
+          ],
+          [
+            "newBindGroupFormat",
+            "newBindGroupFormat"
+          ]
+        ],
+        "imports": [
+          [
+            3,
+            [
+              [
+                "bindGroupNames",
+                "bindGroupNames"
+              ],
+              [
+                "semanticToLocation",
+                "semanticToLocation"
+              ],
+              [
+                "uniformTypeToName",
+                "uniformTypeToName"
+              ]
+            ]
+          ],
+          [
+            6,
+            [
+              [
+                "BindGroupFormat",
+                "BindGroupFormat"
+              ],
+              [
+                "BindTextureFormat",
+                "BindTextureFormat"
+              ]
+            ]
+          ],
+          [
+            8,
+            [
+              [
+                "UniformBufferFormat",
+                "UniformBufferFormat"
+              ],
+              [
+                "UniformFormat",
+                "UniformFormat"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "./shader-definition-utils.debug.js",
+        "stem": "shader-definition-utils_debug",
+        "delivered_bytes": 997,
+        "sha256": "f4e8da0ff92b2a20e14bdd7409af3437c77a7d51502cca3f0d1bfb0cccf60abd",
+        "exports": [
+          [
+            "debugDefinitionOptions",
+            "debugDefinitionOptions"
+          ],
+          [
+            "debugOutputType",
+            "debugOutputType"
+          ],
+          [
+            "debugVertexCode",
+            "debugVertexCode"
+          ],
+          [
+            "debugFragmentCode",
+            "debugFragmentCode"
+          ],
+          [
+            "debugDuplicateAttribute",
+            "debugDuplicateAttribute"
+          ]
+        ],
+        "imports": [
+          [
+            2,
+            [
+              [
+                "Debug",
+                "Debug"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/frag/gles3.js",
+        "stem": "gles3",
+        "delivered_bytes": 2898,
+        "sha256": "ef543effcb42cb984df604826ce1cfb677222f6d19d045b06260f2f26c094e5a",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/frag/shared.js",
+        "stem": "shared",
+        "delivered_bytes": 574,
+        "sha256": "e3c11c8db3d74fec30b0ddee7880710a3c8e569cbb3fbcbdc0be0fb7c881041f",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/frag/shared-wgsl.js",
+        "stem": "shared-wgsl",
+        "delivered_bytes": 1019,
+        "sha256": "c53c2452e81e6bbaf8175f92b8d6a33c61a50cb31c1d30842984f4ca9c9752e1",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/frag/half-types.js",
+        "stem": "half-types",
+        "delivered_bytes": 479,
+        "sha256": "f695b1c2c3a7e2972d4d3aed5072f08027352a83d6ebf39cffa463a9b998fb35",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/frag/webgpu.js",
+        "stem": "webgpu",
+        "delivered_bytes": 3157,
+        "sha256": "f9f5e27065f03e2bd245162abc03d6a24380388a201f95e38debaf20ebd1e1f2",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/frag/webgpu-wgsl.js",
+        "stem": "webgpu-wgsl",
+        "delivered_bytes": 51,
+        "sha256": "e9262deaf94d04bf255cadb225f9d924555fa6eb0041fc3c13f0f833110b6cd2",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/vert/gles3.js",
+        "stem": "gles3",
+        "delivered_bytes": 400,
+        "sha256": "85995412023c3a49a42e9f87465e2bc2e978d5b95ebde819d9763007a26b8424",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/vert/webgpu.js",
+        "stem": "webgpu",
+        "delivered_bytes": 652,
+        "sha256": "1558477f952bcd510b7c08c19a069d404378bcc6a4b31e7aea59481410d77b2e",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "../../upstream/engine/src/platform/graphics/shader-chunks/vert/webgpu-wgsl.js",
+        "stem": "webgpu-wgsl",
+        "delivered_bytes": 72,
+        "sha256": "91374103cda06d1e0170f33f2ba5861e6477fb4ce2d8cfaf9ed394f94efebb40",
+        "exports": [
+          [
+            "default",
+            "__lil_host_export_0"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "./shader-definition-utils.host.js",
+        "stem": "shader-definition-utils_host",
+        "delivered_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exports": [
+          [
+            "gles3FS",
+            "gles3FS"
+          ],
+          [
+            "gles3VS",
+            "gles3VS"
+          ],
+          [
+            "halfTypes",
+            "halfTypes"
+          ],
+          [
+            "sharedGLSL",
+            "sharedGLSL"
+          ],
+          [
+            "sharedWGSL",
+            "sharedWGSL"
+          ],
+          [
+            "webgpuFS",
+            "webgpuFS"
+          ],
+          [
+            "webgpuVS",
+            "webgpuVS"
+          ],
+          [
+            "wgslFS",
+            "wgslFS"
+          ],
+          [
+            "wgslVS",
+            "wgslVS"
+          ]
+        ],
+        "imports": [
+          [
+            13,
+            [
+              [
+                "default",
+                "gles3FS"
+              ]
+            ]
+          ],
+          [
+            14,
+            [
+              [
+                "default",
+                "sharedGLSL"
+              ]
+            ]
+          ],
+          [
+            15,
+            [
+              [
+                "default",
+                "sharedWGSL"
+              ]
+            ]
+          ],
+          [
+            16,
+            [
+              [
+                "default",
+                "halfTypes"
+              ]
+            ]
+          ],
+          [
+            17,
+            [
+              [
+                "default",
+                "webgpuFS"
+              ]
+            ]
+          ],
+          [
+            18,
+            [
+              [
+                "default",
+                "wgslFS"
+              ]
+            ]
+          ],
+          [
+            19,
+            [
+              [
+                "default",
+                "gles3VS"
+              ]
+            ]
+          ],
+          [
+            20,
+            [
+              [
+                "default",
+                "webgpuVS"
+              ]
+            ]
+          ],
+          [
+            21,
+            [
+              [
+                "default",
+                "wgslVS"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "./facade-utils.js",
+        "stem": "facade-utils",
+        "delivered_bytes": 233,
+        "sha256": "78506b1fd438132ca0cc80dbfa018ce490ba9003c648d1a83a314ff7adf416b8",
+        "exports": [
+          [
+            "installMethods",
+            "installMethods"
+          ]
+        ],
+        "imports": []
+      },
+      {
+        "specifier": "./preprocessor.factory.js",
+        "stem": "preprocessor_factory",
+        "delivered_bytes": 1289,
+        "sha256": "ef1d0e0fb1d4ec2554134a2294eff4d39bb943a2ef6f32c0e40586f1643752f7",
+        "exports": [
+          [
+            "createFacade",
+            "createFacade"
+          ]
+        ],
+        "imports": [
+          [
+            23,
+            [
+              [
+                "installMethods",
+                "installMethods"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "./shader-processor-glsl.factory.js",
+        "stem": "shader-processor-glsl_factory",
+        "delivered_bytes": 979,
+        "sha256": "bbbb65276bec340ea55c2c47d1b3e8a7d9237fd9f306bf8e80fd17c00dea2659",
+        "exports": [
+          [
+            "createFacade",
+            "createFacade"
+          ]
+        ],
+        "imports": [
+          [
+            23,
+            [
+              [
+                "installMethods",
+                "installMethods"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "./shader-definition-utils.factory.js",
+        "stem": "shader-definition-utils_factory",
+        "delivered_bytes": 550,
+        "sha256": "619dc3a0748c65b438c42017690e01596b54d6256cfb41cdffb018cc8af638a5",
+        "exports": [
+          [
+            "createFacade",
+            "createFacade"
+          ]
+        ],
+        "imports": [
+          [
+            23,
+            [
+              [
+                "installMethods",
+                "installMethods"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "specifier": "./webgpu-shader-processor-wgsl.factory.js",
+        "stem": "webgpu-shader-processor-wgsl_factory",
+        "delivered_bytes": 1435,
+        "sha256": "60a9a47b892f8b5f7ad848c8622034cb335de8ec767d85ec27f2637fa5c06c19",
+        "exports": [
+          [
+            "createFacade",
+            "createFacade"
+          ]
+        ],
+        "imports": [
+          [
+            23,
+            [
+              [
+                "installMethods",
+                "installMethods"
+              ]
+            ]
+          ]
+        ]
+      }
+    ],
+    "host_reserved": [
+      "Float32Array",
+      "Int16Array",
+      "Int32Array",
+      "Int8Array",
+      "Map",
+      "Math",
+      "Object",
+      "Set",
+      "Uint16Array",
+      "Uint32Array",
+      "Uint8Array",
+      "console",
+      "isNaN",
+      "undefined"
+    ]
+  },
+  "outputs": [
+    {
+      "mode": "single",
+      "format": "esm",
+      "entries": [
+        {
+          "name": "public",
+          "file": "shader-processing.js",
+          "dynamic": false,
+          "closure": [
+            "shader-processing.js"
+          ],
+          "row": 22767,
+          "raw_row": 112004
+        }
+      ],
+      "files": [
+        {
+          "file": "shader-processing.js",
+          "role": "entry",
+          "source_map_for": null,
+          "label": [
+            "public"
+          ],
+          "modules": [
+            "preprocessor.lil",
+            "webgpu-shader-processor-wgsl.lil",
+            "shader-processor-glsl.lil",
+            "shader-definition-utils.facade.lil",
+            "shader-definition-utils.lil",
+            "preprocessor.facade.lil",
+            "shader-processor-glsl.facade.lil",
+            "webgpu-shader-processor-wgsl.facade.lil",
+            "module-12",
+            "module-13",
+            "module-14",
+            "module-15",
+            "module-16",
+            "module-17",
+            "module-18",
+            "module-19",
+            "module-20",
+            "module-21",
+            "module-22",
+            "module-23",
+            "module-24",
+            "module-25",
+            "module-26",
+            "module-27",
+            "module-28",
+            "module-29",
+            "module-30",
+            "module-31",
+            "module-32",
+            "module-33",
+            "module-34",
+            "module-35",
+            "module-36",
+            "module-37",
+            "module-38",
+            "module-39"
+          ],
+          "anchored": true,
+          "imports": [],
+          "dynamic_imports": [],
+          "bytes": 112004,
+          "codec_bytes": 22767,
+          "sha256": "36e8c9eafa5222f7cbc88c95282303f0a589434cec4c6bcdd4313ccc8a9f9f1b"
+        }
+      ],
+      "side_effects": [
+        "shader-processing.js"
+      ],
+      "codec_total": 22767,
+      "rows_total": 22767,
+      "setters": 0,
+      "output": "primary",
+      "codec": "brotli",
+      "codec_settings": {
+        "brotli": {
+          "quality": 11,
+          "window": 22,
+          "mode": "generic"
+        },
+        "gzip": {
+          "level": 9,
+          "window": 15
+        }
+      },
+      "policy_fingerprint": [
+        235,
+        26,
+        196,
+        125,
+        179,
+        58,
+        163,
+        165,
+        155,
+        75,
+        35,
+        187,
+        135,
+        40,
+        67,
+        96,
+        77,
+        196,
+        12,
+        167,
+        136,
+        252,
+        252,
+        11,
+        213,
+        231,
+        47,
+        114,
+        110,
+        236,
+        59,
+        201
+      ]
+    },
+    {
+      "mode": "single",
+      "format": "esm",
+      "entries": [
+        {
+          "name": "closed",
+          "file": "shader-processing.closed.js",
+          "dynamic": false,
+          "closure": [
+            "shader-processing.closed.js"
+          ],
+          "row": 22336,
+          "raw_row": 110017
+        }
+      ],
+      "files": [
+        {
+          "file": "shader-processing.closed.js",
+          "role": "entry",
+          "source_map_for": null,
+          "label": [
+            "closed"
+          ],
+          "modules": [
+            "package-closed.lil",
+            "preprocessor.lil",
+            "webgpu-shader-processor-wgsl.lil",
+            "shader-processor-glsl.lil",
+            "shader-definition-utils.facade.lil",
+            "shader-definition-utils.lil",
+            "module-12",
+            "module-13",
+            "module-14",
+            "module-15",
+            "module-16",
+            "module-17",
+            "module-18",
+            "module-19",
+            "module-20",
+            "module-21",
+            "module-22",
+            "module-23",
+            "module-24",
+            "module-25",
+            "module-26",
+            "module-27",
+            "module-28",
+            "module-29",
+            "module-30",
+            "module-31",
+            "module-32",
+            "module-33",
+            "module-34",
+            "module-35",
+            "module-36",
+            "module-37",
+            "module-38",
+            "module-39"
+          ],
+          "anchored": true,
+          "imports": [],
+          "dynamic_imports": [],
+          "bytes": 110017,
+          "codec_bytes": 22336,
+          "sha256": "17fb99b8c8470c83386cad09e50d0e58870d4aacda0cf7a2b39146d66f613676"
+        }
+      ],
+      "side_effects": [
+        "shader-processing.closed.js"
+      ],
+      "codec_total": 22336,
+      "rows_total": 22336,
+      "setters": 0,
+      "output": "closed",
+      "codec": "brotli",
+      "codec_settings": {
+        "brotli": {
+          "quality": 11,
+          "window": 22,
+          "mode": "generic"
+        },
+        "gzip": {
+          "level": 9,
+          "window": 15
+        }
+      },
+      "policy_fingerprint": [
+        87,
+        166,
+        162,
+        2,
+        31,
+        66,
+        146,
+        24,
+        200,
+        223,
+        97,
+        202,
+        114,
+        35,
+        22,
+        36,
+        225,
+        184,
+        80,
+        214,
+        127,
+        61,
+        88,
+        161,
+        169,
+        179,
+        219,
+        69,
+        11,
+        147,
+        96,
+        124
+      ]
+    }
+  ]
+}

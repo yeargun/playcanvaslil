@@ -1,0 +1,25 @@
+# Development assertions are part of this test provider's observable API.
+[policy]
+version=3
+[javascript]
+strip_debug=false
+# Debug hosts inspect objects and may call patched platform globals.
+assume_pristine_builtins=false
+assume_pure_property_reads=false
+[objective]
+codecs="raw"
+[effort]
+level=13
+[delivery]
+mode="single"
+directory="."
+host_modules="embed"
+entry_names="shader-definition-utils.development.js"
+[delivery.entries]
+api="../src/shader-processing/shader-definition-utils.facade.lil"
+
+[policy.resources]
+logical_work = 2000000000
+
+[execution]
+jobs = 1

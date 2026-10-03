@@ -1,0 +1,32 @@
+# Compiler-owned delivery; no JavaScript post-minifier or export rewriting.
+[policy]
+version = 3
+[javascript]
+# Debug declarations identify optional port instrumentation; arguments keep their effects.
+strip_debug = true
+priority = "size-first"
+# Assumes unpatched platform builtins; disable when consumers replace them.
+assume_pristine_builtins = true
+# Plain-data reads must not run getters; disable for effectful accessor integrations.
+assume_pure_property_reads = true
+
+# Preserved effort setting. 13 favors size; 14/15 allow more expensive marginal searches.
+[effort]
+level = 15
+
+# Optimize the delivered files for this codec, independently of raw/gzip objectives.
+[objective]
+codecs = "raw"
+[mangle]
+identifiers = true
+properties = false
+
+
+[delivery]
+mode = "single"
+host_modules = "embed"
+entry_names = "index.mjs"
+[delivery.entries]
+index = "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/ports/playcanvaslil/src/shader-processing/package.lil"
+[execution]
+jobs = 1

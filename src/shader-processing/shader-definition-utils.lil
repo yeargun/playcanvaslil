@@ -62,11 +62,11 @@ extern string webgpuFS;
 extern string webgpuVS;
 extern string wgslFS;
 extern string wgslVS;
-extern void debugDefinitionOptions(JsValue options, JsValue device);
-extern void debugDuplicateAttribute(string attribName, string vsCode);
-extern void debugFragmentCode(JsValue options);
-extern void debugOutputType(JsValue wgslOutType, string glslOutType);
-extern void debugVertexCode(JsValue options);
+debug extern void debugDefinitionOptions(JsValue options, JsValue device);
+debug extern void debugDuplicateAttribute(string attribName, string vsCode);
+debug extern void debugFragmentCode(JsValue options);
+debug extern void debugOutputType(JsValue wgslOutType, string glslOutType);
+debug extern void debugVertexCode(JsValue options);
 
 extern class GraphicsDeviceHost {
   bool isWebGPU;
@@ -107,7 +107,7 @@ extern class ShaderDefinitionOptionsHost {
 }
 
 extern class ShaderDefinitionUtilsHost {
-  string getWGSLEnables(GraphicsDeviceHost device, string shaderType, bool useDualSourceBlending);
+  string getWGSLEnables(GraphicsDeviceHost device, string shaderType, JsValue useDualSourceBlending);
   string getDefinesCode(GraphicsDeviceHost device, JsValue defines);
   string getShaderNameCode(string name);
   string versionCode(GraphicsDeviceHost device);
@@ -182,7 +182,9 @@ string getDefinesWgsl(
   string code = processor.getWGSLEnables(
     device,
     shaderType,
-    !isVertex && options.useDualSourceBlending.truthy()
+    // Upstream passes `!isVertex && options.useDualSourceBlending`: the
+    // option's own value when it is a fragment shader, not a boolean.
+    JS.and(!isVertex, options.useDualSourceBlending)
   );
 
   if (!isVertex) {

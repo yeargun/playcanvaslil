@@ -1,0 +1,40 @@
+# The source differential harness intentionally shares upstream host constructors.
+# Keep native ESM dependencies external so its instanceof checks test that ABI.
+[policy]
+version=3
+[javascript]
+strip_debug=true
+# This oracle lane includes patched hosts and observable property access.
+assume_pristine_builtins=false
+assume_pure_property_reads=false
+[objective]
+codecs="raw"
+[effort]
+level=13
+[delivery]
+mode="single"
+directory="."
+host_modules="external"
+entry_names="shader-processing.external.js"
+[delivery.entries]
+api="../src/shader-processing/package.lil"
+
+# Destinations are relative to the delivered dist directory.
+[delivery.external_specifiers]
+"../../upstream/engine/src/core/debug.js"="../upstream/engine/src/core/debug.js"
+"../../upstream/engine/src/platform/graphics/constants.js"="../upstream/engine/src/platform/graphics/constants.js"
+"./preprocessor.factory.js"="../src/shader-processing/preprocessor.factory.js"
+"./shader-definition-utils.debug.js"="../src/shader-processing/shader-definition-utils.debug.js"
+"./shader-definition-utils.factory.js"="../src/shader-processing/shader-definition-utils.factory.js"
+"./shader-definition-utils.host.js"="../src/shader-processing/shader-definition-utils.host.js"
+"./shader-processor-glsl.factory.js"="../src/shader-processing/shader-processor-glsl.factory.js"
+"./shader-processor-glsl.host.js"="../src/shader-processing/shader-processor-glsl.host.js"
+"./webgpu-shader-processor-wgsl.factory.js"="../src/shader-processing/webgpu-shader-processor-wgsl.factory.js"
+"./webgpu-shader-processor-wgsl.host.js"="../src/shader-processing/webgpu-shader-processor-wgsl.host.js"
+"./closed-world.factory.js"="../src/shader-processing/closed-world.factory.js"
+
+[policy.resources]
+logical_work = 2000000000
+
+[execution]
+jobs = 1

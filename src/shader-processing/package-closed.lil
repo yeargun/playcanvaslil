@@ -1,0 +1,10 @@
+import "./package-hosts.lil";
+import {preprocessorRun, run as processWgsl} from "./entry.lil";
+import {run as processGlsl} from "./shader-processor-glsl.lil";
+import {ShaderDefinitionUtils} from "./shader-definition-utils.facade.lil";
+import extern {createClosed} from "./closed-world.factory.js";
+extern JsValue createClosed;
+JsValue api = JS.call(createClosed, JS.undefined(), JS.object("preprocessorRun", preprocessorRun, "processWgsl", processWgsl, "processGlsl", processGlsl, "ShaderDefinitionUtils", ShaderDefinitionUtils));
+export JsValue createDefinition = api["createDefinition"];
+export JsValue preprocess = api["preprocess"];
+export {processWgsl, processGlsl};

@@ -1,57 +1,33 @@
-import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { describe, it } from "node:test";
-import { fileURLToPath } from "node:url";
-
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const site = resolve(root, "_site");
-
-describe("GitHub Pages artifact", () => {
-  it("contains the evidence and runnable modules", () => {
-    for (const path of [
-      "index.html",
-      "styles.css",
-      "app.js",
-      "results.json",
-      "performance.json",
-      "compression-analysis.json",
-      "artifacts/shader-processing.js",
-      "artifacts/shader-processing.official.js",
-      "artifacts/shader-processing.closed.js",
-      "artifacts/shader-processing.closed.official.js",
-      ".nojekyll",
-    ]) {
-      assert.equal(existsSync(resolve(site, path)), true, path);
-    }
-  });
-
-  it("states the narrow scope and separates both contracts", () => {
-    const html = readFileSync(resolve(site, "index.html"), "utf8");
-    assert.match(html, /shader-processing core/i);
-    assert.match(html, /Open world/i);
-    assert.match(html, /Closed world/i);
-    assert.match(html, /not affiliated/i);
-    assert.doesNotMatch(html, /full engine port/i);
-  });
-
-  it("publishes measured provenance", () => {
-    const results = JSON.parse(readFileSync(resolve(site, "results.json"), "utf8"));
-    assert.equal(results.scope.gitSubmodulePath, "upstream/engine");
-    assert.equal(results.scope.name, "shader-processing core");
-    assert.equal(results.scope.convertedFiles.length, 4);
-    assert.match(results.upstream.revision, /^[0-9a-f]{40}$/);
-    assert.match(results.compiler.binarySha256, /^[0-9a-f]{64}$/);
-    for (const world of ["open", "closed"]) {
-      const metric = results.comparison[world].brotli11;
-      assert.ok(metric.candidate > 0 && metric.baseline > 0);
-      assert.ok(Math.abs(metric.differencePercent - (metric.candidate / metric.baseline - 1) * 100) < 0.011);
-    }
-
-    assert.equal(results.contract.officialPropertyMangling, false);
-    assert.equal(results.contract.lilscriptInternalPropertyMangling, false);
-    const analysis = JSON.parse(readFileSync(resolve(site, "compression-analysis.json"), "utf8"));
-    assert.ok(Math.abs(analysis.transfer.rawDifferencePercent - results.comparison.open.raw.differencePercent) < 0.011);
-    assert.ok(Math.abs(analysis.transfer.brotliDifferencePercent - results.comparison.open.brotli11.differencePercent) < 0.011);
-  });
+import assert from 'node:assert/strict';
+import {test} from 'node:test';
+import {readFileSync,existsSync} from 'node:fs';
+import {dirname,resolve,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {verifyComparison} from '../scripts/build-comparison.mjs';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+test('three independently targeted builds have current artifact and config hashes',()=>{
+ const data=verifyComparison(root);
+ assert.deepEqual(data.objectives.map(row=>row.objective),['raw','gzip','brotli']);
+ for(const row of data.objectives){
+  assert.equal(row.metric,{raw:'raw',gzip:'gzip9',brotli:'brotli11'}[row.objective]);
+  assert.equal(row.ratio,row.lilscript.sizes[row.metric]/row.original.sizes[row.metric]);
+  assert.equal(row.original.sizes[row.metric],Math.min(...data.minifiers.map(m=>m.sizes[row.metric])));
+  assert.ok(row.lilscript.buildSeconds>0);assert.ok(row.original.buildSeconds>0);
+ }
+});
+test('public comparison describes current versus original and distinguishes build stages',()=>{
+ const html=readFileSync(join(root,'site/index.html'),'utf8');
+ const module=readFileSync(join(root,'site/objective-comparison.js'),'utf8');
+ assert.match(html,/id="compression-comparison"/);assert.match(html,/id="objective-build-times"/);
+ assert.match(module,/separate compilation targeting/);assert.match(module,/upstream package from its original TypeScript sources/);
+ assert.doesNotMatch(html,/previous release|previous version|old compiler|earlier compiler|last release/i);
+ const data=JSON.parse(readFileSync(join(root,'site/comparison.json'),'utf8'));
+ assert.equal(data.schemaVersion,4);assert.ok(data.validation.checks>0);
+ assert.ok(data.upstream.sharedExports.length>0);assert.ok(data.minifiers.length>=2);
+});
+test('built Pages artifact contains the current data and measured downloads',()=>{
+ const data=JSON.parse(readFileSync(join(root,'site/comparison.json'),'utf8'));
+ assert.equal(readFileSync(join(root,'_site/comparison.json'),'utf8'),readFileSync(join(root,'site/comparison.json'),'utf8'));
+ for(const row of data.objectives)for(const item of [row.lilscript,row.original])assert.ok(existsSync(join(root,'_site',item.artifact)));
+ for(const file of ['app.js','styles.css','objective-comparison.js','objective-comparison.css','.nojekyll'])assert.ok(existsSync(join(root,'_site',file)),file);
 });

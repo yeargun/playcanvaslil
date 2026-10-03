@@ -1,31 +1,14 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import {cp,mkdir,rm,writeFile} from 'node:fs/promises';
+import {dirname,resolve,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {verifyComparison} from './build-comparison.mjs';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+verifyComparison(root);
+const output=join(root,'_site');
+await rm(output,{recursive:true,force:true});
+await mkdir(output,{recursive:true});
+await cp(join(root,'site'),output,{recursive:true});
+await writeFile(join(output,'.nojekyll'),'');
+console.log(`Built current objective comparisons at ${output}`);
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const output = resolve(root, "_site");
-
-await rm(output, { recursive: true, force: true });
-await mkdir(resolve(output, "artifacts"), { recursive: true });
-await cp(resolve(root, "site"), output, { recursive: true });
-await cp(resolve(root, "reports", "results.json"), resolve(output, "results.json"));
-await cp(resolve(root, "reports", "performance.json"), resolve(output, "performance.json"));
-await cp(resolve(root, "reports", "compression-analysis.json"), resolve(output, "compression-analysis.json"));
-await cp(resolve(root, "dist", "shader-processing.js"), resolve(output, "artifacts", "shader-processing.js"));
-await cp(
-  resolve(root, "dist", "shader-processing.official.js"),
-  resolve(output, "artifacts", "shader-processing.official.js"),
-);
-await cp(
-  resolve(root, "dist", "shader-processing.closed.js"),
-  resolve(output, "artifacts", "shader-processing.closed.js"),
-);
-await cp(
-  resolve(root, "dist", "shader-processing.closed.official.js"),
-  resolve(output, "artifacts", "shader-processing.closed.official.js"),
-);
-await writeFile(resolve(output, ".nojekyll"), "");
-console.log(`Built GitHub Pages site at ${output}`);
-
-// Publish current build facts using the existing page typography.
-await import("./build-comparison.mjs").then(({writeComparison}) => writeComparison({root, output}));
+await import('./package-download.mjs').then(({writePackageDownload}) => writePackageDownload(root, output));

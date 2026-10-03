@@ -1,0 +1,262 @@
+{
+  "package": "playcanvaslil",
+  "pin": "playcanvas@2.22.0-beta.24",
+  "objectiveComparison": {
+    "schemaVersion": 4,
+    "name": "playcanvaslil",
+    "package": "playcanvaslil",
+    "measuredAt": "2026-10-03T18:02:15.886942+03:00",
+    "compiler": {
+      "baseRevision": "f7d29bd9",
+      "binarySha256": "8ff44fabb92c949e68240ce6541038fd52e2f3c04d1a9ac470031e4238541c3a",
+      "hasLocalSourceChanges": true
+    },
+    "upstream": {
+      "package": "playcanvas",
+      "version": "2.22.0-beta.24",
+      "external": [],
+      "sharedExports": [
+        "Preprocessor",
+        "ShaderDefinitionUtils",
+        "ShaderProcessorGLSL",
+        "UniformLine",
+        "WebgpuShaderProcessorWGSL"
+      ],
+      "excludedExports": [],
+      "additionalExports": [],
+      "resolution": {
+        "platform": "neutral",
+        "conditions": [
+          "production"
+        ],
+        "mainFields": [
+          "module",
+          "main"
+        ],
+        "target": "es2020",
+        "defines": {
+          "process.env.NODE_ENV": "production"
+        },
+        "css": "excluded; measured JavaScript only"
+      }
+    },
+    "scope": "PlayCanvas shader-processing subsystem: preprocessor, shader definitions, GLSL and WGSL processing, with shared host dependencies included. Original release Debug calls are stripped. This is not the complete engine.",
+    "machine": {
+      "cpu": "AMD EPYC 7763 64-Core Processor",
+      "logicalCpus": 8,
+      "memoryGiB": 15.6,
+      "os": "Linux-7.0.0-1014-azure-x86_64-with-glibc2.39",
+      "node": "v20.19.0"
+    },
+    "objectives": [
+      {
+        "objective": "raw",
+        "metric": "raw",
+        "lilscript": {
+          "artifact": "./comparison-artifacts/lilscript-raw.mjs",
+          "sizes": {
+            "raw": 109574,
+            "gzip9": 26622,
+            "brotli11": 22934
+          },
+          "sha256": "3b4efa998676d70d030bba9e0ad13addd519134f155ae551f571c2c68c143459",
+          "buildSeconds": 8.093894564997754,
+          "config": "./comparison-artifacts/lilscript-raw.toml",
+          "configSha256": "e21edeef9c14f739859850f7557feb8b1f6f2fd292c41c248b1b833e6a49d8e3"
+        },
+        "original": {
+          "tool": "Terser",
+          "version": "5.51.2",
+          "artifact": "./comparison-artifacts/original-terser.mjs",
+          "sizes": {
+            "raw": 46667,
+            "gzip9": 14012,
+            "brotli11": 12522
+          },
+          "sha256": "d246427f370696f30459e922fe96ec79b093c28a1e13b01dc8839ba7d937e08e",
+          "buildSeconds": 0.7505624110000062
+        },
+        "ratio": 2.3479975143034695
+      },
+      {
+        "objective": "gzip",
+        "metric": "gzip9",
+        "lilscript": {
+          "artifact": "./comparison-artifacts/lilscript-gzip.mjs",
+          "sizes": {
+            "raw": 111732,
+            "gzip9": 26305,
+            "brotli11": 22605
+          },
+          "sha256": "e82baa588e66ac10a6af28694c0189f0b5007e16bf200ef12491864a491a766f",
+          "buildSeconds": 5.232355536005343,
+          "config": "./comparison-artifacts/lilscript-gzip.toml",
+          "configSha256": "946d00878e47fc08073bcc97e3adc773c37b762ed55476800a5bcf0ba4e1693d"
+        },
+        "original": {
+          "tool": "Terser",
+          "version": "5.51.2",
+          "artifact": "./comparison-artifacts/original-terser.mjs",
+          "sizes": {
+            "raw": 46667,
+            "gzip9": 14012,
+            "brotli11": 12522
+          },
+          "sha256": "d246427f370696f30459e922fe96ec79b093c28a1e13b01dc8839ba7d937e08e",
+          "buildSeconds": 0.7505624110000062
+        },
+        "ratio": 1.877319440479589
+      },
+      {
+        "objective": "brotli",
+        "metric": "brotli11",
+        "lilscript": {
+          "artifact": "./comparison-artifacts/lilscript-brotli.mjs",
+          "sizes": {
+            "raw": 111873,
+            "gzip9": 26422,
+            "brotli11": 22673
+          },
+          "sha256": "5c6878975580bc2c7c70a1e2856b6ececccf8e1875e9dea92ca3caaf8ebf54e3",
+          "buildSeconds": 21.232017928006826,
+          "config": "./comparison-artifacts/lilscript-brotli.toml",
+          "configSha256": "2703e3e518a2f8d3b8ab738860de4fe795211715c735a3314f17b1666f7f8247"
+        },
+        "original": {
+          "tool": "Terser",
+          "version": "5.51.2",
+          "artifact": "./comparison-artifacts/original-terser.mjs",
+          "sizes": {
+            "raw": 46667,
+            "gzip9": 14012,
+            "brotli11": 12522
+          },
+          "sha256": "d246427f370696f30459e922fe96ec79b093c28a1e13b01dc8839ba7d937e08e",
+          "buildSeconds": 0.7505624110000062
+        },
+        "ratio": 1.810653250279508
+      }
+    ],
+    "minifiers": [
+      {
+        "tool": "Terser",
+        "version": "5.51.2",
+        "artifact": "./comparison-artifacts/original-terser.mjs",
+        "sizes": {
+          "raw": 46667,
+          "gzip9": 14012,
+          "brotli11": 12522
+        },
+        "sha256": "d246427f370696f30459e922fe96ec79b093c28a1e13b01dc8839ba7d937e08e",
+        "buildSeconds": 0.7505624110000062
+      },
+      {
+        "tool": "esbuild",
+        "version": "0.28.1",
+        "artifact": "./comparison-artifacts/original-esbuild.mjs",
+        "sizes": {
+          "raw": 47566,
+          "gzip9": 14939,
+          "brotli11": 13221
+        },
+        "sha256": "e762281c8d18d5b7da35a8e5fa4ecb57db8e6e4f2de85034eb934ff0c61b5962",
+        "buildSeconds": 0.15568422999999892
+      },
+      {
+        "tool": "Oxc",
+        "version": "via Vite 8.2.1",
+        "artifact": "./comparison-artifacts/original-oxc.mjs",
+        "sizes": {
+          "raw": 46818,
+          "gzip9": 14485,
+          "brotli11": 12830
+        },
+        "sha256": "78e2f289818bf72b9c6c2f5735eb3deefb49b22cbd1f172d056a43069eff9d76",
+        "buildSeconds": 0.26665420599999196
+      }
+    ],
+    "validation": {
+      "checks": 234,
+      "runs": [
+        {
+          "objective": "raw",
+          "suite": "playcanvas",
+          "checks": 78,
+          "command": [
+            "node",
+            "scripts/test-upstream.mjs",
+            "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/raw/playcanvaslil/dist/index.mjs"
+          ],
+          "artifact": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/raw/playcanvaslil/dist/index.mjs",
+          "ok": true
+        },
+        {
+          "objective": "gzip",
+          "suite": "playcanvas",
+          "checks": 78,
+          "command": [
+            "node",
+            "scripts/test-upstream.mjs",
+            "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/gzip/playcanvaslil/dist/index.mjs"
+          ],
+          "artifact": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/gzip/playcanvaslil/dist/index.mjs",
+          "ok": true
+        },
+        {
+          "objective": "brotli",
+          "suite": "playcanvas",
+          "checks": 78,
+          "command": [
+            "node",
+            "scripts/test-upstream.mjs",
+            "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/brotli/playcanvaslil/dist/index.mjs"
+          ],
+          "artifact": "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/brotli/playcanvaslil/dist/index.mjs",
+          "ok": true
+        }
+      ],
+      "ok": true,
+      "scope": "Current independent main-entry builds; package-format tests are recorded separately."
+    },
+    "originalValidation": {
+      "checks": 234,
+      "runs": [
+        {
+          "minifier": "terser",
+          "checks": 78,
+          "ok": true,
+          "command": [
+            "node",
+            "scripts/test-upstream.mjs",
+            "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/original-terser/playcanvaslil/dist/index.mjs"
+          ]
+        },
+        {
+          "minifier": "esbuild",
+          "checks": 78,
+          "ok": true,
+          "command": [
+            "node",
+            "scripts/test-upstream.mjs",
+            "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/original-esbuild/playcanvaslil/dist/index.mjs"
+          ]
+        },
+        {
+          "minifier": "oxc",
+          "checks": 78,
+          "ok": true,
+          "command": [
+            "node",
+            "scripts/test-upstream.mjs",
+            "/home/azureuser/lilscript-rebuild-reports/2026-10-03-site-refresh/validation/original-oxc/playcanvaslil/dist/index.mjs"
+          ]
+        }
+      ]
+    }
+  },
+  "spec": {
+    "pass": 234,
+    "total": 234,
+    "label": "current main-entry checks"
+  }
+}

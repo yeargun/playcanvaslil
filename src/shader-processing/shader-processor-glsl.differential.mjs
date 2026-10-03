@@ -27,7 +27,7 @@ import {
 import {
   ShaderProcessorGLSL as Port,
   UniformLine as PortUniformLine,
-} from "./shader-processor-glsl.facade.js";
+} from "../../dist/shader-processing.external.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const upstreamPath = resolve(here, "../../upstream/engine/src/platform/graphics/shader-processor-glsl.js");
